@@ -27,3 +27,7 @@ Version 5.2.0
 ### Eslint
 Version 8.22.0 (la 8.23.0 tiene un bug)
 
+## Herramientas para desarrollo (opcionales)
+
+### React Developres Tools
+https://addons.mozilla.org/en-US/firefox/addon/react-devtools/
