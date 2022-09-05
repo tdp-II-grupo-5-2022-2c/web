@@ -24,10 +24,17 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 ### Bootstrap
 Version 5.2.0
 
+`npm i bootstrap@5.2.0`
+
 ### Eslint
 Version 8.22.0 (la 8.23.0 tiene un bug)
 
+`npm install eslint@8.22.0 --save-exact`
+
+### Reactstrap
+`npm install reactstrap`
+
 ## Herramientas para desarrollo (opcionales)
 
-### React Developres Tools
+### React Developers Tools
 https://addons.mozilla.org/en-US/firefox/addon/react-devtools/
