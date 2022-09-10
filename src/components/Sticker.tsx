@@ -1,33 +1,45 @@
-import {Button, Card, CardBody, CardSubtitle, CardText, CardTitle} from "reactstrap";
+import {Button, Card, CardBody, CardSubtitle, CardTitle} from "reactstrap";
+import {formatDate} from "../utils/formatDate";
 
-const Sticker = () => {
+export type IPlayer = {
+  id: number;
+  name: string;
+  dateOfBirth: Date;
+  weight: number;
+  height: number;
+  position: string;
+  country: string;
+  image: string;
+}
+
+type Props = {player: IPlayer}
+
+const Sticker = ({player}: Props) => {
   return (
     <Card
       style={{
         width: '18rem'
       }}
+      className={"m-1"}
     >
       <img
-        alt="Sample"
-        src="https://picsum.photos/300/200"
+        alt="Player"
+        src={player.image}
       />
       <CardBody>
         <CardTitle tag="h5">
-          Card title
+          {player.name}
         </CardTitle>
         <CardSubtitle
           className="mb-2 text-muted"
           tag="h6"
         >
-          Card subtitle
+          {formatDate(player.dateOfBirth)}
         </CardSubtitle>
-        <CardText>
-          Some quick example text to build on the card title and make up the bulk of the card‘s content.
-        </CardText>
-        <Button>
-          Button
-        </Button>
       </CardBody>
+      <Button>
+        Pegar
+      </Button>
     </Card>
   )
 }
