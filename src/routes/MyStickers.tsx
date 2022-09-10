@@ -7,31 +7,22 @@ type IPlayers = {
   players: IPlayer[]
 }
 
-/*
-id: number;
-name: string;
-dateOfBirth: Date;
-weight: number;
-height: number;
-position: number;
-country: string;
-image: string;
- */
-
 class MyStickers extends Component<any, any>{
   state: IPlayers = {
     players: getPlayersData()
   }
 
-
   render() {
+
     return (
       <React.Fragment>
         <MyNavbar/>
         <div className="container text-center">
-          <div className="row row-cols-4">
+          <div className="row row-cols-auto">
             {this.state.players.map((player, index) =>
-              <div key={player.id} className="col"><Sticker player={player}/></div>
+              <div key={player.id} className="my-1">
+                <Sticker player={player}/>
+              </div>
             )}
           </div>
         </div>

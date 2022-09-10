@@ -15,12 +15,17 @@ export type IPlayer = {
 type Props = {player: IPlayer}
 
 const Sticker = ({player}: Props) => {
+
+  const styles = {
+    card: {
+      width: '18rem',
+      height: '26rem'
+    }
+  }
+
   return (
     <Card
-      style={{
-        width: '18rem'
-      }}
-      className={"m-1"}
+      style={styles.card}
     >
       <img
         alt="Player"

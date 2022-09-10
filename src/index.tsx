@@ -11,6 +11,7 @@ import MyStickers from "./routes/MyStickers";
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
