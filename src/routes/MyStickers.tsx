@@ -20,7 +20,7 @@ class MyStickers extends Component<any, any>{
         <div className="container text-center">
           <div className="row row-cols-auto">
             {this.state.players.map((player, index) =>
-              <div key={player.id} className="my-1">
+              <div key={player.id} className="gy-5">
                 <Sticker player={player}/>
               </div>
             )}

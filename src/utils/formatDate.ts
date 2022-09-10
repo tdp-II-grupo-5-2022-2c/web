@@ -1,4 +1,4 @@
 
 export function formatDate (date: Date) {
-  return date.toDateString()
+  return date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear()
 }
