@@ -22,10 +22,10 @@ const MyNavbar = (args: any) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="me-auto" navbar>
             <NavItem>
-              <Link to="/my-stickers">Mis Figus</Link>
+              <Link to="/sign-in">Sign in</Link>
             </NavItem>
             <NavItem>
-              <Link to="/my-album">Mi Album</Link>
+              <Link to="/my-stickers">Mis Figus</Link>
             </NavItem>
           </Nav>
         </Collapse>
