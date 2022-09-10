@@ -34,6 +34,9 @@ Version 8.22.0 (la 8.23.0 tiene un bug)
 ### Reactstrap
 `npm install reactstrap`
 
+### React Router
+`npm install react-router-dom@6`
+
 ## Herramientas para desarrollo (opcionales)
 
 ### React Developers Tools
