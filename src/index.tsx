@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css'
 import './index.css';
+import './css/Sticker.css';
+import './assets/css/Packet.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
@@ -11,6 +13,7 @@ import { Register } from './routes/Register';
 import { AuthProvider } from './context/authContext';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import MyAlbum from "./routes/MyAlbum";
+import Packet from "./routes/Packet"
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -36,6 +39,11 @@ root.render(
           <Route path="/my-album" element={
             <ProtectedRoute>
               <MyAlbum />
+            </ProtectedRoute>
+          } />
+          <Route path="/packet/:id" element={
+            <ProtectedRoute>
+              <Packet />
             </ProtectedRoute>
           } />
         </Routes>
