@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css'
 import './index.css';
 import './css/Sticker.css';
+import './assets/css/Packet.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import SignIn from "./routes/SignIn";
 import MyStickers from "./routes/MyStickers";
+import Packet from "./routes/Packet"
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,6 +22,7 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/my-stickers" element={<MyStickers />} />
+        <Route path="/packet/:id" element={<Packet />} /> {/*TODO: Los paquetes se van a almacenar? van a tener ID?*/}
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
