@@ -2,15 +2,26 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css'
 import './index.css';
+import './css/Sticker.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import SignIn from "./routes/SignIn";
+import MyStickers from "./routes/MyStickers";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/my-stickers" element={<MyStickers />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

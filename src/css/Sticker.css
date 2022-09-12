@@ -1,0 +1,33 @@
+.card {
+  width: 18rem;
+  height: 26rem;
+  background-color: #FF5722;
+}
+
+.primary {
+  color: #FF5722;
+}
+
+.dark-primary {
+  color: #FF5722;
+}
+
+.bg-primary {
+  background-color: #FF5722;
+}
+
+.secondary {
+  color: #FF5252
+}
+
+.bg-secondary {
+  background-color: #FF5252;
+}
+
+.text-white {
+  color: #FFFFFF
+}
+
+.bg-white {
+  background-color: #FFFFFF
+}
