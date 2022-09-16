@@ -1,14 +1,25 @@
 import React, {Component} from "react";
 import MyNavbar from "../components/MyNavbar";
-import StickerPlaceHolder from "../components/StickerPlaceHolder";
-import {IPlayers} from "./MyStickers";
 import {getAlbumData} from "../data/albumData";
 import AlbumPage from "../components/AlbumPage";
+import {IPlayer} from "../components/Sticker";
 
+export type ITeam = {
+  players: IPlayer[];
+  country: string;
+  pageNumber: number
+}
 
-class MyStickers extends Component<any, any>{
-  state: IPlayers = {
-    players: []
+type IAlbum = {
+  teams : ITeam[];
+  selectedPage: number
+}
+
+class MyAlbum extends Component<any, any>{
+  // TODO: los equipos son constantes, no tiene sentido que esten en un state
+  state: IAlbum = {
+    teams:[],
+    selectedPage: 0
   }
 
   /* el album lo podemos hardcodear porque es siempre el mismo asi que
@@ -18,13 +29,19 @@ class MyStickers extends Component<any, any>{
     */
   componentDidMount() {
     console.log("MyAlbum - Did Mount")
-    const _players = getAlbumData()
-    this.setState({players: _players})
+    const _teams = getAlbumData()
+    this.setState({teams: _teams})
   }
 
   //TODO: yo siempre muestro una sola pagina en pantalla a pesar de tener todas
   // hacer una lista de pagina de album y solo renderizar una
   // <AlbumPage players = {this.state.albumPage.at(#numeroDePagina)}
+
+  private validateSelectedPage() {
+    return this.state.teams &&
+      this.state.selectedPage >= 0 &&
+      this.state.selectedPage < this.state.teams.length;
+  }
 
   render() {
     return (
@@ -32,12 +49,14 @@ class MyStickers extends Component<any, any>{
         <MyNavbar/>
         <div className="container text-center">
           <div className="row row-cols-auto">
-              <AlbumPage players={this.state.players}/>
+            {this.validateSelectedPage() &&
+                <AlbumPage team={this.state.teams[this.state.selectedPage]}/>}
           </div>
         </div>
       </React.Fragment>
     );
   }
+
 }
 
-export default MyStickers
+export default MyAlbum
