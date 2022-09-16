@@ -1,7 +1,7 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react';
 import {MemoryRouter} from "react-router-dom";
-import SignIn from "../routes/SignIn";
+import {SignIn} from "../routes/SignIn";
 import userEvent from "@testing-library/user-event";
 
 test('renders signin Form', () => {
