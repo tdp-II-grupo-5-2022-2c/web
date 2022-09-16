@@ -43,6 +43,22 @@ class MyAlbum extends Component<any, any>{
       this.state.selectedPage < this.state.teams.length;
   }
 
+  private nextPage = () => {
+    // TODO: ver tema offset +- 1 entre length y posicion elemento
+    let _nextSelectedPage = this.state.selectedPage >= this.state.teams.length - 1 ?
+      this.state.teams.length - 1 :
+      (this.state.selectedPage + 1)
+    console.log(_nextSelectedPage)
+    this.setState({selectedPage: _nextSelectedPage})
+  }
+
+  private previousPage = () => {
+    let _previousSelectedPage = this.state.selectedPage <= 0 ?
+      0 : (this.state.selectedPage - 1)
+    console.log(_previousSelectedPage)
+    this.setState({selectedPage: _previousSelectedPage})
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -50,12 +66,17 @@ class MyAlbum extends Component<any, any>{
         <div className="container text-center">
           <div className="row row-cols-auto">
             {this.validateSelectedPage() &&
-                <AlbumPage team={this.state.teams[this.state.selectedPage]}/>}
+              <AlbumPage team={this.state.teams[this.state.selectedPage]}/>
+            }
           </div>
+          <button className={"btn btn-primary btn-sm m-2"} onClick={this.previousPage}>Anterior</button>
+          <button className={"btn btn-primary btn-sm m-2"} onClick={this.nextPage}>Siguiente</button>
         </div>
       </React.Fragment>
     );
   }
+
+
 
 }
 

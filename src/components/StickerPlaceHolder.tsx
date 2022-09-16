@@ -12,8 +12,12 @@ type Props = IStickerPlaceHolder
 const StickerPlaceHolder = ({player, number}: Props) => {
 
   const styles = {
-    bgColor:{
-      ...globalStickerStyles.sticker, ...{backgroundColor: albumColors.primary}
+    stickerPlaceHolder:{
+      ...globalStickerStyles.sticker,
+      ...{backgroundColor: albumColors.primary},
+      ...{  width: "12rem",
+        height: "18rem",
+      }
     },
     text:{
       color: qatarColors.primary
@@ -26,7 +30,7 @@ const StickerPlaceHolder = ({player, number}: Props) => {
   }
 
   return (
-    <div className="card" style={styles.bgColor}>
+    <div className="card" style={styles.stickerPlaceHolder}>
         <div className="card-body d-flex flex-column justify-content-between">
           <p className="card-text"></p>
           <div>
