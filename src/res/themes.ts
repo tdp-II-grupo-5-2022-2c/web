@@ -11,6 +11,6 @@ export const qatarColors = {
 }
 
 export const albumColors = {
-  primary: "#00ACC1",
+  primary: "#80CBC4",
   secondary: qatarColors.secondary,
 }

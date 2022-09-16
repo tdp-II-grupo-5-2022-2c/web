@@ -1,74 +1,41 @@
-import {Button, Card, CardBody, CardSubtitle, CardTitle} from "reactstrap";
-import {formatDate} from "../utils/formatDate";
 import {IPlayer} from "./Sticker";
-import {colors} from "../res/themes";
-
+import {globalStickerStyles} from "../res/globalStyles";
+import {albumColors, qatarColors} from "../res/themes";
 
 type IStickerPlaceHolder = {
-  player: IPlayer
+  player: IPlayer;
+  number: number
 }
 
 type Props = IStickerPlaceHolder
 
-const StickerPlaceHolder = ({player}: Props) => {
+const StickerPlaceHolder = ({player, number}: Props) => {
 
   const styles = {
-    sticker:{
-      width: "18rem",
-      height: "26rem",
-      backgroundColor: colors.secondary
+    bgColor:{
+      ...globalStickerStyles.sticker, ...{backgroundColor: albumColors.primary}
     },
-    image:{
-      backgroundImage: `url(${player.image})`,
-      backgroundRepeat: 'no-repeat',
-    },
-    playerName:{
-      backgroundColor: colors.white,
-      color: colors.primary,
-      fontSize: '24px',
-      fontWeight: 'bold'
-    },
-    playerBirth:{
-      backgroundColor: colors.primary,
-      color: colors.white,
-      fontSize: '16px',
-      fontWeight: 'bold',
-    },
-    button:{
-      backgroundColor: colors.primary,
-      color: colors.white,
+    text:{
+      color: qatarColors.primary
     }
   }
 
-  return (
-    <Card
-      style={styles.sticker}
-    >
-      <div
-        className="w-100 h-100"
-        style={styles.image}
-      >
-        <div className="d-flex flex-row justify-content-end my-1">
-          {player.isInAlbum && <span className="badge text-bg-secondary mx-1">En album</span>}
-          {player.repeatedCount && player.repeatedCount > 0 &&
-              <span className="badge text-bg-secondary mx-1">{player.repeatedCount}
-                </span>}
-          {player.isInExchange && <span className="badge text-bg-secondary">En intercambio</span>}
-        </div>
-      </div>
+  const formatPlayerCountry = (playerName : String) => {
+    const firstThreeLetters = 3
+    return playerName.slice(0,firstThreeLetters).toUpperCase()
+  }
 
-      <CardBody className="d-flex flex-column justify-content-end align-items-center">
-        <CardTitle className="w-100" style={styles.playerName}>
-          {player.name}
-        </CardTitle>
-        <CardSubtitle
-          className="w-50"
-          style={styles.playerBirth}
-        >
-          {formatDate(player.dateOfBirth)}
-        </CardSubtitle>
-      </CardBody>
-    </Card>
+  return (
+    <div className="card" style={styles.bgColor}>
+        <div className="card-body d-flex flex-column justify-content-between">
+          <p className="card-text"></p>
+          <div>
+            <h5 className="card-title" style={styles.text}>{formatPlayerCountry(player.country)}</h5>
+            <h5 className="card-title" style={styles.text}>{number}</h5>
+          </div>
+          <p className="card-text" style={styles.text}>{player.name}</p>
+        </div>
+    </div>
   )
 }
 

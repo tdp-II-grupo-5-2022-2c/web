@@ -17,6 +17,7 @@ class MyStickers extends Component<any, any>{
     es si contiene o no una figurita
     */
   componentDidMount() {
+    console.log("MyAlbum - Did Mount")
     const _players = getAlbumData()
     this.setState({players: _players})
   }

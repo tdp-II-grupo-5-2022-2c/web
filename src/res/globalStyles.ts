@@ -1,6 +1,6 @@
 import {colors} from "./themes";
 
-export const stickerStyles = {
+export const globalStickerStyles = {
   sticker:{
     width: "18rem",
     height: "26rem",
@@ -21,5 +21,11 @@ export const stickerStyles = {
   button:{
     backgroundColor: colors.primary,
     color: colors.white,
+  }
+}
+
+export const debug = {
+  container:{
+    borderStyle: "solid"
   }
 }

@@ -7,11 +7,14 @@ type Props = IPlayers
 const AlbumPage = ({players}:Props) => {
 
     // TODO: pasar por Prop el color del background de la pagina del album
+    // TODO: pasar por Prop el pais
     const styles = {
       albumBg:{
         backgroundColor: "lightblue"
       }
     }
+
+    const OFFSET = 1
 
     return (
       <React.Fragment>
@@ -19,7 +22,7 @@ const AlbumPage = ({players}:Props) => {
           <div className="row row-cols-auto">
             {players.map((player, index) =>
               <div key={player.id} className="gy-5">
-                <StickerPlaceHolder player={player}/>
+                <StickerPlaceHolder player={player} number={index + OFFSET}/>
               </div>
             )}
           </div>
