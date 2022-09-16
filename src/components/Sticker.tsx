@@ -25,7 +25,10 @@ type Props = ISticker
 
 const Sticker = ({player, readOnly = false}: Props) => {
 
-  // TODO: ver el tema del tamaño de imagen, al parecer corta la imagen si es muy grande y no la estira si es muy chica
+  //TODO: ver el tema del tamaño de imagen, al parecer corta la imagen si es muy grande y no la estira si es muy chica
+  // tener en cuenta que la foto es de 300 por 200; ver de fijar eso como un maximo
+  // una buena solucion es que las imagenes NO se ajusten al tamaño de la ventana sino que la persona tenga que scrollear
+  // si es muy chica la pantalla
   const styles = {
     sticker:{
       width: "18rem",

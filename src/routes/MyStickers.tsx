@@ -3,7 +3,7 @@ import MyNavbar from "../components/MyNavbar";
 import Sticker, {IPlayer} from "../components/Sticker";
 import {getPlayersData} from "../data/playersData";
 
-type IPlayers = {
+export type IPlayers = {
   players: IPlayer[]
 }
 

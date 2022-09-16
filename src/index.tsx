@@ -8,6 +8,7 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import SignIn from "./routes/SignIn";
 import MyStickers from "./routes/MyStickers";
+import MyAlbum from "./routes/MyAlbum";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,6 +21,7 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/my-stickers" element={<MyStickers />} />
+        <Route path="/my-album" element={<MyAlbum />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
