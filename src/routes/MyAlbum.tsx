@@ -19,7 +19,7 @@ class MyAlbum extends Component<any, any>{
   // TODO: los equipos son constantes, no tiene sentido que esten en un state
   state: IAlbum = {
     teams:[],
-    selectedPage: 0
+    selectedPage: 1
   }
 
   /* el album lo podemos hardcodear porque es siempre el mismo asi que
