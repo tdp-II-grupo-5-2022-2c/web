@@ -27,13 +27,17 @@ root.render(
             </ProtectedRoute>
           } />
           <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/my-stickers" element={
             <ProtectedRoute>
               <MyStickers />
             </ProtectedRoute>
-
           } />
-          <Route path="/register" element={<Register />} />
+          <Route path="/my-album" element={
+            <ProtectedRoute>
+              <MyAlbum />
+            </ProtectedRoute>
+          } />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
