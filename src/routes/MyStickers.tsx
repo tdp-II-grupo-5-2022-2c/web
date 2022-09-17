@@ -3,13 +3,8 @@ import MyNavbar from "../components/MyNavbar";
 import Sticker, {IPlayer} from "../components/Sticker";
 import {getArgentinaPlayersData} from "../data/playersData";
 
-// TODO: ver de sacar esto
-export type IPlayers = {
-  players: IPlayer[]
-}
-
 class MyStickers extends Component<any, any>{
-  state: IPlayers = {
+  state: { players: IPlayer[] } = {
     players: getArgentinaPlayersData()
   }
 

@@ -1,5 +1,4 @@
-// TODO: renombrar a stickerColors
-export const colors = {
+export const stickerColors = {
   primary: "#FF5252",
   secondary: "#FF5722",
   white: "#FFFFFF"

@@ -33,10 +33,6 @@ class MyAlbum extends Component<any, any>{
     this.setState({teams: _teams})
   }
 
-  //TODO: yo siempre muestro una sola pagina en pantalla a pesar de tener todas
-  // hacer una lista de pagina de album y solo renderizar una
-  // <AlbumPage players = {this.state.albumPage.at(#numeroDePagina)}
-
   private validateSelectedPage() {
     return this.state.teams &&
       this.state.selectedPage >= 0 &&
@@ -44,18 +40,15 @@ class MyAlbum extends Component<any, any>{
   }
 
   private nextPage = () => {
-    // TODO: ver tema offset +- 1 entre length y posicion elemento
     let _nextSelectedPage = this.state.selectedPage >= this.state.teams.length - 1 ?
       this.state.teams.length - 1 :
       (this.state.selectedPage + 1)
-    console.log(_nextSelectedPage)
     this.setState({selectedPage: _nextSelectedPage})
   }
 
   private previousPage = () => {
     let _previousSelectedPage = this.state.selectedPage <= 0 ?
       0 : (this.state.selectedPage - 1)
-    console.log(_previousSelectedPage)
     this.setState({selectedPage: _previousSelectedPage})
   }
 

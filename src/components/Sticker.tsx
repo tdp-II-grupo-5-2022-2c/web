@@ -1,6 +1,6 @@
 import {Button, Card, CardBody, CardSubtitle, CardTitle} from "reactstrap";
 import {formatDate} from "../utils/formatDate";
-import {colors} from "../res/themes";
+import {stickerColors} from "../res/themes";
 
 export type IPlayer = {
   id: number;
@@ -28,32 +28,32 @@ const Sticker = ({player, readOnly = false}: Props) => {
   //TODO: ver el tema del tamaño de imagen, al parecer corta la imagen si es muy grande y no la estira si es muy chica
   // tener en cuenta que la foto es de 300 por 200; ver de fijar eso como un maximo
   // una buena solucion es que las imagenes NO se ajusten al tamaño de la ventana sino que la persona tenga que scrollear
-  // si es muy chica la pantalla
+  // si es muy chica la pantalla, es decir se mantienen siempre del mismo tamaño
   const styles = {
     sticker:{
       width: "18rem",
       height: "26rem",
-      backgroundColor: colors.secondary
+      backgroundColor: stickerColors.secondary
     },
     image:{
       backgroundImage: `url(${player.image})`,
       backgroundRepeat: 'no-repeat',
     },
     playerName:{
-      backgroundColor: colors.white,
-      color: colors.primary,
+      backgroundColor: stickerColors.white,
+      color: stickerColors.primary,
       fontSize: '24px',
       fontWeight: 'bold'
     },
     playerBirth:{
-      backgroundColor: colors.primary,
-      color: colors.white,
+      backgroundColor: stickerColors.primary,
+      color: stickerColors.white,
       fontSize: '16px',
       fontWeight: 'bold',
     },
     button:{
-      backgroundColor: colors.primary,
-      color: colors.white,
+      backgroundColor: stickerColors.primary,
+      color: stickerColors.white,
     }
   }
 

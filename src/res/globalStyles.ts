@@ -1,26 +1,26 @@
-import {colors} from "./themes";
+import {stickerColors} from "./themes";
 
 export const globalStickerStyles = {
   sticker:{
     width: "18rem",
     height: "26rem",
-    backgroundColor: colors.secondary
+    backgroundColor: stickerColors.secondary
   },
   playerName:{
-    backgroundColor: colors.white,
-    color: colors.primary,
+    backgroundColor: stickerColors.white,
+    color: stickerColors.primary,
     fontSize: '24px',
     fontWeight: 'bold'
   },
   playerBirth:{
-    backgroundColor: colors.primary,
-    color: colors.white,
+    backgroundColor: stickerColors.primary,
+    color: stickerColors.white,
     fontSize: '16px',
     fontWeight: 'bold',
   },
   button:{
-    backgroundColor: colors.primary,
-    color: colors.white,
+    backgroundColor: stickerColors.primary,
+    color: stickerColors.white,
   }
 }
 
