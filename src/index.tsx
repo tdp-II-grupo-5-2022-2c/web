@@ -41,7 +41,9 @@ root.render(
             </ProtectedRoute>
           } />
           <Route path="/packet" element={
+            <ProtectedRoute>
               <Packet />
+            </ProtectedRoute>
           } />
           <Route path="/packet/open" element={
             <ProtectedRoute>
