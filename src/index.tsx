@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css'
 import './index.css';
-import './css/Sticker.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
@@ -11,6 +10,7 @@ import MyStickers from "./routes/MyStickers";
 import { Register } from './routes/Register';
 import { AuthProvider } from './context/authContext';
 import { ProtectedRoute } from './routes/ProtectedRoute';
+import MyAlbum from "./routes/MyAlbum";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -27,13 +27,17 @@ root.render(
             </ProtectedRoute>
           } />
           <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/my-stickers" element={
             <ProtectedRoute>
               <MyStickers />
             </ProtectedRoute>
-            
           } />
-          <Route path="/register" element={<Register />} />
+          <Route path="/my-album" element={
+            <ProtectedRoute>
+              <MyAlbum />
+            </ProtectedRoute>
+          } />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

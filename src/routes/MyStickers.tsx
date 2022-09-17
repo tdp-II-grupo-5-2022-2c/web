@@ -1,15 +1,11 @@
 import React, {Component} from "react";
 import MyNavbar from "../components/MyNavbar";
 import Sticker, {IPlayer} from "../components/Sticker";
-import {getPlayersData} from "../data/playersData";
-
-type IPlayers = {
-  players: IPlayer[]
-}
+import {getArgentinaPlayersData} from "../data/playersData";
 
 class MyStickers extends Component<any, any>{
-  state: IPlayers = {
-    players: getPlayersData()
+  state: { players: IPlayer[] } = {
+    players: getArgentinaPlayersData()
   }
 
   render() {
