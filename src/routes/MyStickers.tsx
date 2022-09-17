@@ -5,10 +5,12 @@ import {getArgentinaPlayersData} from "../data/playersData";
 import {useDrop} from "react-dnd";
 import {Draggable} from "../components/Draggable";
 import DropBoard from "../components/DropBoard";
+import {useNavigate} from "react-router-dom";
 
 const MyStickers = () => {
-
   const [players, setPlayers] = useState([] as IPlayer[])
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     setPlayers(getArgentinaPlayersData())
@@ -19,8 +21,9 @@ const MyStickers = () => {
     const playersWithId = players.filter(player => player.id === playerId)
     // TODO: validar que sea solo uno, caso contrario lanzar excepcion
     console.log(playersWithId)
-    // TODO: navegar a MyAlbum pasando por props el id del jugador
-    return undefined;
+    //TODO: navegar a MyAlbum pasando por props el id del jugador;
+    // una opcion es pasar por queryParams y usar el hook useSearchParams y obtener de ahi el id de figurita a pegar
+    navigate("../my-album?pasteId=1")
   }
 
   // TODO: definir el accept en una constante

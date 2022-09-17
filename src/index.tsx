@@ -18,6 +18,10 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+//TODO: si ya esta logeado deberia enviarlo directo al welcome
+// usar el context para eso; es decir tener un
+// NavStack/Routers distinto para el que esta logeado
+
 root.render(
   <React.StrictMode>
     <AuthProvider>
