@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, {Component} from "react";
 import {Card, CardImg, CardBody, Button, Col, Row, Container, Fade} from "reactstrap";
+import '../assets/css/Packet.css';
 
 class Packet extends Component {
   constructor(props) {
@@ -17,10 +18,10 @@ class Packet extends Component {
     return (
       <>
         <Container fluid className="packet-background">
-          <Row className="justify-content-center ">
+          <Row className="h-100 justify-content-center align-items-center">
             <Col lg={{size: "auto"}} className="mt-5 col-10 col-sm-5 col-md-5 col-lg-5 col-xl-5">
-              <Fade appear={true} timeout={500} className="offset-md-3 offset-lg-3 offset-xl-3">
-                <Card className="bg-transparent border-0">
+              <Fade appear={true} timeout={500}>
+                <Card className="bg-transparent border-0 mx-auto" style={{ width: "18rem" }}>
                   <CardImg
                       alt="..."
                       src={require("../assets/img/packet.png")}

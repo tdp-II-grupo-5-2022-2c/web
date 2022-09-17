@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css'
 import './index.css';
-import './css/Sticker.css';
-import './assets/css/Packet.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
@@ -42,9 +40,9 @@ root.render(
             </ProtectedRoute>
           } />
           <Route path="/packet" element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
               <Packet />
-            </ProtectedRoute>
+            //</ProtectedRoute>
           } />
         </Routes>
       </BrowserRouter>
