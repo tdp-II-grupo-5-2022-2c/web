@@ -5,8 +5,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import SignIn from "./routes/SignIn";
+import {SignIn} from "./routes/SignIn";
 import MyStickers from "./routes/MyStickers";
+import { Register } from './routes/Register';
+import { AuthProvider } from './context/authContext';
+import { ProtectedRoute } from './routes/ProtectedRoute';
 import MyAlbum from "./routes/MyAlbum";
 
 const root = ReactDOM.createRoot(
@@ -15,14 +18,25 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/my-stickers" element={<MyStickers />} />
-        <Route path="/my-album" element={<MyAlbum />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={
+            <ProtectedRoute>
+              <App />
+            </ProtectedRoute>
+          } />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/my-stickers" element={
+            <ProtectedRoute>
+              <MyStickers />
+            </ProtectedRoute>
+
+          } />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>
 );
 
