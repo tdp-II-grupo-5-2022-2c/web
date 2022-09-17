@@ -22,7 +22,7 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/my-stickers" element={<MyStickers />} />
-        <Route path="/packet/:id" element={<Packet />} /> {/*TODO: Los paquetes se van a almacenar? van a tener ID?*/}
+        <Route path="/packet" element={<Packet />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
