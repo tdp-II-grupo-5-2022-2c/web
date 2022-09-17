@@ -41,7 +41,7 @@ root.render(
               <MyAlbum />
             </ProtectedRoute>
           } />
-          <Route path="/packet/:id" element={
+          <Route path="/packet" element={
             <ProtectedRoute>
               <Packet />
             </ProtectedRoute>

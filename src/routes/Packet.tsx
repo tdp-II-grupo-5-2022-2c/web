@@ -9,14 +9,18 @@ class Packet extends Component {
     this.state = {}
   }
 
+  openPacket(event) {
+    console.log("Opening packet"); //TODO: Redirect to open packet
+  }
+
   render() {
     return (
       <>
         <Container fluid className="packet-background">
-          <Row className="justify-content-center">
-            <Col lg={{size: "auto"}} className="mt-5">
-              <Fade appear={true} timeout={500}>
-                <Card className="bg-transparent border-0" style={{ width: "18rem" }}>
+          <Row className="justify-content-center ">
+            <Col lg={{size: "auto"}} className="mt-5 col-10 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+              <Fade appear={true} timeout={500} className="offset-md-3 offset-lg-3 offset-xl-3">
+                <Card className="bg-transparent border-0">
                   <CardImg
                       alt="..."
                       src={require("../assets/img/packet.png")}
@@ -25,9 +29,8 @@ class Packet extends Component {
                   <CardBody className="text-center">
                     <Button
                         color="primary"
-                        href="#pablo"
                         size="md"
-                        onClick={e => e.preventDefault()}
+                        onClick={this.openPacket}
                     >
                       Abrir
                     </Button>
