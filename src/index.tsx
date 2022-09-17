@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css'
 import './index.css';
-import './css/Sticker.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
@@ -13,6 +12,7 @@ import { AuthProvider } from './context/authContext';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import MyAlbum from "./routes/MyAlbum";
 import Packet from "./routes/Packet"
+import PacketOpen from "./routes/PacketOpen";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -41,9 +41,12 @@ root.render(
             </ProtectedRoute>
           } />
           <Route path="/packet" element={
-            // <ProtectedRoute> TODO: Fix ProtectedRoute
               <Packet />
-            //</ProtectedRoute>
+          } />
+          <Route path="/packet/open" element={
+            <ProtectedRoute>
+              <PacketOpen />
+            </ProtectedRoute>
           } />
         </Routes>
       </BrowserRouter>
