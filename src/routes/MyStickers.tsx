@@ -1,42 +1,58 @@
-import React, {Component} from "react";
+import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import Sticker, {IPlayer} from "../components/Sticker";
 import {getArgentinaPlayersData} from "../data/playersData";
-import {DndProvider} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
+import {useDrop} from "react-dnd";
 import {Draggable} from "../components/Draggable";
 import DropBoard from "../components/DropBoard";
 
-class MyStickers extends Component<any, any>{
-  state: { players: IPlayer[] } = {
-    players: getArgentinaPlayersData()
+const MyStickers = () => {
+
+  const [players, setPlayers] = useState([] as IPlayer[])
+
+  useEffect(() => {
+    setPlayers(getArgentinaPlayersData())
+  }, [])
+
+  const addStickerToAlbum = (playerId: number) => {
+    console.log("Sticker id " + playerId + " into album")
+    const playersWithId = players.filter(player => player.id === playerId)
+    // TODO: validar que sea solo uno, caso contrario lanzar excepcion
+    console.log(playersWithId)
+    // TODO: navegar a MyAlbum pasando por props el id del jugador
+    return undefined;
   }
 
-  render() {
+  // TODO: definir el accept en una constante
+  const [{isOver}, drop] = useDrop(() => ({
+    accept: "sticker",
+    drop: (item: any) => addStickerToAlbum(item.id),
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    })
+  }))
 
-    return (
-      <React.Fragment>
-        <MyNavbar/>
-        <DndProvider backend={HTML5Backend}>
-          <div className="container text-center">
-            <div className="row row-cols-auto">
-              {this.state.players.map((player, index) =>
-                <div key={player.id} className="gy-5">
-                  <Draggable>
-                    <Sticker player={player}/>
-                  </Draggable>
-                </div>
-              )}
-              <div className="gy-5">
-                <DropBoard/>
-              </div>
+  // TODO: a draggable le podria pasar el type por props
+  return (
+    <React.Fragment>
+      <MyNavbar/>
+      <div className="container text-center">
+        <div className="row row-cols-auto">
+          {players.map((player, index) =>
+            <div key={player.id} className="gy-5">
+              <Draggable childrenId={player.id}>
+                <Sticker player={player}/>
+              </Draggable>
             </div>
+          )}
+          <div className="gy-5" ref={drop}>
+            <DropBoard/>
           </div>
+        </div>
+      </div>
+    </React.Fragment>
+  );
 
-        </DndProvider>
-      </React.Fragment>
-    );
-  }
 }
 
 export default MyStickers

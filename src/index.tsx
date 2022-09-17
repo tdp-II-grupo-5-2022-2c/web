@@ -7,10 +7,12 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {SignIn} from "./routes/SignIn";
 import MyStickers from "./routes/MyStickers";
-import { Register } from './routes/Register';
-import { AuthProvider } from './context/authContext';
-import { ProtectedRoute } from './routes/ProtectedRoute';
+import {Register} from './routes/Register';
+import {AuthProvider} from './context/authContext';
+import {ProtectedRoute} from './routes/ProtectedRoute';
 import MyAlbum from "./routes/MyAlbum";
+import {HTML5Backend} from "react-dnd-html5-backend";
+import {DndProvider} from "react-dnd";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -23,21 +25,23 @@ root.render(
         <Routes>
           <Route path="/" element={
             <ProtectedRoute>
-              <App />
+              <App/>
             </ProtectedRoute>
-          } />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/register" element={<Register />} />
+          }/>
+          <Route path="/sign-in" element={<SignIn/>}/>
+          <Route path="/register" element={<Register/>}/>
           <Route path="/my-stickers" element={
             <ProtectedRoute>
-              <MyStickers />
+              <DndProvider backend={HTML5Backend}>
+                <MyStickers/>
+              </DndProvider>
             </ProtectedRoute>
-          } />
+          }/>
           <Route path="/my-album" element={
             <ProtectedRoute>
-              <MyAlbum />
+              <MyAlbum/>
             </ProtectedRoute>
-          } />
+          }/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
