@@ -29,6 +29,8 @@ const StickerPlaceHolder = ({player, number}: Props) => {
     return playerName.slice(0,firstThreeLetters).toUpperCase()
   }
 
+  //TODO: renderizado condicional, si no tengo figurita renderizo el placeholder, caso contrario
+  // renderizo la figurita que recibo por props
   return (
     <div className="card" style={styles.stickerPlaceHolder}>
         <div className="card-body d-flex flex-column justify-content-between">

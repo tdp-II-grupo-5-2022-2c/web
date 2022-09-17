@@ -1,6 +1,7 @@
 import {Button, Card, CardBody, CardSubtitle, CardTitle} from "reactstrap";
 import {formatDate} from "../utils/formatDate";
 import {stickerColors} from "../res/themes";
+import {globalStickerStyles} from "../res/globalStyles";
 
 export type IPlayer = {
   id: number;
@@ -29,27 +30,12 @@ const Sticker = ({player, readOnly = false}: Props) => {
   // tener en cuenta que la foto es de 300 por 200; ver de fijar eso como un maximo
   // una buena solucion es que las imagenes NO se ajusten al tamaño de la ventana sino que la persona tenga que scrollear
   // si es muy chica la pantalla, es decir se mantienen siempre del mismo tamaño
+
+  // TODO: corregir el estilo
   const styles = {
-    sticker:{
-      width: "18rem",
-      height: "26rem",
-      backgroundColor: stickerColors.secondary
-    },
     image:{
       backgroundImage: `url(${player.image})`,
       backgroundRepeat: 'no-repeat',
-    },
-    playerName:{
-      backgroundColor: stickerColors.white,
-      color: stickerColors.primary,
-      fontSize: '24px',
-      fontWeight: 'bold'
-    },
-    playerBirth:{
-      backgroundColor: stickerColors.primary,
-      color: stickerColors.white,
-      fontSize: '16px',
-      fontWeight: 'bold',
     },
     button:{
       backgroundColor: stickerColors.primary,
@@ -59,7 +45,7 @@ const Sticker = ({player, readOnly = false}: Props) => {
 
   return (
     <Card
-      style={styles.sticker}
+      style={globalStickerStyles.sticker}
     >
         <div
           className="w-100 h-100"
@@ -75,12 +61,12 @@ const Sticker = ({player, readOnly = false}: Props) => {
         </div>
 
       <CardBody className="d-flex flex-column justify-content-end align-items-center">
-        <CardTitle className="w-100" style={styles.playerName}>
+        <CardTitle className="w-100" style={globalStickerStyles.playerName}>
           {player.name}
         </CardTitle>
         <CardSubtitle
           className="w-50"
-          style={styles.playerBirth}
+          style={globalStickerStyles.playerBirth}
         >
           {formatDate(player.dateOfBirth)}
         </CardSubtitle>
