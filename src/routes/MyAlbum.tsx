@@ -22,6 +22,9 @@ const MyAlbum = () => {
   const [selectedPage, setSelectedPage] = useState(0)
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const [isPasting, setIsPasting] = useState(false);
+  const [pasteId, setPasteId] = useState<number | undefined>(0);
+
   /* el album lo podemos hardcodear porque es siempre el mismo asi que
     una vez montado el album queda asi, pretendo que cada StickerPlaceHolder pueda tener adentro un Sticker
     como un contenedor, los placeholders van a ser estaticos durante toda la aplicacion, lo que cambia
@@ -39,23 +42,23 @@ const MyAlbum = () => {
   useEffect(() => {
     // TODO: poner en una constante global este queryParam
     const stickerIdToBePasted = searchParams.get("stickerIdToBePasted")
-    if(stickerIdToBePasted){
+    if (stickerIdToBePasted) {
       console.log("stickerIdToBePasted " + stickerIdToBePasted)
       goToAlbumPage(stickerIdToBePasted)
     }
   }, [searchParams])
 
-  const goToAlbumPage = (stickerId : string) => {
+  const goToAlbumPage = (stickerId: string) => {
     const PLAYERS_PER_ALBUM_PAGE = 11
     let newSelectedPage = selectedPage
     let counter = 1
     let notFound = true
     let teamIndex = 0
     // TODO: no se que tan mal esta pero la unica forma de tener el state cuando entro por el navigate es usando un useRef
-    while(notFound && teamIndex < refTeams.current.length) {
+    while (notFound && teamIndex < refTeams.current.length) {
       const players = refTeams.current[teamIndex].players
       let playerIndex = 0
-      while(notFound && playerIndex < players.length) {
+      while (notFound && playerIndex < players.length) {
         const player = players[playerIndex]
         console.log("player.id " + player.id)
         if (player.id.toString() === stickerId) {
@@ -73,8 +76,9 @@ const MyAlbum = () => {
     newSelectedPage = Math.floor(newSelectedPage)
     console.log("goToAlbumPage - Paste id album page " + newSelectedPage)
     setSelectedPage(newSelectedPage)
+    setPasteId(Number(stickerId));
+    setIsPasting(true)
 
-    // TODO: poner aca la api call para pegar la figu en el album
   }
 
   const validateSelectedPage = () => {
@@ -87,29 +91,39 @@ const MyAlbum = () => {
     let _nextSelectedPage = selectedPage >= teams.length - 1 ?
       teams.length - 1 :
       (selectedPage + 1)
-      setSelectedPage(_nextSelectedPage)
+    setSelectedPage(_nextSelectedPage)
   }
 
   const previousPage = () => {
     let _previousSelectedPage = selectedPage <= 0 ?
       0 : (selectedPage - 1)
-    setSelectedPage( _previousSelectedPage)
+    setSelectedPage(_previousSelectedPage)
   }
 
-    return (
-      <React.Fragment>
-        <MyNavbar/>
-        <div className="container text-center">
-          <div className="row row-cols-auto">
-            {validateSelectedPage() &&
-              <AlbumPage team={teams[selectedPage]}/>
-            }
-          </div>
-          <button className={"btn btn-primary btn-sm m-2"} onClick={previousPage}>Anterior</button>
-          <button className={"btn btn-primary btn-sm m-2"} onClick={nextPage}>Siguiente</button>
+  const onPaste = (pasteId : number) => {
+    // TODO: poner aca la api call para pegar la figu en el album
+    console.log("API REQUEST TO PASTE " + pasteId)
+    setIsPasting(false)
+    setPasteId(undefined)
+  }
+
+  return (
+    <React.Fragment>
+      <MyNavbar/>
+      <div className="container text-center">
+        <div className="row row-cols-auto">
+          {validateSelectedPage() &&
+              <div>
+                {!isPasting && <AlbumPage team={teams[selectedPage]}/>}
+                {isPasting && <AlbumPage team={teams[selectedPage]} pasteId={pasteId} onPaste={onPaste}/>}
+              </div>
+          }
         </div>
-      </React.Fragment>
-    );
+        <button className={"btn btn-primary btn-sm m-2"} onClick={previousPage}>Anterior</button>
+        <button className={"btn btn-primary btn-sm m-2"} onClick={nextPage}>Siguiente</button>
+      </div>
+    </React.Fragment>
+  );
 }
 
 export default MyAlbum
