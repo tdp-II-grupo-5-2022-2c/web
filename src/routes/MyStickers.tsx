@@ -11,19 +11,17 @@ const MyStickers = () => {
   const [players, setPlayers] = useState([] as IPlayer[])
   const navigate = useNavigate();
 
-
   useEffect(() => {
     setPlayers(getArgentinaPlayersData())
   }, [])
 
   const addStickerToAlbum = (playerId: number) => {
     console.log("Sticker id " + playerId + " into album")
-    const playersWithId = players.filter(player => player.id === playerId)
-    // TODO: validar que sea solo uno, caso contrario lanzar excepcion
-    console.log(playersWithId)
     //TODO: navegar a MyAlbum pasando por props el id del jugador;
     // una opcion es pasar por queryParams y usar el hook useSearchParams y obtener de ahi el id de figurita a pegar
-    navigate("../my-album?pasteId=1")
+
+    // TODO: validar que no este en el album; validar que tampoco este para intercambiar????????
+    navigate("../my-album?stickerIdToBePasted=" + playerId)
   }
 
   // TODO: definir el accept en una constante
