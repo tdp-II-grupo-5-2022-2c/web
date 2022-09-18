@@ -11,6 +11,7 @@ import { Register } from './routes/Register';
 import { AuthProvider } from './context/authContext';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import MyAlbum from "./routes/MyAlbum";
+import Packet from "./routes/Packet"
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -37,6 +38,11 @@ root.render(
             <ProtectedRoute>
               <MyAlbum />
             </ProtectedRoute>
+          } />
+          <Route path="/packet" element={
+            // <ProtectedRoute> TODO: Fix ProtectedRoute
+              <Packet />
+            //</ProtectedRoute>
           } />
         </Routes>
       </BrowserRouter>
