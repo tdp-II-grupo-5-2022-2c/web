@@ -11,6 +11,7 @@ export const useAuth = () => {
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const signUp = (email, password) => 
         createUserWithEmailAndPassword(auth, email, password);
@@ -30,9 +31,10 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         onAuthStateChanged(auth, currentUser => { // Si esta logeado me devuelve el user, si no esta logeado devuelve null
             setUser(currentUser);
+            setLoading(false);
         });
     }, []);
         
 
-    return <authContext.Provider value={{ signUp, login, loginWithGoogle, user, logout }}> {children} </authContext.Provider>;
+    return <authContext.Provider value={{ signUp, login, loginWithGoogle, user, logout, loading }}> {children} </authContext.Provider>;
 }

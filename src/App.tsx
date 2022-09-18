@@ -23,6 +23,7 @@ function App() {
       <MyNavbar/>
       <h1>Welcome {user.displayName || user.email}</h1>
       <button onClick={handleLogout}> Logout </button>
+      <button onClick={() => {navigate('/my-stickers')}}> MY stickers </button>
     </React.Fragment>
 
   );

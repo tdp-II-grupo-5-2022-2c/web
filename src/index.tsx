@@ -13,6 +13,8 @@ import {ProtectedRoute} from './routes/ProtectedRoute';
 import MyAlbum from "./routes/MyAlbum";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from "react-dnd";
+import Packet from "./routes/Packet"
+import PacketOpen from "./routes/PacketOpen";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -45,7 +47,17 @@ root.render(
             <ProtectedRoute>
               <MyAlbum/>
             </ProtectedRoute>
-          }/>
+          } />
+          <Route path="/packet" element={
+            <ProtectedRoute>
+              <Packet />
+            </ProtectedRoute>
+          } />
+          <Route path="/packet/open" element={
+            <ProtectedRoute>
+              <PacketOpen />
+            </ProtectedRoute>
+          } />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
