@@ -27,7 +27,6 @@ const MyNavbar = (args: any) => {
             <NavItem>
               <Link to="/my-stickers">Mis Figus</Link>
             </NavItem>
-
             <NavItem>
               <Link to="/my-album">Mi Album</Link>
             </NavItem>
