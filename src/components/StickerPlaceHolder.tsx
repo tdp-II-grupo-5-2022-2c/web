@@ -2,8 +2,14 @@ import {IPlayer} from "./Sticker";
 import {globalStickerStyles} from "../res/globalStyles";
 import {albumColors, qatarColors} from "../res/themes";
 
+export type ISlicedPlayer = {
+  id: number;
+  name: string;
+  country: string
+}
+
 type IStickerPlaceHolder = {
-  player: IPlayer;
+  player: IPlayer | ISlicedPlayer;
   number: number
 }
 

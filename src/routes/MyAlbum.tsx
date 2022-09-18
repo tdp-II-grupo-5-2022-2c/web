@@ -1,19 +1,24 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {getAlbumData} from "../data/albumData";
 import AlbumPage from "../components/AlbumPage";
 import {IPlayer} from "../components/Sticker";
 import {useSearchParams} from "react-router-dom";
+import {ISlicedPlayer} from "../components/StickerPlaceHolder";
 
+// TODO: despues eliminar el IPlayer[] dado que es data mockeada
 export type ITeam = {
-  players: IPlayer[];
+  players: IPlayer[] | ISlicedPlayer[];
   country: string;
   pageNumber: number
 }
 
 const MyAlbum = () => {
-  // TODO: los equipos son constantes, no tiene sentido que esten en un state
+  //TODO: los equipos son constantes, no tiene sentido que esten en un state
+  // si tiene sentido si los obtengo de una query al back que es lo que supongo que va a pasar
+
   const [teams, setTeams] = useState([] as ITeam[])
+  const refTeams = useRef([] as ITeam[])
   const [selectedPage, setSelectedPage] = useState(0)
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -24,18 +29,53 @@ const MyAlbum = () => {
     */
   useEffect(() => {
     console.log("MyAlbum - Did Mount")
+    //TODO: hacer una unica request al back con la data de todos los jugadores del album con sus ids; por country
+    // entonces se llenan los placeholders de cada album
     const _teams = getAlbumData()
     setTeams(_teams)
+    refTeams.current = getAlbumData()
   }, [])
 
-  // TODO: deberia ejecutarse cada vez que hay un queryParam
   useEffect(() => {
     // TODO: poner en una constante global este queryParam
     const stickerIdToBePasted = searchParams.get("stickerIdToBePasted")
     if(stickerIdToBePasted){
       console.log("stickerIdToBePasted " + stickerIdToBePasted)
+      goToAlbumPage(stickerIdToBePasted)
     }
-  })
+  }, [searchParams])
+
+  const goToAlbumPage = (stickerId : string) => {
+    const PLAYERS_PER_ALBUM_PAGE = 11
+    let newSelectedPage = selectedPage
+    let counter = 1
+    let notFound = true
+    let teamIndex = 0
+    // TODO: no se que tan mal esta pero la unica forma de tener el state cuando entro por el navigate es usando un useRef
+    while(notFound && teamIndex < refTeams.current.length) {
+      const players = refTeams.current[teamIndex].players
+      let playerIndex = 0
+      while(notFound && playerIndex < players.length) {
+        const player = players[playerIndex]
+        console.log("player.id " + player.id)
+        if (player.id.toString() === stickerId) {
+          console.log("counter: " + counter)
+          newSelectedPage = (counter - 1) / (PLAYERS_PER_ALBUM_PAGE)
+          console.log("MATCH!!!!")
+          notFound = false
+        }
+        counter++
+        playerIndex++
+      }
+      teamIndex++
+    }
+
+    newSelectedPage = Math.floor(newSelectedPage)
+    console.log("goToAlbumPage - Paste id album page " + newSelectedPage)
+    setSelectedPage(newSelectedPage)
+
+    // TODO: poner aca la api call para pegar la figu en el album
+  }
 
   const validateSelectedPage = () => {
     return teams &&
