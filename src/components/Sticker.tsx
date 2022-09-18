@@ -75,11 +75,11 @@ const Sticker = ({player, readOnly = false}: Props) => {
         </div>
 
       <CardBody className="d-flex flex-column justify-content-end align-items-center">
-        <CardTitle className="w-100" style={styles.playerName}>
+        <CardTitle className="w-100 text-center" style={styles.playerName}>
           {player.name}
         </CardTitle>
         <CardSubtitle
-          className="w-50"
+          className="w-50 text-center"
           style={styles.playerBirth}
         >
           {formatDate(player.dateOfBirth)}
