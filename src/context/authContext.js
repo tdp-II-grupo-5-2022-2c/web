@@ -17,8 +17,8 @@ export function AuthProvider({ children }) {
     const signUp = async (email, password) => {
         createUserWithEmailAndPassword(auth, email, password);
 
-        //TODO: esto es para el back, ver que no choque con el login de firebase
-        // que tambien hace un setUser
+        //TODO (1): esto es para el back, ver que no choque con el login de firebase
+        // que tambien hace un setUser pero con datos distintos (los de firebase)
         const { data: user } = await client.post("/users", {mail: email});
         setUser(user)
     }
@@ -27,6 +27,9 @@ export function AuthProvider({ children }) {
         const userCredentials = await signInWithEmailAndPassword(auth, email, password);
         console.log(userCredentials);
 
+        // TODO: endpoint que me devuelva los datos del user
+        //const { data: user } = await client.post???("/users", {mail: email});
+        //setUser(user)
     }
 
     const loginWithGoogle = () => {
@@ -38,6 +41,7 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         onAuthStateChanged(auth, currentUser => { // Si esta logeado me devuelve el user, si no esta logeado devuelve null
+            // TODO (1): Ojo que me setea el user con cosas de firebase y yo necesito las del back-end
             setUser(currentUser);
             setLoading(false);
         });

@@ -22,6 +22,9 @@ const MyNavbar = (args: any) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="me-auto" navbar>
             <NavItem>
+              <Link to="/">Home</Link>
+            </NavItem>
+            <NavItem>
               <Link to="/sign-in">Sign in</Link>
             </NavItem>
             <NavItem>
