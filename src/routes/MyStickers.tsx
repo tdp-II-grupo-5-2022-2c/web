@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
-import Sticker, {IPlayer} from "../components/Sticker";
+import Sticker, {IBackEndSticker, IPlayer} from "../components/Sticker";
 import {getArgentinaPlayersData} from "../data/playersData";
 import {useDrop} from "react-dnd";
 import {Draggable} from "../components/Draggable";
@@ -10,17 +10,19 @@ import client from "../services/config";
 import {useAuth} from "../context/authContext";
 
 const MyStickers = () => {
-  const [players, setPlayers] = useState([] as IPlayer[])
+  const [players, setPlayers] = useState([] as IBackEndSticker[])
   const navigate = useNavigate();
   const {user} = useAuth()
 
   useEffect(() => {
-    setPlayers(getArgentinaPlayersData())
+    //setPlayers(getArgentinaPlayersData())
+    fetchUserStickers()
   }, [])
 
   // TODO: una vez hecho el endpoint hay que probar y quitar el getARgentinaPlayersData que esta mockeado
   const fetchUserStickers = async () => {
-    const {data: stickers} = await client.get(`/users/${user.id}/stickers`);
+    const mockedUser = {id: "63238bf658c62f37cba18c64"}
+    const {data: stickers} = await client.get(`/users/${mockedUser.id}/stickers`);
     setPlayers(stickers)
   }
 
