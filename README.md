@@ -37,6 +37,15 @@ Version 8.22.0 (la 8.23.0 tiene un bug)
 ### React Router
 `npm install react-router-dom@6`
 
+### Firebase
+`npm install firebase`
+
+### React-Dnd
+`npm install firebase`
+
+### Axios
+`npm install axios`
+
 ## Herramientas para desarrollo (opcionales)
 
 ### React Developers Tools
