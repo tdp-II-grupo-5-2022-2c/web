@@ -6,14 +6,23 @@ import {useDrop} from "react-dnd";
 import {Draggable} from "../components/Draggable";
 import DropBoard from "../components/DropBoard";
 import {useNavigate} from "react-router-dom";
+import client from "../services/config";
+import {useAuth} from "../context/authContext";
 
 const MyStickers = () => {
   const [players, setPlayers] = useState([] as IPlayer[])
   const navigate = useNavigate();
+  const {user} = useAuth()
 
   useEffect(() => {
     setPlayers(getArgentinaPlayersData())
   }, [])
+
+  // TODO: una vez hecho el endpoint hay que probar y quitar el getARgentinaPlayersData que esta mockeado
+  const fetchUserStickers = async () => {
+    const {data: stickers} = await client.get(`/users/${user.id}/stickers`);
+    setPlayers(stickers)
+  }
 
   const addStickerToAlbum = (playerId: number) => {
     console.log("Sticker id " + playerId + " into album")
