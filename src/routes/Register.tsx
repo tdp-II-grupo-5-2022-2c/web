@@ -11,12 +11,21 @@ export function Register() {
     });
     const [error, setError] = useState();
 
-    const { signUp } = useAuth();
+    const { signUp, loginWithGoogle } = useAuth();
     const navigate = useNavigate();
 
     const handleChange = ({target: {name, value}}: any) => {
         setUser({...user, [name]: value});
     }
+
+    const handleGoogleSignIn = async () => {
+        try {
+            await loginWithGoogle();
+            navigate('/');
+        } catch (error: any) {
+            setError(error.message)
+        }
+    };
 
     const handleSubmit = async (e: any) => {
         e.preventDefault(); // ToDo sacar esta linea para que vuelva a estado normal despues de submit
@@ -48,8 +57,7 @@ export function Register() {
                                 <Button
                                     className="btn-neutral btn-icon mr-4"
                                     color="default"
-                                    href="#pablo"
-                                    onClick={(e) => e.preventDefault()}
+                                    onClick={handleGoogleSignIn}
                                 >
                     <span className="btn-inner--icon">
                       <img
@@ -66,7 +74,7 @@ export function Register() {
                         </CardHeader>
                         <CardBody className="px-lg-5 py-lg-5">
                             <div className="text-center text-muted mb-4">
-                                <small>Or registrate con credenciales</small>
+                                <small>O registrate con credenciales</small>
                             </div>
                             <Form role="form">
                                 <FormGroup>
