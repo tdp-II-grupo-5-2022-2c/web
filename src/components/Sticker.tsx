@@ -17,8 +17,17 @@ export type IPlayer = {
   isInExchange?: boolean,
 }
 
+export type IBackEndSticker = {
+  id: number;
+  image: string;
+  name: string;
+  quantity: number
+  country: string
+  is_on_album: boolean
+}
+
 export type ISticker = {
-  player: IPlayer
+  player: IBackEndSticker
   readOnly?: boolean,
 }
 
@@ -52,11 +61,9 @@ const Sticker = ({player, readOnly = false}: Props) => {
           style={styles.image}
         >
           <div className="d-flex flex-row justify-content-end my-1">
-            {player.isInAlbum && <span className="badge text-bg-secondary mx-1">En album</span>}
-            {player.repeatedCount && player.repeatedCount > 0 &&
-                <span className="badge text-bg-secondary mx-1">{player.repeatedCount}
+            {player.quantity > 0 &&
+                <span className="badge text-bg-secondary mx-1">{player.quantity}
                 </span>}
-            {player.isInExchange && <span className="badge text-bg-secondary">En intercambio</span>}
           </div>
         </div>
 
@@ -68,7 +75,6 @@ const Sticker = ({player, readOnly = false}: Props) => {
           className="w-50"
           style={globalStickerStyles.playerBirth}
         >
-          {formatDate(player.dateOfBirth)}
         </CardSubtitle>
       </CardBody>
       {!readOnly &&

@@ -76,10 +76,14 @@ const MyAlbum = () => {
 
     newSelectedPage = Math.floor(newSelectedPage)
     console.log("goToAlbumPage - Paste id album page " + newSelectedPage)
+    console.log("StickerIdToBePaste: " + stickerId)
     setSelectedPage(newSelectedPage)
-    setPasteId(Number(stickerId));
+    //setPasteId(stickerId);
     setIsPasting(true)
 
+    // TODO: bypass: por ahora dejar el paste aca dado que no implementamos la logica de pegado todavia
+    // TODO: ademas esto genera un paste con cada re-render
+    onPaste(stickerId)
   }
 
   const validateSelectedPage = () => {
@@ -101,17 +105,18 @@ const MyAlbum = () => {
     setSelectedPage(_previousSelectedPage)
   }
 
-  const onPaste = async (pasteId : number) => {
-    console.log(user)
+  const onPaste = async (pasteId : string) => {
+    // TODO: se debe usar el userContext
+    const mockedUser = {id: "63238bf658c62f37cba18c64"}
 
     // TODO: poner aca la api call para pegar la figu en el album
-    /*const { data: response } = await client.patch(
-      `/users/${user._id}/stickers/${pasteId}/paste`
-    );*/
+    const { data: response } = await client.patch(
+      `/users/${mockedUser.id}/stickers/${pasteId}/paste`
+    );
 
     console.log("API REQUEST TO PASTE " + pasteId)
     console.log("Response")
-    //console.log(response)
+    console.log(response)
 
     setIsPasting(false)
     setPasteId(undefined)
@@ -124,8 +129,7 @@ const MyAlbum = () => {
         <div className="row row-cols-auto">
           {validateSelectedPage() &&
               <div>
-                {!isPasting && <AlbumPage team={teams[selectedPage]}/>}
-                {isPasting && <AlbumPage team={teams[selectedPage]} pasteId={pasteId} onPaste={onPaste}/>}
+                <AlbumPage team={teams[selectedPage]}/>
               </div>
           }
         </div>
