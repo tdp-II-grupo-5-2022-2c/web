@@ -56,7 +56,6 @@ export function SignIn() {
       <Row className="justify-content-center">
         <Col lg="5" md="7">
           <Card className="shadow border-0">
-            {error && <p>{error}</p>}
             <CardHeader className="bg-transparent pb-5">
               <Row>
                 <div className="text-muted text-center mt-2 mb-3">
@@ -106,6 +105,7 @@ export function SignIn() {
                     <Col className="text-center">
                       <Button color="primary">Iniciar Sesión</Button>
                     </Col>
+                    {error && <p>{error}</p>}
                   </Row>
                   <Row>
                     <Col className="text-center">
@@ -114,7 +114,7 @@ export function SignIn() {
                           color="link"
                           onClick={handleRegister}
                       >
-                        <span className="btn-inner--text">Register</span>
+                        <span className="btn-inner--text">Registrarse</span>
                       </Button>
                     </Col>
                   </Row>
