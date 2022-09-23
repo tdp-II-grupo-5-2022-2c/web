@@ -3,6 +3,7 @@ import {globalStickerStyles} from "../res/globalStyles";
 import {albumColors, qatarColors} from "../res/themes";
 import React from "react";
 
+// TODO: quitar esto pq solo me sirve para data mockeada
 export type ISlicedPlayer = {
   id: number;
   name: string;

@@ -3,6 +3,7 @@ import {formatDate} from "../utils/formatDate";
 import {stickerColors} from "../res/themes";
 import {globalStickerStyles} from "../res/globalStyles";
 
+// TODO: quitar esto pq tiene info de mas que no necesito
 export type IPlayer = {
   id: number;
   name: string;
@@ -26,12 +27,10 @@ export type IBackEndSticker = {
   is_on_album: boolean
 }
 
-export type ISticker = {
+type Props = {
   player: IBackEndSticker
   readOnly?: boolean,
 }
-
-type Props = ISticker
 
 const Sticker = ({player, readOnly = false}: Props) => {
 
@@ -40,16 +39,11 @@ const Sticker = ({player, readOnly = false}: Props) => {
   // una buena solucion es que las imagenes NO se ajusten al tamaño de la ventana sino que la persona tenga que scrollear
   // si es muy chica la pantalla, es decir se mantienen siempre del mismo tamaño
 
-  // TODO: corregir el estilo
   const styles = {
     image:{
       backgroundImage: `url(${player.image})`,
       backgroundRepeat: 'no-repeat',
     },
-    button:{
-      backgroundColor: stickerColors.primary,
-      color: stickerColors.white,
-    }
   }
 
   return (
@@ -66,27 +60,6 @@ const Sticker = ({player, readOnly = false}: Props) => {
                 </span>}
           </div>
         </div>
-
-      <CardBody className="d-flex flex-column justify-content-end align-items-center">
-        <CardTitle className="w-100" style={globalStickerStyles.playerName}>
-          {player.name}
-        </CardTitle>
-        <CardSubtitle
-          className="w-50"
-          style={globalStickerStyles.playerBirth}
-        >
-        </CardSubtitle>
-      </CardBody>
-      {!readOnly &&
-          <div className="d-flex flex-row justify-content-around">
-              <Button className="w-50 mx-1 btn-outline-danger" style={styles.button}>
-                  Pegar
-              </Button>
-              <Button className="w-50 mx-1 btn-outline-danger" style={styles.button}>
-                  Intercambiar
-              </Button>
-          </div>
-      }
     </Card>
   )
 }
