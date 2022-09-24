@@ -22,7 +22,7 @@ function App() {
     <React.Fragment>
       <MyNavbar/>
       <div className="container card">
-        <h1> Bienvenido {mail}</h1>
+        <h1>Bienvenido {mail}</h1>
         <button className="btn btn-primary my-1" onClick={() => {navigate('/my-stickers')}}> Mis figus </button>
         <button className="btn btn-secondary my-1" onClick={handleLogout}> Cerrar sesión </button>
       </div>

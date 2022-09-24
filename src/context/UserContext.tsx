@@ -35,35 +35,6 @@ export const UserProvider = ({ children }: PropsWithChildren<any>) => {
 
   const userActions = {
     ...user,
-    async loginWithGoogle() {
-      const googleProvider = new GoogleAuthProvider();
-      const userCredential = await signInWithPopup(auth, googleProvider)
-
-      if(userCredential) {
-        const email = userCredential.user.email
-        if(email){
-          let user = null
-          try{
-            const data = await client.get(`/users?mail=${email}`);
-            user = data
-          } catch (error: any) {
-            user = null
-          }
-
-          // si me logie con google pero no existe en el back, lo creo
-          if(!user){
-            const requestBody = {
-              mail: email,
-              stickers: []
-            }
-            const { data: user } = await client.post(`/users`, requestBody);
-          }
-        }
-      }
-    },
-    async logout () {
-      await signOut(auth)
-    },
     async loginToBackEnd (email: string, password: string) {
       try{
         const { data: user } = await client.get(`/users?mail=${email}`);
@@ -73,6 +44,37 @@ export const UserProvider = ({ children }: PropsWithChildren<any>) => {
         return null
       }
     },
+    async loginWithGoogle() {
+      const googleProvider = new GoogleAuthProvider();
+      const userCredential = await signInWithPopup(auth, googleProvider)
+
+      if(userCredential) {
+        const email = userCredential.user.email
+        if(email){
+          const user = userActions.loginToBackEnd(email, "")
+          // si me logie con google pero no existe en el back, lo creo
+          if(!user){
+            console.log("CREATING USER")
+            const requestBody = {
+              mail: email,
+              stickers: []
+            }
+            // lo creo
+            const { data: user } = await client.post(`/users`, requestBody);
+            // TODO: al parecer el post no devuelve el id asi que tengo que fetchearlo una vez creado
+            const newCreatedUser = await userActions.loginToBackEnd(email, "")
+            if(newCreatedUser){
+              setUser(newCreatedUser)
+            }
+          }
+        }
+      }
+    },
+
+    async logout () {
+      await signOut(auth)
+    },
+
     // si el user de google existe en el back, lo traigo, caso contrario
     // tengo un user en firebase pero no en el back asi que fuerzo un logout
     // para evitar quedar en un loop de logeo fallido
@@ -81,6 +83,8 @@ export const UserProvider = ({ children }: PropsWithChildren<any>) => {
       if(!user){
         await signOut(auth)
       }
+      console.log("RESTORING")
+      console.log(user)
       setUser(user || {} as User)
     }
   }
@@ -89,9 +93,9 @@ export const UserProvider = ({ children }: PropsWithChildren<any>) => {
     onAuthStateChanged(auth, currentUser => {
       // Si esta logeado me devuelve el user, si no esta logeado devuelve null
       if(currentUser){
-        const mail : string | null = currentUser.email
-        if(mail){
-          userActions.restore(mail)
+        const email : string | null = currentUser.email
+        if(email){
+          userActions.restore(email)
         }
       }
     });
