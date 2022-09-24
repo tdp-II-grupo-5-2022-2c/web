@@ -7,7 +7,6 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {SignIn} from "./routes/SignIn";
 import MyStickers from "./routes/MyStickers";
-import {Register} from './routes/Register';
 import {ProtectedRoute} from './routes/ProtectedRoute';
 import MyAlbum from "./routes/MyAlbum";
 import {HTML5Backend} from "react-dnd-html5-backend";
@@ -31,7 +30,6 @@ root.render(
             </ProtectedRoute>
           }/>
           <Route path="/sign-in" element={<SignIn/>}/>
-          <Route path="/register" element={<Register/>}/>
           <Route path="/my-stickers" element={
             <ProtectedRoute>
               <DndProvider backend={HTML5Backend}>
