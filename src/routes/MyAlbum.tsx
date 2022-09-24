@@ -6,7 +6,6 @@ import {IPlayer} from "../components/Sticker";
 import {useSearchParams} from "react-router-dom";
 import {ISlicedPlayer} from "../components/StickerPlaceHolder";
 import client from "../services/config";
-import {useAuth} from "../context/authContext";
 
 // TODO: despues eliminar el IPlayer[] dado que es data mockeada
 export type ITeam = {
@@ -27,7 +26,6 @@ const MyAlbum = () => {
   const [isPasting, setIsPasting] = useState(false);
   const [pasteId, setPasteId] = useState<number | undefined>(0);
 
-  const {user} = useAuth()
 
   /* el album lo podemos hardcodear porque es siempre el mismo asi que
     una vez montado el album queda asi, pretendo que cada StickerPlaceHolder pueda tener adentro un Sticker
@@ -105,12 +103,12 @@ const MyAlbum = () => {
     setSelectedPage(_previousSelectedPage)
   }
 
-  const onPaste = async (pasteId : string) => {
+  const onPaste = async (pasteId: string) => {
     // TODO: se debe usar el userContext
     const mockedUser = {id: "63238bf658c62f37cba18c64"}
 
     // TODO: poner aca la api call para pegar la figu en el album
-    const { data: response } = await client.patch(
+    const {data: response} = await client.patch(
       `/users/${mockedUser.id}/stickers/${pasteId}/paste`
     );
 
@@ -129,7 +127,7 @@ const MyAlbum = () => {
         <div className="row row-cols-auto">
           {validateSelectedPage() &&
               <div>
-                <AlbumPage team={teams[selectedPage]}/>
+                  <AlbumPage team={teams[selectedPage]}/>
               </div>
           }
         </div>

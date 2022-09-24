@@ -1,18 +1,16 @@
 import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
-import Sticker, {IBackEndSticker, IPlayer} from "../components/Sticker";
+import Sticker, {IBackEndSticker} from "../components/Sticker";
 import {useDrop} from "react-dnd";
 import {Draggable, DraggableTypes} from "../components/Draggable";
 import DropBoard from "../components/DropBoard";
 import {useNavigate} from "react-router-dom";
 import client from "../services/config";
-import {useAuth} from "../context/authContext";
 import MyModal from "../components/MyModal";
 
 const MyStickers = () => {
   const [players, setPlayers] = useState([] as IBackEndSticker[])
   const navigate = useNavigate();
-  const {user} = useAuth()
 
   const [showPasteOk, setShowPasteOk] = useState(false);
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MyNavbar from "./components/MyNavbar";
-import {useAuth} from './context/authContext'
+import {useUser} from "./context/UserContext";
 
 function App() {
 
-  const {user, logout} = useAuth();
+  const {mail, logout} = useUser();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -21,7 +21,7 @@ function App() {
   return (
     <React.Fragment>
       <MyNavbar/>
-      <h1>Welcome {user.displayName || user.email}</h1>
+      <h1>Welcome {mail}</h1>
       <button onClick={handleLogout}> Logout </button>
       <button onClick={() => {navigate('/my-stickers')}}> Mis figus </button>
     </React.Fragment>

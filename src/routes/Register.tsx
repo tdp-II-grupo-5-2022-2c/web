@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/authContext';
 import {Button, Card, CardHeader, CardBody, Col, Row, Form, FormGroup, InputGroup, InputGroupText, Input} from "reactstrap";
 import MyNavbar from "../components/MyNavbar";
+import {useUser} from "../context/UserContext";
 
 export function Register() {
     const [user, setUser] = useState({
@@ -11,7 +11,7 @@ export function Register() {
     });
     const [error, setError] = useState();
 
-    const { signUp, loginWithGoogle } = useAuth();
+    const { signUp, loginWithGoogle } = useUser();
     const navigate = useNavigate();
 
     const handleChange = ({target: {name, value}}: any) => {
@@ -39,7 +39,7 @@ export function Register() {
             // ToDo agregar manejo de errores
             setError(error.message);
         }
-        
+
     }
 
     // ToDo poner bonito
