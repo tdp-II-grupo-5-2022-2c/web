@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css'
-import './index.css';
 import "./assets/plugins/nucleo/css/nucleo.css";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -9,26 +8,22 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {SignIn} from "./routes/SignIn";
 import MyStickers from "./routes/MyStickers";
 import {Register} from './routes/Register';
-import {AuthProvider} from './context/authContext';
 import {ProtectedRoute} from './routes/ProtectedRoute';
 import MyAlbum from "./routes/MyAlbum";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from "react-dnd";
 import Packet from "./routes/Packet"
 import PacketOpen from "./routes/PacketOpen";
+import {UserProvider} from "./context/UserContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-//TODO: si ya esta logeado deberia enviarlo directo al welcome
-// usar el context para eso; es decir tener un
-// NavStack/Routers distinto para el que esta logeado
-
 root.render(
   <React.StrictMode>
-    <AuthProvider>
       <BrowserRouter>
+        <UserProvider>
         <Routes>
           <Route path="/" element={
             <ProtectedRoute>
@@ -60,8 +55,8 @@ root.render(
             </ProtectedRoute>
           } />
         </Routes>
+        </UserProvider>
       </BrowserRouter>
-    </AuthProvider>
   </React.StrictMode>
 );
 

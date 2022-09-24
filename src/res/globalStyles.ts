@@ -4,7 +4,6 @@ export const globalStickerStyles = {
   sticker:{
     width: "12rem",
     height: "18rem",
-    backgroundColor: stickerColors.secondary
   },
   playerName:{
     backgroundColor: stickerColors.white,

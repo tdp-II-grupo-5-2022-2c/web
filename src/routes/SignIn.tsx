@@ -1,9 +1,8 @@
-import React, {Component, useState} from "react";
+import React, {useState} from "react";
 import '../css/App.css';
-import MyNavbar from "../components/MyNavbar";
-import { useAuth } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import {Button, Card, CardHeader, CardBody, Col, Row} from "reactstrap";
+import {useUser} from "../context/UserContext";
 
 export function SignIn() {
   const [user, setUser] = useState({
@@ -12,7 +11,7 @@ export function SignIn() {
   });
 
   const [error, setError] = useState();
-  const { login, loginWithGoogle } = useAuth();
+  const { login, loginWithGoogle } = useUser();
   const navigate = useNavigate();
 
   const handleChange = ({target: {name, value}}: any) => {
@@ -27,23 +26,23 @@ export function SignIn() {
 
     try {
       console.log(user);
-      await login(user.email, user.password); 
+      await login(user.email, user.password);
       navigate('/');
     } catch (error: any) {
       // ToDo agregar manejo de errores
       console.log(error)
       setError(error.message);
-    }      
+    }
   }
-  
+
   const handleGoogleSignIn = async () => {
     try {
       await loginWithGoogle();
-      navigate('/');  
+      navigate('/');
     } catch (error: any) {
       setError(error.message)
     }
-    
+
   };
 
   const handleRegister = () => {
@@ -52,7 +51,6 @@ export function SignIn() {
 
   return (
     <React.Fragment>
-      <MyNavbar/>
       <Row className="justify-content-center">
         <Col lg="5" md="7">
           <Card className="shadow border-0">

@@ -25,14 +25,11 @@ const MyNavbar = (args: any) => {
               <Link to="/">Home</Link>
             </NavItem>
             <NavItem>
-              <Link to="/sign-in">Sign in</Link>
-            </NavItem>
-            <NavItem>
               <Link to="/my-stickers">Mis Figus</Link>
             </NavItem>
-            <NavItem>
+            {/*<NavItem>
               <Link to="/my-album">Mi Album</Link>
-            </NavItem>
+            </NavItem>*/}
           </Nav>
         </Collapse>
       </Navbar>

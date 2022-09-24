@@ -1,50 +1,78 @@
 import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
-import Sticker, {IBackEndSticker, IPlayer} from "../components/Sticker";
-import {getArgentinaPlayersData} from "../data/playersData";
+import Sticker, {IBackEndSticker} from "../components/Sticker";
 import {useDrop} from "react-dnd";
-import {Draggable} from "../components/Draggable";
+import {Draggable, DraggableTypes} from "../components/Draggable";
 import DropBoard from "../components/DropBoard";
 import {useNavigate} from "react-router-dom";
 import client from "../services/config";
-import {useAuth} from "../context/authContext";
+import MyModal from "../components/MyModal";
 
 const MyStickers = () => {
   const [players, setPlayers] = useState([] as IBackEndSticker[])
   const navigate = useNavigate();
-  const {user} = useAuth()
+
+  const [showPasteOk, setShowPasteOk] = useState(false);
 
   useEffect(() => {
-    //setPlayers(getArgentinaPlayersData())
     fetchUserStickers()
   }, [])
 
-  // TODO: una vez hecho el endpoint hay que probar y quitar el getARgentinaPlayersData que esta mockeado
   const fetchUserStickers = async () => {
+    // TODO user mockeado
     const mockedUser = {id: "63238bf658c62f37cba18c64"}
-    const {data: stickers} = await client.get(`/users/${mockedUser.id}/stickers`);
-    setPlayers(stickers)
+
+    try{
+      const {data: stickers} = await client.get(`/users/${mockedUser.id}/stickers`);
+      setPlayers(stickers)
+
+    } catch(error: any){
+      console.error(
+        "Request failed, response:",
+        error
+      );
+    }
   }
 
-  const addStickerToAlbum = (playerId: number) => {
+  const closeShowPasteOk = () => {
+    setShowPasteOk(false)
+  }
+
+  const addStickerToAlbum = async (playerId: number) => {
     console.log("Sticker id " + playerId + " into album")
-    //TODO: navegar a MyAlbum pasando por props el id del jugador;
-    // una opcion es pasar por queryParams y usar el hook useSearchParams y obtener de ahi el id de figurita a pegar
 
-    // TODO: validar que no este en el album; validar que tampoco este para intercambiar????????
-    navigate("../my-album?stickerIdToBePasted=" + playerId)
+    // Copy-paste de onPaste de MyAlbum
+    // TODO: se debe usar el userContext
+    const mockedUser = {id: "63238bf658c62f37cba18c64"}
+
+    try {
+      const { data: response } = await client.patch(
+        `/users/${mockedUser.id}/stickers/${playerId}/paste`
+      );
+      console.log("API REQUEST TO PASTE " + playerId)
+      console.log("Response")
+      console.log(response)
+      setShowPasteOk(true)
+    } catch(error: any){
+      console.error(
+        "Request failed, response:",
+        error
+      );
+    }
+    // Copy-paste de onPaste de MyAlbum
+
+    // TODO: se quita la navegacion al album pq no esta incluida en los requisitos del Sprint 1
+    // navigate("../my-album?stickerIdToBePasted=" + playerId)
   }
 
-  // TODO: definir el accept en una constante
   const [{isOver}, drop] = useDrop(() => ({
-    accept: "sticker",
+    accept: DraggableTypes.STICKER,
     drop: (item: any) => addStickerToAlbum(item.id),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     })
   }))
 
-  // TODO: a draggable le podria pasar el type por props
   return (
     <React.Fragment>
       <MyNavbar/>
@@ -52,7 +80,7 @@ const MyStickers = () => {
         <div className="row row-cols-auto">
           {players.map((player, index) =>
             <div key={player.id} className="gy-5">
-              <Draggable childrenId={player.id}>
+              <Draggable childrenId={player.id} type={DraggableTypes.STICKER}>
                 <Sticker player={player}/>
               </Draggable>
             </div>
@@ -62,6 +90,7 @@ const MyStickers = () => {
           </div>
         </div>
       </div>
+      <MyModal header={"Figurita Pegada!"} body={"Ya no deberias ver mas tu figurita si era una sola"} isOpen={showPasteOk} onAccept={closeShowPasteOk}/>
     </React.Fragment>
   );
 
