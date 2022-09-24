@@ -7,11 +7,12 @@ import DropBoard from "../components/DropBoard";
 import {useNavigate} from "react-router-dom";
 import client from "../services/config";
 import MyModal from "../components/MyModal";
+import {useUser} from "../context/UserContext";
 
 const MyStickers = () => {
+  const user = useUser();
   const [players, setPlayers] = useState([] as IBackEndSticker[])
   const navigate = useNavigate();
-
   const [showPasteOk, setShowPasteOk] = useState(false);
 
   useEffect(() => {
@@ -19,11 +20,8 @@ const MyStickers = () => {
   }, [])
 
   const fetchUserStickers = async () => {
-    // TODO user mockeado
-    const mockedUser = {id: "63238bf658c62f37cba18c64"}
-
     try{
-      const {data: stickers} = await client.get(`/users/${mockedUser.id}/stickers`);
+      const {data: stickers} = await client.get(`/users/${user.id}/stickers`);
       setPlayers(stickers)
 
     } catch(error: any){
