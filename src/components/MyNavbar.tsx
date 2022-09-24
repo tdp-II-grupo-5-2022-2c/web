@@ -30,9 +30,9 @@ const MyNavbar = (args: any) => {
             <NavItem>
               <Link to="/my-stickers">Mis Figus</Link>
             </NavItem>
-            <NavItem>
+            {/*<NavItem>
               <Link to="/my-album">Mi Album</Link>
-            </NavItem>
+            </NavItem>*/}
           </Nav>
         </Collapse>
       </Navbar>

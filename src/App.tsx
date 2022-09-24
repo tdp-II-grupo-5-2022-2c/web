@@ -10,11 +10,11 @@ function App() {
 
   const handleLogout = () => {
     try {
-      logout();  
+      logout();
     } catch (error) {
       console.error(error)
     }
-    
+
     navigate('/sign-in');
   };
 
@@ -23,7 +23,7 @@ function App() {
       <MyNavbar/>
       <h1>Welcome {user.displayName || user.email}</h1>
       <button onClick={handleLogout}> Logout </button>
-      <button onClick={() => {navigate('/my-stickers')}}> MY stickers </button>
+      <button onClick={() => {navigate('/my-stickers')}}> Mis figus </button>
     </React.Fragment>
 
   );

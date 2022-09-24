@@ -1,18 +1,20 @@
 import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import Sticker, {IBackEndSticker, IPlayer} from "../components/Sticker";
-import {getArgentinaPlayersData} from "../data/playersData";
 import {useDrop} from "react-dnd";
 import {Draggable, DraggableTypes} from "../components/Draggable";
 import DropBoard from "../components/DropBoard";
 import {useNavigate} from "react-router-dom";
 import client from "../services/config";
 import {useAuth} from "../context/authContext";
+import MyModal from "../components/MyModal";
 
 const MyStickers = () => {
   const [players, setPlayers] = useState([] as IBackEndSticker[])
   const navigate = useNavigate();
   const {user} = useAuth()
+
+  const [showPasteOk, setShowPasteOk] = useState(false);
 
   useEffect(() => {
     fetchUserStickers()
@@ -21,8 +23,21 @@ const MyStickers = () => {
   const fetchUserStickers = async () => {
     // TODO user mockeado
     const mockedUser = {id: "63238bf658c62f37cba18c64"}
-    const {data: stickers} = await client.get(`/users/${mockedUser.id}/stickers`);
-    setPlayers(stickers)
+
+    try{
+      const {data: stickers} = await client.get(`/users/${mockedUser.id}/stickers`);
+      setPlayers(stickers)
+
+    } catch(error: any){
+      console.error(
+        "Request failed, response:",
+        error
+      );
+    }
+  }
+
+  const closeShowPasteOk = () => {
+    setShowPasteOk(false)
   }
 
   const addStickerToAlbum = async (playerId: number) => {
@@ -32,14 +47,20 @@ const MyStickers = () => {
     // TODO: se debe usar el userContext
     const mockedUser = {id: "63238bf658c62f37cba18c64"}
 
-    // TODO: poner aca la api call para pegar la figu en el album
-    const { data: response } = await client.patch(
-      `/users/${mockedUser.id}/stickers/${playerId}/paste`
-    );
-
-    console.log("API REQUEST TO PASTE " + playerId)
-    console.log("Response")
-    console.log(response)
+    try {
+      const { data: response } = await client.patch(
+        `/users/${mockedUser.id}/stickers/${playerId}/paste`
+      );
+      console.log("API REQUEST TO PASTE " + playerId)
+      console.log("Response")
+      console.log(response)
+      setShowPasteOk(true)
+    } catch(error: any){
+      console.error(
+        "Request failed, response:",
+        error
+      );
+    }
     // Copy-paste de onPaste de MyAlbum
 
     // TODO: se quita la navegacion al album pq no esta incluida en los requisitos del Sprint 1
@@ -71,6 +92,7 @@ const MyStickers = () => {
           </div>
         </div>
       </div>
+      <MyModal header={"Figurita Pegada!"} body={"Ya no deberias ver mas tu figurita si era una sola"} isOpen={showPasteOk} onAccept={closeShowPasteOk}/>
     </React.Fragment>
   );
 
