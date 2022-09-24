@@ -3,7 +3,7 @@ import {useUser} from "../context/UserContext";
 
 export function ProtectedRoute({children} : any) {
     const user = useUser();
-    if (!user) {
+    if (!user.id) {
         return <Navigate to="/sign-in"/>
     }
 
