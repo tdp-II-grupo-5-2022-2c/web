@@ -51,16 +51,17 @@ export const UserProvider = ({ children }: PropsWithChildren<any>) => {
       if(userCredential) {
         const email = userCredential.user.email
         if(email){
-          const user = userActions.loginToBackEnd(email, "")
+          const user = await userActions.loginToBackEnd(email, "")
           // si me logie con google pero no existe en el back, lo creo
           if(!user){
             console.log("CREATING USER")
             const requestBody = {
               mail: email,
+              firebaseUID: userCredential.user.uid,
               stickers: []
             }
             // lo creo
-            const { data: user } = await client.post(`/users`, requestBody);
+            const { data: user } = await client.post(`/users`, requestBody); // ToDo handlear casos de errores, si esto req vuelve con 500 va al home
             // TODO: al parecer el post no devuelve el id asi que tengo que fetchearlo una vez creado
             const newCreatedUser = await userActions.loginToBackEnd(email, "")
             if(newCreatedUser){
