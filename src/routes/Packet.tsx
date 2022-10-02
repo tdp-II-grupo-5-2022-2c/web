@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from "react";
 import {Card, CardImg, CardBody, Button, Col, Row, Container, Fade} from "reactstrap";
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +6,7 @@ import '../assets/css/Packet.css';
 function Packet() {
   const navigate = useNavigate();
 
-  const openPacket = (event) => {
+  const openPacket = () => {
     navigate('/packet/open');
   }
 

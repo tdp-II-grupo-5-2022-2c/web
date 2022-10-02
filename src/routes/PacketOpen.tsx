@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from "react";
 import {Row, Container, Col, Fade, Button} from "reactstrap";
 import Sticker from "../components/Sticker";
@@ -27,7 +26,6 @@ function PacketOpen() {
                   <Fade appear={true} timeout={index * fadeInTimeout}>
                     <Sticker
                         player={player}
-                        readOnly={true}
                     />
                   </Fade>
                 </Col>
