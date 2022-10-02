@@ -1,6 +1,4 @@
-import {Button, Card, CardBody, CardSubtitle, CardTitle} from "reactstrap";
-import {formatDate} from "../utils/formatDate";
-import {stickerColors} from "../res/themes";
+import {Card} from "reactstrap";
 import {globalStickerStyles} from "../res/globalStyles";
 
 // TODO: quitar esto pq tiene info de mas que no necesito
@@ -39,7 +37,7 @@ const Sticker = ({player}: Props) => {
   // si es muy chica la pantalla, es decir se mantienen siempre del mismo tamaño
 
   const styles = {
-    image:{
+    image: {
       backgroundImage: `url(${player.image})`,
       backgroundRepeat: 'no-repeat',
     },
@@ -49,16 +47,16 @@ const Sticker = ({player}: Props) => {
     <Card
       style={globalStickerStyles.sticker}
     >
-        <div
-          className="w-100 h-100"
-          style={styles.image}
-        >
-          <div className="d-flex flex-row justify-content-end my-1">
-            {player.quantity > 0 &&
-                <span className="badge text-bg-secondary mx-1">{player.quantity}
+      <div
+        className="w-100 h-100"
+        style={styles.image}
+      >
+        <div className="d-flex flex-row justify-content-end my-1">
+          {player.quantity > 0 &&
+              <span className="badge text-bg-secondary mx-1">{player.quantity}
                 </span>}
-          </div>
         </div>
+      </div>
     </Card>
   )
 }
