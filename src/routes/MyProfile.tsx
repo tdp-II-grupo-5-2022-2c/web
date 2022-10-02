@@ -1,9 +1,34 @@
-import React from "react";
+import React, {useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
+import {Button} from "reactstrap";
 
 const MyProfile = () => {
   const user = useUser();
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [form, setForm] = useState({
+    name: "",
+    country: ""
+  })
+
+  const enableProfileEditing = () => {
+    setIsEditing(true)
+  }
+
+  const acceptChanges = () => {
+    setIsEditing(false)
+    console.log(form)
+    // TODO: api call para editar perfil
+  }
+
+  const cancelChanges = () => {
+    setIsEditing(false)
+  }
+
+  const handleChange = ({target: {name, value}}: any) => {
+    // TODO: rollback de cambios
+    setForm({...form, [name]: value});
+  }
 
   return (
     <React.Fragment>
@@ -16,7 +41,9 @@ const MyProfile = () => {
               <h1 className="display-2">Hola {user.mail}</h1><p
               className="mt-0 mb-5">
               En esta pantalla podrás ver el progreso de tu colección de figuritas</p>
-              <a href="profile/edit" className="btn btn-info">Editar perfil</a>
+              {!isEditing && <Button className="btn btn-info" onClick={() => enableProfileEditing()}>Editar perfil</Button>}
+              {isEditing && <Button className="btn btn-info" onClick={() => acceptChanges()}>Aceptar</Button>}
+              {isEditing && <Button className="btn btn-primary" onClick={() => cancelChanges()}>Cancelar</Button>}
             </div>
           </div>
         </div>
@@ -27,10 +54,8 @@ const MyProfile = () => {
                 <div className="justify-content-center row">
                   <div className="order-lg-2 col-lg-3">
                     <div className="card-profile-image">
-                      <a href="#">
-                        <img alt="..." className="rounded-circle img-fluid"
-                             src={require("../assets/img/packet.png")}/>
-                      </a>
+                      <img alt="..." className="rounded-circle img-fluid"
+                           src={require("../assets/img/packet.png")}/>
                     </div>
                   </div>
                 </div>
@@ -40,7 +65,8 @@ const MyProfile = () => {
                       <div className="card-profile-stats d-flex justify-content-center mt-md-5">
                         <div><span className="heading">22</span><span className="description">Comunidades</span></div>
                         <div><span className="heading">10</span><span className="description">Figuritas</span></div>
-                        <div><span className="heading">89%</span><span className="description">Album completo</span></div>
+                        <div><span className="heading">89%</span><span className="description">Album completo</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -57,7 +83,6 @@ const MyProfile = () => {
                 <div className="bg-white border-0 card-header">
                   <div className="align-items-center row">
                     <div className="col-8"><h3 className="mb-0">Mis Datos</h3></div>
-
                   </div>
                 </div>
                 <div className="card-body">
@@ -66,16 +91,24 @@ const MyProfile = () => {
                       <div className="row">
                         <div className="col-lg-6">
                           <div className="form-group">
-                            <label className="form-control-label" htmlFor="input-username">Nombre</label><input
-                            id="input-username" placeholder="Username" type="text"
-                            className="form-control-alternative form-control" value="Juan Carlos"/>
+                            <label className="form-control-label">Nombre</label>
+                            <input
+                              id="input-username" placeholder="Nombre usuario" type="name"
+                              name='name'
+                              className="form-control-alternative form-control"
+                              onChange={handleChange}
+                              disabled={!isEditing}
+                            />
                           </div>
                         </div>
                         <div className="col-lg-6">
                           <div className="form-group">
-                            <label className="form-control-label" htmlFor="input-email">Correo Electrónico</label>
-                            <input id="input-email" placeholder="juan@example.com" type="email"
-                                   className="form-control-alternative form-control"/></div>
+                            <label className="form-control-label">Correo Electrónico</label>
+                            <input id="input-email" placeholder="juan@example.com"
+                                   className="form-control-alternative form-control"
+                                   value={user.mail}
+                                   disabled={true} />
+                          </div>
                         </div>
                       </div>
 
@@ -86,14 +119,15 @@ const MyProfile = () => {
                       <div className="row">
                         <div className="col-lg-4">
                           <div className="form-group">
-                            <label className="form-control-label" htmlFor="input-city">
-                              País
-                            </label>
-                            <input id="input-city"
-                                   placeholder="City"
-                                   type="text"
+                            <label className="form-control-label">País</label>
+                            <input id="input-country"
+                                   placeholder="Pais"
+                                   type="country"
+                                   name='country'
                                    className="form-control-alternative form-control"
-                                   value="Argentina"/>
+                                   onChange={handleChange}
+                                   disabled={!isEditing}
+                            />
                           </div>
                         </div>
                       </div>
