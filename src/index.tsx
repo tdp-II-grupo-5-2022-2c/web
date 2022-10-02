@@ -31,26 +31,26 @@ root.render(
           }/>
           <Route path="/sign-in" element={<SignIn/>}/>
           <Route path="/my-stickers" element={
-            <ProtectedRoute>
+            //<ProtectedRoute>
               <DndProvider backend={HTML5Backend}>
                 <MyStickers/>
               </DndProvider>
-            </ProtectedRoute>
+            //</ProtectedRoute>
           }/>
           <Route path="/my-album" element={
-            <ProtectedRoute>
-              <MyAlbum/>
-            </ProtectedRoute>
+            // <ProtectedRoute>
+                <MyAlbum/>
+            // </ProtectedRoute>
           } />
           <Route path="/packet" element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
               <Packet />
-            </ProtectedRoute>
+            // </ProtectedRoute>
           } />
           <Route path="/packet/open" element={
-            <ProtectedRoute>
+            //<ProtectedRoute>
               <PacketOpen />
-            </ProtectedRoute>
+            //</ProtectedRoute>
           } />
         </Routes>
         </UserProvider>

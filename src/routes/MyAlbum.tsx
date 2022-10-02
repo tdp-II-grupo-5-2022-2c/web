@@ -1,11 +1,12 @@
 import React, {useEffect, useRef, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
-import {getAlbumData} from "../data/albumData";
+import {DEFAULT_COUNTRY_PAGE, getAlbumData, getAlbumPages} from "../data/albumData";
 import AlbumPage from "../components/AlbumPage";
 import {IPlayer} from "../components/Sticker";
 import {useSearchParams} from "react-router-dom";
 import {ISlicedPlayer} from "../components/StickerPlaceHolder";
 import client from "../services/config";
+import {useUser} from "../context/UserContext";
 
 // TODO: despues eliminar el IPlayer[] dado que es data mockeada
 export type ITeam = {
@@ -18,13 +19,14 @@ const MyAlbum = () => {
   //TODO: los equipos son constantes, no tiene sentido que esten en un state
   // si tiene sentido si los obtengo de una query al back que es lo que supongo que va a pasar
 
-  const [teams, setTeams] = useState([] as ITeam[])
+  const user = useUser();
+  const [pastedStickers, setPastedStickers] = useState([] as ITeam[])
   const refTeams = useRef([] as ITeam[])
-  const [selectedPage, setSelectedPage] = useState(0)
+  const [selectedCountry, setSelectedCountry] = useState(DEFAULT_COUNTRY_PAGE)
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [isPasting, setIsPasting] = useState(false);
-  const [pasteId, setPasteId] = useState<number | undefined>(0);
+  const [pasteId, setPasteId] = useState<string | undefined>(undefined);
 
 
   /* el album lo podemos hardcodear porque es siempre el mismo asi que
@@ -36,22 +38,27 @@ const MyAlbum = () => {
     console.log("MyAlbum - Did Mount")
     //TODO: hacer una unica request al back con la data de todos los jugadores del album con sus ids; por country
     // entonces se llenan los placeholders de cada album
-    const _teams = getAlbumData()
-    setTeams(_teams)
-    refTeams.current = getAlbumData()
+    //const _teams = getAlbumData()
+    //setTeams(_teams)
+    //xrefTeams.current = getAlbumData()
   }, [])
 
   useEffect(() => {
     // TODO: poner en una constante global este queryParam
-    const stickerIdToBePasted = searchParams.get("stickerIdToBePasted")
-    if (stickerIdToBePasted) {
-      console.log("stickerIdToBePasted " + stickerIdToBePasted)
-      goToAlbumPage(stickerIdToBePasted)
+    const stickerIdToBePasted = searchParams.get("stickerIdToBePasted") || undefined;
+    const country = searchParams.get("country") || undefined;
+
+    if (country) {
+      setSelectedCountry(country);
     }
+    setPasteId(stickerIdToBePasted);
+    //goToAlbumPage(stickerIdToBePasted, country);
   }, [searchParams])
 
-  const goToAlbumPage = (stickerId: string) => {
-    const PLAYERS_PER_ALBUM_PAGE = 11
+  const goToAlbumPage = (stickerId?: string, country?: string) => {
+
+
+    /*const PLAYERS_PER_ALBUM_PAGE = 11
     let newSelectedPage = selectedPage
     let counter = 1
     let notFound = true
@@ -81,10 +88,10 @@ const MyAlbum = () => {
 
     // TODO: bypass: por ahora dejar el paste aca dado que no implementamos la logica de pegado todavia
     // TODO: ademas esto genera un paste con cada re-render
-    onPaste(stickerId)
+    onPaste(stickerId)*/
   }
 
-  const validateSelectedPage = () => {
+  /*const validateSelectedPage = () => {
     return teams &&
       selectedPage >= 0 &&
       selectedPage < teams.length;
@@ -101,15 +108,19 @@ const MyAlbum = () => {
     let _previousSelectedPage = selectedPage <= 0 ?
       0 : (selectedPage - 1)
     setSelectedPage(_previousSelectedPage)
-  }
+  }*/
 
-  const onPaste = async (pasteId: string) => {
+  const onPaste = async (pasteId?: string) => {
     // TODO: se debe usar el userContext
-    const mockedUser = {id: "63238bf658c62f37cba18c64"}
+    //const mockedUser = {id: "63238bf658c62f37cba18c64"}
+
+    if (!pasteId) {
+      return;
+    }
 
     // TODO: poner aca la api call para pegar la figu en el album
     const {data: response} = await client.patch(
-      `/users/${mockedUser.id}/stickers/${pasteId}/paste`
+      `/users/${user.id}/stickers/${pasteId}/paste`
     );
 
     console.log("API REQUEST TO PASTE " + pasteId)
@@ -125,14 +136,14 @@ const MyAlbum = () => {
       <MyNavbar/>
       <div className="container text-center">
         <div className="row row-cols-auto">
-          {validateSelectedPage() &&
+          {//validateSelectedPage() &&
               <div>
-                  <AlbumPage team={teams[selectedPage]}/>
+                  <AlbumPage country={selectedCountry} pasteId={pasteId} onPaste={() => onPaste(pasteId)}/>
               </div>
           }
         </div>
-        <button className={"btn btn-primary btn-sm m-2"} onClick={previousPage}>Anterior</button>
-        <button className={"btn btn-primary btn-sm m-2"} onClick={nextPage}>Siguiente</button>
+        {/*<button className={"btn btn-primary btn-sm m-2"} onClick={previousPage}>Anterior</button>*/}
+        {/*<button className={"btn btn-primary btn-sm m-2"} onClick={nextPage}>Siguiente</button>*/}
       </div>
     </React.Fragment>
   );

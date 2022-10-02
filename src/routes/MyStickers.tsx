@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 import client from "../services/config";
 import MyModal from "../components/MyModal";
 import {useUser} from "../context/UserContext";
+import {Col, Container, Row} from "reactstrap";
 
 const MyStickers = () => {
   const user = useUser();
@@ -22,6 +23,7 @@ const MyStickers = () => {
   const fetchUserStickers = async () => {
     try{
       const {data: stickers} = await client.get(`/users/${user.id}/stickers`);
+      console.log(stickers);
       setPlayers(stickers)
 
     } catch(error: any){
@@ -36,16 +38,17 @@ const MyStickers = () => {
     setShowPasteOk(false)
   }
 
-  const addStickerToAlbum = async (playerId: number) => {
-    console.log("Sticker id " + playerId + " into album")
+  const addStickerToAlbum = async (sticker: IBackEndSticker) => {
+    console.log(sticker);
+    //console.log("Sticker id " + sticker.id + " into album")
 
     // Copy-paste de onPaste de MyAlbum
     // TODO: se debe usar el userContext
-    const mockedUser = {id: "63238bf658c62f37cba18c64"}
+    // const mockedUser = {id: "63238bf658c62f37cba18c64"}
 
-    try {
+    /*try {
       const { data: response } = await client.patch(
-        `/users/${mockedUser.id}/stickers/${playerId}/paste`
+        `/users/${user.id}/stickers/${playerId}/paste`
       );
       console.log("API REQUEST TO PASTE " + playerId)
       console.log("Response")
@@ -56,16 +59,15 @@ const MyStickers = () => {
         "Request failed, response:",
         error
       );
-    }
+    }*/
     // Copy-paste de onPaste de MyAlbum
 
-    // TODO: se quita la navegacion al album pq no esta incluida en los requisitos del Sprint 1
-    // navigate("../my-album?stickerIdToBePasted=" + playerId)
+    navigate("../my-album?stickerIdToBePasted=" + sticker.id + "&country=" + sticker.country)
   }
 
   const [{isOver}, drop] = useDrop(() => ({
     accept: DraggableTypes.STICKER,
-    drop: (item: any) => addStickerToAlbum(item.id),
+    drop: (item: IBackEndSticker) => addStickerToAlbum(item),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     })
@@ -74,20 +76,29 @@ const MyStickers = () => {
   return (
     <React.Fragment>
       <MyNavbar/>
-      <div className="container text-center">
-        <div className="row row-cols-auto">
-          {players.map((player, index) =>
-            <div key={player.id} className="gy-5">
-              <Draggable childrenId={player.id} type={DraggableTypes.STICKER}>
-                <Sticker player={player}/>
-              </Draggable>
+      <Container fluid>
+        <Row>
+          <Col className="col-md-2">
+          {/*  ACA VA EL DROPZONE PARA LA COLA DE FIGUS REPETIDAS */}
+          </Col>
+          <Col className="col-md-8 pr-6 pl-6">
+            <Row>
+              {players.map((player, index) =>
+                  <Col key={player.id} className="col-md-3 p-3 d-flex justify-content-center">
+                    <Draggable sticker={player} type={DraggableTypes.STICKER}>
+                      <Sticker player={player}/>
+                    </Draggable>
+                  </Col>
+              )}
+            </Row>
+          </Col>
+          <Col className="col-md-2">
+            <div className="h-100vh flex-items-middle" ref={drop}>
+              <DropBoard/>
             </div>
-          )}
-          <div className="gy-5" ref={drop}>
-            <DropBoard/>
-          </div>
-        </div>
-      </div>
+          </Col>
+        </Row>
+      </Container>
       <MyModal header={"Figurita Pegada!"} body={"Ya no deberias ver mas tu figurita si era una sola"} isOpen={showPasteOk} onAccept={closeShowPasteOk}/>
     </React.Fragment>
   );
