@@ -7,6 +7,7 @@ import {
   Nav,
   NavItem,
 } from 'reactstrap';
+import '../assets/css/argon-dashboard-react.css'
 import {Link} from "react-router-dom";
 import {ROUTES} from "../routes/RoutesNames";
 
@@ -31,9 +32,9 @@ const MyNavbar = (args: any) => {
             <NavItem>
               <Link to={ROUTES.DAILYPACKET}>Paquete diario</Link>
             </NavItem>
-            {/*<NavItem>
+            <NavItem>
               <Link to="/my-album">Mi Album</Link>
-            </NavItem>*/}
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>

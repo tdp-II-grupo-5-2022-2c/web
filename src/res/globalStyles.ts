@@ -2,8 +2,8 @@ import {stickerColors} from "./themes";
 
 export const globalStickerStyles = {
   sticker:{
-    width: "12rem",
-    height: "18rem",
+    width: "16rem",
+    height: "20rem",
   },
   playerName:{
     backgroundColor: stickerColors.white,

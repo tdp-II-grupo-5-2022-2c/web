@@ -1,6 +1,7 @@
-import {Button, Card, CardBody, CardSubtitle, CardTitle} from "reactstrap";
-import {formatDate} from "../utils/formatDate";
-import {stickerColors} from "../res/themes";
+import {
+  Card,
+  CardImg,
+} from "reactstrap";
 import {globalStickerStyles} from "../res/globalStyles";
 
 // TODO: quitar esto pq tiene info de mas que no necesito
@@ -22,6 +23,7 @@ export type IBackEndSticker = {
   id: number;
   image: string;
   name: string;
+  number: number;
   quantity: number
   country: string
   is_on_album: boolean
@@ -38,27 +40,18 @@ const Sticker = ({player}: Props) => {
   // una buena solucion es que las imagenes NO se ajusten al tamaño de la ventana sino que la persona tenga que scrollear
   // si es muy chica la pantalla, es decir se mantienen siempre del mismo tamaño
 
-  const styles = {
-    image:{
-      backgroundImage: `url(${player.image})`,
-      backgroundRepeat: 'no-repeat',
-    },
-  }
-
   return (
     <Card
-      style={globalStickerStyles.sticker}
+        style={globalStickerStyles.sticker}
     >
-        <div
+      {player.quantity > 1 &&
+          <span style={{fontSize: 25 }} className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-gradient-gray">
+            &nbsp;{player.quantity}&nbsp;
+          </span>}
+      <CardImg
           className="w-100 h-100"
-          style={styles.image}
-        >
-          <div className="d-flex flex-row justify-content-end my-1">
-            {player.quantity > 0 &&
-                <span className="badge text-bg-secondary mx-1">{player.quantity}
-                </span>}
-          </div>
-        </div>
+          src={require("../assets/img/stickers/ARG11.png")}
+      />
     </Card>
   )
 }
