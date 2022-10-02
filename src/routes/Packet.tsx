@@ -1,42 +1,42 @@
 import React from "react";
 import {Card, CardImg, CardBody, Button, Col, Row, Container, Fade} from "reactstrap";
-import { useNavigate } from 'react-router-dom';
 import '../assets/css/Packet.css';
 
-function Packet() {
-  const navigate = useNavigate();
+type Props = {
+  onOpenPacket: () => void;
+  unopenedPacketsQty: number
+}
 
-  const openPacket = () => {
-    navigate('/packet/open');
-  }
+const Packet = ({onOpenPacket, unopenedPacketsQty} : Props) => {
+  const _opacity = unopenedPacketsQty === 0 ? 0.4 : 1
 
   return (
-    <>
-      <Container fluid className="packet-background">
-        <Row className="h-100 justify-content-center align-items-center">
-          <Col lg={{size: "auto"}} className="mt-5 col-10 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+    <React.Fragment>
+      <Container >
+        <Row>
+          <Col>
             <Fade appear={true} timeout={500}>
-              <Card className="bg-transparent border-0 mx-auto" style={{ width: "18rem" }}>
+              <Card className={`bg-transparent border-0 mx-auto`} style={{ width: "18rem", opacity: _opacity}}>
                 <CardImg
                     alt="..."
                     src={require("../assets/img/packet.png")}
                     top
                 />
                 <CardBody className="text-center">
-                  <Button
+                  {unopenedPacketsQty > 0 && <Button
                       color="primary"
                       size="md"
-                      onClick={openPacket}
+                      onClick={() => {onOpenPacket()}}
                   >
-                    Abrir
-                  </Button>
+                    Abrir paquete
+                  </Button>}
                 </CardBody>
               </Card>
             </Fade>
           </Col>
         </Row>
       </Container>
-    </>
+    </React.Fragment>
   )
 }
 

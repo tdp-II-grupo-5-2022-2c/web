@@ -26,5 +26,13 @@ export const globalStickerStyles = {
 export const debug = {
   container:{
     borderStyle: "solid"
+  },
+  containerRed:{
+    borderStyle: "solid",
+    borderColor: "red"
+  },
+  containerBlue:{
+    borderStyle: "solid",
+    borderColor:"blue"
   }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MyNavbar from "./components/MyNavbar";
 import {useUser} from "./context/UserContext";
+import {ROUTES} from "./routes/RoutesNames";
 
 function App() {
 
@@ -19,7 +20,7 @@ function App() {
   };
 
   const handleDailyPacket = () => {
-    navigate("/packet")
+    navigate(ROUTES.DAILYPACKET)
   }
 
   return (
