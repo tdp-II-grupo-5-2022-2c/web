@@ -29,10 +29,9 @@ export type IBackEndSticker = {
 
 type Props = {
   player: IBackEndSticker
-  readOnly?: boolean,
 }
 
-const Sticker = ({player, readOnly = false}: Props) => {
+const Sticker = ({player}: Props) => {
 
   //TODO: ver el tema del tamaño de imagen, al parecer corta la imagen si es muy grande y no la estira si es muy chica
   // tener en cuenta que la foto es de 300 por 200; ver de fijar eso como un maximo

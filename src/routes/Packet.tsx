@@ -1,43 +1,45 @@
-// @ts-nocheck
 import React from "react";
 import {Card, CardImg, CardBody, Button, Col, Row, Container, Fade} from "reactstrap";
-import { useNavigate } from 'react-router-dom';
 import '../assets/css/Packet.css';
 
-function Packet() {
-  const navigate = useNavigate();
+type Props = {
+  onOpenPacket: () => void;
+  unopenedPacketsQty: number
+}
 
-  const openPacket = (event) => {
-    navigate('/packet/open');
-  }
+const Packet = ({onOpenPacket, unopenedPacketsQty}: Props) => {
+  const _opacity = unopenedPacketsQty === 0 ? 0.4 : 1
 
   return (
-    <>
-      <Container fluid className="packet-background">
-        <Row className="h-100 justify-content-center align-items-center">
-          <Col lg={{size: "auto"}} className="mt-5 col-10 col-sm-5 col-md-5 col-lg-5 col-xl-5">
-            <Fade appear={true} timeout={500}>
-              <Card className="bg-transparent border-0 mx-auto" style={{ width: "18rem" }}>
-                <CardImg
-                    alt="..."
-                    src={require("../assets/img/packet.png")}
-                    top
-                />
-                <CardBody className="text-center">
-                  <Button
-                      color="primary"
-                      size="md"
-                      onClick={openPacket}
-                  >
-                    Abrir
-                  </Button>
-                </CardBody>
-              </Card>
-            </Fade>
+    <React.Fragment>
+      <Container>
+        <Row>
+          <Col>
+            <Card className={`bg-transparent border-0 mx-auto`} style={{width: "18rem", opacity: _opacity}}>
+              <span style={{fontSize: 25 }} className="position-absolute badge rounded-pill text-bg-secondary">
+                &nbsp;{unopenedPacketsQty}&nbsp;
+              </span>
+              <CardImg
+                alt="..."
+                src={require("../assets/img/packet.png")}
+                top
+              />
+              <CardBody className="text-center">
+                {unopenedPacketsQty > 0 && <Button
+                    color="primary"
+                    size="md"
+                    onClick={() => {
+                      onOpenPacket()
+                    }}
+                >
+                    Abrir paquete
+                </Button>}
+              </CardBody>
+            </Card>
           </Col>
         </Row>
       </Container>
-    </>
+    </React.Fragment>
   )
 }
 
