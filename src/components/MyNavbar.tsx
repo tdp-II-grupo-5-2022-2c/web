@@ -8,6 +8,7 @@ import {
   NavItem,
 } from 'reactstrap';
 import {Link} from "react-router-dom";
+import {ROUTES} from "../routes/RoutesNames";
 
 const MyNavbar = (args: any) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,10 +23,13 @@ const MyNavbar = (args: any) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="me-auto" navbar>
             <NavItem>
-              <Link to="/">Home</Link>
+              <Link to={ROUTES.HOME}>Home</Link>
             </NavItem>
             <NavItem>
-              <Link to="/my-stickers">Mis Figus</Link>
+              <Link to={ROUTES.MYSTICKERS}>Mis Figus</Link>
+            </NavItem>
+            <NavItem>
+              <Link to={ROUTES.DAILYPACKET}>Paquete diario</Link>
             </NavItem>
             {/*<NavItem>
               <Link to="/my-album">Mi Album</Link>

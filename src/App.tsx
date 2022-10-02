@@ -16,7 +16,7 @@ function App() {
       console.error(error)
     }
 
-    navigate('/sign-in');
+    navigate(ROUTES.SIGNIN);
   };
 
   const handleDailyPacket = () => {
@@ -28,8 +28,8 @@ function App() {
       <MyNavbar/>
       <div className="container card">
         <h1>Bienvenido {mail}</h1>
-        <button className="btn btn-primary my-1" onClick={() => {navigate('/my-stickers')}}> Mis figus </button>
-        <button className="btn btn-secondary my-1" onClick={handleDailyPacket}> Paquete diario </button>
+        <button className="btn btn-primary my-1" onClick={() => {navigate(ROUTES.MYSTICKERS)}}> Mis figus </button>
+        <button className="btn btn-primary my-1" onClick={handleDailyPacket}> Paquete diario </button>
         <button className="btn btn-secondary my-1" onClick={handleLogout}> Cerrar sesión </button>
       </div>
     </React.Fragment>

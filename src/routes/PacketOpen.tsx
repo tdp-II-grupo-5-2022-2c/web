@@ -8,17 +8,17 @@ import MyNavbar from "../components/MyNavbar";
 import Packet from "./Packet";
 import client from "../services/config";
 import {useUser} from "../context/UserContext";
+import {ROUTES} from "./RoutesNames";
 
 function PacketOpen() {
   const user = useUser();
   /*Tiene las 5 figuritas que se muestran*/
+  /*TODO: ojo que este estado es local, no actualiza el user context
+  *  este se actualiza recien en el momento que se hace un restore*/
   const [openedPacketStickers, setOpenedPacketStickers] = useState<IBackEndSticker[]>([])
 
   const fadeInTimeout = 600;
   const navigate = useNavigate();
-
-  /*Todo: data del user que indica cuantos paquetes tiene para abrir?*/
-  const hasUnopenedPackets = false
 
   const openPacket = async () => {
     const requestBody = {
@@ -29,16 +29,16 @@ function PacketOpen() {
   }
 
   const goToMyStickers = () => {
-    navigate('/my-stickers');
+    navigate(ROUTES.MYSTICKERS);
   }
 
   return (
       <React.Fragment>
         <MyNavbar/>
-        <Container style={debug.containerRed}>
-          <Row className="m-5 h-100" style={debug.containerBlue}>
+        <Container >
+          <Row className="bg-light border m-5 h-100" >
             {openedPacketStickers.length > 0 && openedPacketStickers.map((player, index) =>
-                <Col className="d-flex justify-content-center" key={index} style={debug.containerRed}>
+                <Col className="d-flex justify-content-center" key={index} >
                   <Fade appear={true} timeout={index * fadeInTimeout}>
                     <Sticker
                         player={player}
@@ -54,12 +54,13 @@ function PacketOpen() {
                 </Col>
             }
           </Row>
-          <Row className="align-items-center" style={debug.containerBlue}>
-            <Col className="justify-content-center" style={debug.container}>
-              <Packet onOpenPacket={openPacket} unopenedPacketsQty={1}/>
+          <Row className="bg-light border align-items-center m-5" >
+            <Col className="justify-content-center" >
+              {/*TODO: user deberia tener un atributo con la cantidad de paquetes a abrir*/}
+              <Packet onOpenPacket={openPacket} unopenedPacketsQty={2}/>
             </Col>
-            <Col className="d-flex justify-content-center" style={debug.container}>
-              <Button size="lg" color="success" onClick={goToMyStickers}>OK</Button>
+            <Col className="d-flex justify-content-center" >
+              <Button size="lg" color="success" onClick={goToMyStickers}>Volver a Mis Figus</Button>
             </Col>
           </Row>
         </Container>

@@ -7,32 +7,35 @@ type Props = {
   unopenedPacketsQty: number
 }
 
-const Packet = ({onOpenPacket, unopenedPacketsQty} : Props) => {
+const Packet = ({onOpenPacket, unopenedPacketsQty}: Props) => {
   const _opacity = unopenedPacketsQty === 0 ? 0.4 : 1
 
   return (
     <React.Fragment>
-      <Container >
+      <Container>
         <Row>
           <Col>
-            <Fade appear={true} timeout={500}>
-              <Card className={`bg-transparent border-0 mx-auto`} style={{ width: "18rem", opacity: _opacity}}>
-                <CardImg
-                    alt="..."
-                    src={require("../assets/img/packet.png")}
-                    top
-                />
-                <CardBody className="text-center">
-                  {unopenedPacketsQty > 0 && <Button
-                      color="primary"
-                      size="md"
-                      onClick={() => {onOpenPacket()}}
-                  >
+            <Card className={`bg-transparent border-0 mx-auto`} style={{width: "18rem", opacity: _opacity}}>
+              <span style={{fontSize: 25 }} className="position-absolute badge rounded-pill text-bg-secondary">
+                &nbsp;{unopenedPacketsQty}&nbsp;
+              </span>
+              <CardImg
+                alt="..."
+                src={require("../assets/img/packet.png")}
+                top
+              />
+              <CardBody className="text-center">
+                {unopenedPacketsQty > 0 && <Button
+                    color="primary"
+                    size="md"
+                    onClick={() => {
+                      onOpenPacket()
+                    }}
+                >
                     Abrir paquete
-                  </Button>}
-                </CardBody>
-              </Card>
-            </Fade>
+                </Button>}
+              </CardBody>
+            </Card>
           </Col>
         </Row>
       </Container>

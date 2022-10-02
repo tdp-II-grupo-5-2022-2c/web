@@ -13,6 +13,7 @@ import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from "react-dnd";
 import PacketOpen from "./routes/PacketOpen";
 import {UserProvider} from "./context/UserContext";
+import {ROUTES} from "./routes/RoutesNames";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -28,20 +29,20 @@ root.render(
               <App/>
             </ProtectedRoute>
           }/>
-          <Route path="/sign-in" element={<SignIn/>}/>
-          <Route path="/my-stickers" element={
+          <Route path={ROUTES.SIGNIN} element={<SignIn/>}/>
+          <Route path={ROUTES.MYSTICKERS} element={
             <ProtectedRoute>
               <DndProvider backend={HTML5Backend}>
                 <MyStickers/>
               </DndProvider>
             </ProtectedRoute>
           }/>
-          <Route path="/my-album" element={
+          <Route path={ROUTES.MYALBUM} element={
             <ProtectedRoute>
               <MyAlbum/>
             </ProtectedRoute>
           } />
-          <Route path="/daily-packet" element={
+          <Route path={ROUTES.DAILYPACKET} element={
             <ProtectedRoute>
               <PacketOpen />
             </ProtectedRoute>
