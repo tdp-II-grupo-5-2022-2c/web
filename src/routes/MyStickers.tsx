@@ -38,7 +38,7 @@ const MyStickers = () => {
 
   const fetchUserStickers = async () => {
     try {
-      const {data: stickers} = await client.get(`/users/${user.id}/stickers`, {
+      const {data: stickers} = await client.get(`/users/${user._id}/stickers`, {
         params: searchFilters
       });
       setFetchedStickers(stickers)
