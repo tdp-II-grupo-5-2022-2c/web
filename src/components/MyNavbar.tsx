@@ -7,7 +7,6 @@ import {
   Nav,
   NavItem,
 } from 'reactstrap';
-import '../assets/css/argon-dashboard-react.css'
 import {Link} from "react-router-dom";
 import {ROUTES} from "../routes/RoutesNames";
 

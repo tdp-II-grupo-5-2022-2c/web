@@ -1,8 +1,7 @@
-import {IPlayer} from "./Sticker";
 import {globalStickerStyles} from "../res/globalStyles";
 import {albumColors, qatarColors} from "../res/themes";
 import React from "react";
-import {Button} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, CardText, CardTitle, Row} from "reactstrap";
 
 // TODO: quitar esto pq solo me sirve para data mockeada
 export type ISlicedPlayer = {
@@ -13,22 +12,22 @@ export type ISlicedPlayer = {
 
 type IStickerPlaceHolder = {
   country: string,
-  number: number,
+  index: number,
+  position?: number,
   pasteId?: string,
-  onPaste?: (pasteId: string) => void;
+  onPaste?: (pasteId: string) => void,
+  style?: object
 }
 
 type Props = IStickerPlaceHolder
 
-const StickerPlaceHolder = ({country, number, pasteId, onPaste}: Props) => {
+const StickerPlaceHolder = ({country, position, index, pasteId, onPaste, style = {}}: Props) => {
 
   const styles = {
     stickerPlaceHolder:{
       ...globalStickerStyles.sticker,
       ...{backgroundColor: albumColors.primary},
-      ...{  width: "12rem",
-        height: "16rem",
-      }
+      ...style
     },
     text:{
       color: qatarColors.primary
@@ -49,17 +48,20 @@ const StickerPlaceHolder = ({country, number, pasteId, onPaste}: Props) => {
   //TODO: renderizado condicional, si no tengo figurita renderizo el placeholder, caso contrario
   // renderizo la figurita que recibo por props
   return (
-    <div className="card" style={styles.stickerPlaceHolder}>
-        <div className="card-body d-flex flex-column justify-content-between">
-          <p className="card-text"></p>
-          <div>
-            <h5 className="card-title" style={styles.text}>{formatCountry(country)}</h5>
-            <h5 className="card-title" style={styles.text}>{formatNumber(number)}</h5>
-          </div>
-          {/*<p className="card-text" style={styles.text}>{player.name}</p>*/}
-          {pasteId && onPaste && <Button color="primary" size="sm" className="m-2" onClick={() => onPaste(pasteId)}>Pegar</Button>}
-        </div>
-    </div>
+    <Card style={styles.stickerPlaceHolder}>
+      <CardBody className="d-flex flex-column justify-content-between">
+        <Row>
+          <span className="h1 font-weight-bold" style={styles.text}>{formatCountry(country)}</span>
+        </Row>
+        <Row>
+          <span className="h1 font-weight-bold" style={styles.text}>{formatNumber(index)}</span>
+        </Row>
+        {/*<p className="card-text" style={styles.text}>{player.name}</p>*/}
+        <Row>
+          {pasteId && position === index && onPaste && <Button color="primary" size="sm" className="m-2" onClick={() => onPaste(pasteId)}>Pegar</Button>}
+        </Row>
+      </CardBody>
+    </Card>
   )
 }
 
