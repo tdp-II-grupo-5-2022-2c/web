@@ -9,7 +9,7 @@ import {useForm} from "react-hook-form";
 import client from "../services/config";
 import MyModal from "../components/MyModal";
 import {useUser} from "../context/UserContext";
-import {Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
+import {CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
 
 type Filters = {
   name?: string,
@@ -18,7 +18,7 @@ type Filters = {
 
 const MyStickers = () => {
   const user = useUser();
-  const [players, setPlayers] = useState([] as IBackEndSticker[])
+  const [fetchedStickers, setFetchedStickers] = useState([] as IBackEndSticker[])
   const navigate = useNavigate();
   const [showPasteOk, setShowPasteOk] = useState(false);
   const [searchFilters, setSearchFilters] = useState<Filters>({name: undefined, country: undefined});
@@ -40,7 +40,7 @@ const MyStickers = () => {
       const {data: stickers} = await client.get(`/users/${user.id}/stickers`, {
         params: searchFilters
       });
-      setPlayers(stickers)
+      setFetchedStickers(stickers)
 
     } catch(error: any){
       console.error(
@@ -91,6 +91,12 @@ const MyStickers = () => {
     fetchUserStickers();
   }
 
+  function handleChange() {
+    return (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.value.length >= 3 || e.target.value.length === 0) onChangeHandler(e)
+    };
+  }
+
   return (
     <React.Fragment>
       <MyNavbar/>
@@ -128,14 +134,14 @@ const MyStickers = () => {
                       <i className="fas fa-search" />
                     </InputGroupText>
                     <Input placeholder="Buscar" type="text" id="name" {...register("name", {
-                      onChange: (e:ChangeEvent<HTMLInputElement>) => {if (e.target.value.length >= 3 || e.target.value.length === 0) onChangeHandler(e)}
+                      onChange: handleChange()
                     })} />
                   </InputGroup>
                 </FormGroup>
               </Form>
             </Row>
             <Row>
-              {players.map((player, index) =>
+              {fetchedStickers.map((player, index) =>
                   player.quantity > 0 &&
                     <Col key={player.id} className="col-md-3 p-3 d-flex justify-content-center">
                       <Draggable sticker={player} type={DraggableTypes.STICKER}>
@@ -144,6 +150,11 @@ const MyStickers = () => {
                       </Draggable>
                     </Col>
               )}
+              {fetchedStickers && fetchedStickers.length === 0 &&
+                <Col>
+                    <CardText>No se encontró ninguna figurita con este filtro</CardText>
+                </Col>
+              }
               {/*  ACA VA EL DROPZONE PARA LA COLA DE FIGUS REPETIDAS */}
             </Row>
           </Col>

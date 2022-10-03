@@ -4,8 +4,6 @@ import MyNavbar from "./components/MyNavbar";
 import {useUser} from "./context/UserContext";
 import {ROUTES} from "./routes/RoutesNames";
 
-import './assets/css/argon-dashboard-react.css'
-import '@fortawesome/fontawesome-free/css/all.min.css'
 
 function App() {
 
@@ -31,9 +29,19 @@ function App() {
       <MyNavbar/>
       <div className="container card">
         <h1>Bienvenido {mail}</h1>
-        <button className="btn btn-primary my-1" onClick={() => {navigate(ROUTES.MYSTICKERS)}}> Mis figus </button>
-        <button className="btn btn-primary my-1" onClick={handleDailyPacket}> Paquete diario </button>
-        <button className="btn btn-secondary my-1" onClick={handleLogout}> Cerrar sesión </button>
+        <div className="container text-center">
+          <div className="row">
+            <div className="col">
+              <button className="btn btn-primary" onClick={() => {navigate(ROUTES.MYSTICKERS)}}> Mis figus </button>
+            </div>
+            <div className="col">
+              <button className="btn btn-primary" onClick={handleDailyPacket}> Paquete diario </button>
+            </div>
+            <div className="col">
+              <button className="btn btn-secondary" onClick={handleLogout}> Cerrar sesión </button>
+            </div>
+          </div>
+        </div>
       </div>
     </React.Fragment>
 
