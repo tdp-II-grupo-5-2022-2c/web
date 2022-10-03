@@ -16,7 +16,8 @@ const Packet = ({onOpenPacket, unopenedPacketsQty}: Props) => {
         <Row>
           <Col>
             <Card className={`bg-transparent border-0 mx-auto`} style={{width: "18rem", opacity: _opacity}}>
-              <span style={{fontSize: 25 }} className="position-absolute badge rounded-pill text-bg-secondary">
+              <span style={{fontSize: 25}}
+                        className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-gradient-gray">
                 &nbsp;{unopenedPacketsQty}&nbsp;
               </span>
               <CardImg

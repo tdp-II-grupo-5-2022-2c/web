@@ -1,13 +1,4 @@
 import React, {useState} from 'react';
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-} from 'reactstrap';
-import {Link} from "react-router-dom";
 import {ROUTES} from "../routes/RoutesNames";
 
 const MyNavbar = (args: any) => {
@@ -16,31 +7,34 @@ const MyNavbar = (args: any) => {
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <div>
-      <Navbar {...args}>
-        <NavbarBrand href="/">Figus Qatar</NavbarBrand>
-        <NavbarToggler onClick={toggle}/>
-        <Collapse isOpen={isOpen} navbar>
-          <Nav className="me-auto" navbar>
-            <NavItem>
-              <Link to={ROUTES.HOME}>Home</Link>
-            </NavItem>
-            <NavItem>
-              <Link to={ROUTES.MYSTICKERS}>Mis Figus</Link>
-            </NavItem>
-            <NavItem>
-              <Link to={ROUTES.DAILYPACKET}>Paquete diario</Link>
-            </NavItem>
-            <NavItem>
-              <Link to={ROUTES.MYPROFILE}>Mi perfil</Link>
-            </NavItem>
-            {/*<NavItem>
-              <Link to="/my-album">Mi Album</Link>
-            </NavItem>*/}
-          </Nav>
-        </Collapse>
-      </Navbar>
-    </div>
+    <React.Fragment>
+      <nav className="navbar navbar-expand navbar-light bg-light">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="/">Figus Qatar</a>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <a className="nav-link" href={ROUTES.HOME}>Home</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href={ROUTES.MYSTICKERS}>Mis Figus</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href={ROUTES.DAILYPACKET}>Paquete diario</a>
+              </li>
+
+              <li className="nav-item">
+                <a className="nav-link" href={ROUTES.MYPROFILE}>Mi perfil</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href={ROUTES.MYALBUM}>Mi Album</a>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+      </nav>
+    </React.Fragment>
   );
 }
 

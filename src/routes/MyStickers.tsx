@@ -9,7 +9,8 @@ import {useForm} from "react-hook-form";
 import client from "../services/config";
 import MyModal from "../components/MyModal";
 import {useUser} from "../context/UserContext";
-import {Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
+import {Button, CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
+import {ROUTES} from "./RoutesNames";
 
 type Filters = {
   name?: string,
@@ -18,7 +19,7 @@ type Filters = {
 
 const MyStickers = () => {
   const user = useUser();
-  const [players, setPlayers] = useState([] as IBackEndSticker[])
+  const [fetchedStickers, setFetchedStickers] = useState([] as IBackEndSticker[])
   const navigate = useNavigate();
   const [showPasteOk, setShowPasteOk] = useState(false);
   const [searchFilters, setSearchFilters] = useState<Filters>({name: undefined, country: undefined});
@@ -36,13 +37,13 @@ const MyStickers = () => {
   }, [])
 
   const fetchUserStickers = async () => {
-    try{
+    try {
       const {data: stickers} = await client.get(`/users/${user.id}/stickers`, {
         params: searchFilters
       });
-      setPlayers(stickers)
+      setFetchedStickers(stickers)
 
-    } catch(error: any){
+    } catch (error: any) {
       console.error(
         "Request failed, response:",
         error
@@ -66,29 +67,28 @@ const MyStickers = () => {
     })
   }))
 
-  const onChangeHandler = (event : React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeHandler = ({target: {id, value}}: any) => {
     let _searchFilters = searchFilters;
-    if (event) {
-      // @ts-ignore
-      _searchFilters[event.target.id] = event.target.value;
-    }
     console.log("Search filters")
-    console.log(_searchFilters)
+    console.log("id:" + id + " value:" + value)
+    // @ts-ignore
+    _searchFilters[id] = value;
     setSearchFilters(_searchFilters);
     fetchUserStickers();
   }
 
-  //TODO: Fix checkbox, no anda.
-  const onCheckboxHandler = (event : any) => {
+  const onRadioClick = (value: string) => {
+    console.log("Clicked" + value)
     let _searchFilters = searchFilters;
-    if (event) {
-      // @ts-ignore
-      _searchFilters[event.target.id] = event.target.value;
-    }
-    console.log("Search filters")
-    console.log(_searchFilters)
+    _searchFilters["country"] = value;
     setSearchFilters(_searchFilters);
     fetchUserStickers();
+  }
+
+  function handleChange() {
+    return (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.value.length >= 3 || e.target.value.length === 0) onChangeHandler(e)
+    };
   }
 
   return (
@@ -102,18 +102,13 @@ const MyStickers = () => {
                 <h3 className="text-gray">Pais</h3>
                 {Object.entries(countriesToFilter).map(([key, value]) =>
                   <FormGroup key={value} className="custom-control custom-radio mb-3">
-                    <Input
-                        key={value}
-                        className="custom-control-input"
-                        id="country"
-                        value={value}
-                        checked={searchFilters.country === value}
-                        type="radio"
-                        onClick={(e) => onCheckboxHandler(e)}
-                    />
-                    <label className="custom-control-label" htmlFor="country">
-                      {key}
-                    </label>
+                    <Button
+                      color="primary"
+                      outline
+                      onClick={() => onRadioClick(value)}
+                      active={searchFilters.country === key}
+                    >         {key}
+                    </Button>
                   </FormGroup>
                 )}
               </Form>
@@ -125,25 +120,38 @@ const MyStickers = () => {
                 <FormGroup className="mb-0">
                   <InputGroup className="input-group-alternative">
                     <InputGroupText>
-                      <i className="fas fa-search" />
+                      <i className="fas fa-search"/>
                     </InputGroupText>
                     <Input placeholder="Buscar" type="text" id="name" {...register("name", {
-                      onChange: (e:ChangeEvent<HTMLInputElement>) => {if (e.target.value.length >= 3 || e.target.value.length === 0) onChangeHandler(e)}
+                      onChange: handleChange()
                     })} />
                   </InputGroup>
                 </FormGroup>
               </Form>
             </Row>
             <Row>
-              {players.map((player, index) =>
-                  player.quantity > 0 &&
-                    <Col key={player.id} className="col-md-3 p-3 d-flex justify-content-center">
+              {fetchedStickers.map((player, index) =>
+                player.quantity > 0 &&
+                  <Col key={player.id} className="col-md-3 p-3 d-flex justify-content-center">
                       <Draggable sticker={player} type={DraggableTypes.STICKER}>
-                        <Sticker player={player}
-                          displayBadge={true}/>
+                          <Sticker player={player}
+                                   displayBadge={true}/>
                       </Draggable>
-                    </Col>
+                  </Col>
               )}
+              {fetchedStickers && fetchedStickers.length === 0 && user.stickers.length > 0 &&
+                  <Col>
+                      <CardText>No se encontró ninguna figurita con este filtro</CardText>
+                  </Col>
+              }
+              {user.stickers.length === 0 &&
+                  <Col>
+                      <CardText>No tienes figuritas, abrí un nuevo paquete</CardText>
+                      <Button>
+                          <a className="nav-link" href={ROUTES.DAILYPACKET}>Abrir paquete</a>
+                      </Button>
+                  </Col>
+              }
               {/*  ACA VA EL DROPZONE PARA LA COLA DE FIGUS REPETIDAS */}
             </Row>
           </Col>
@@ -154,7 +162,8 @@ const MyStickers = () => {
           </Col>
         </Row>
       </Container>
-      <MyModal header={"Figurita Pegada!"} body={"Ya no deberias ver mas tu figurita si era una sola"} isOpen={showPasteOk} onAccept={closeShowPasteOk}/>
+      <MyModal header={"Figurita Pegada!"} body={"Ya no deberias ver mas tu figurita si era una sola"}
+               isOpen={showPasteOk} onAccept={closeShowPasteOk}/>
     </React.Fragment>
   );
 

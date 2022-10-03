@@ -32,6 +32,7 @@ function PacketOpen() {
     try{
       const {data: openedPacketStickers}  = await client.post(`/stickers/package`, requestBody);
       setOpenedPacketStickers(openedPacketStickers)
+      await user.restore(user.mail)
 
     } catch (error : any){
       // TODO: meter toda la logica de manejo de error en un servicio global o algo asi
@@ -85,7 +86,7 @@ function PacketOpen() {
           <Row className="bg-light border align-items-center m-5" >
             <Col className="justify-content-center" >
               {/*TODO: user deberia tener un atributo con la cantidad de paquetes a abrir*/}
-              <Packet onOpenPacket={openPacket} unopenedPacketsQty={2}/>
+              <Packet onOpenPacket={openPacket} unopenedPacketsQty={1}/>
             </Col>
             <Col className="d-flex justify-content-center" >
               <Button size="lg" color="success" onClick={goToMyStickers}>Volver a Mis Figus</Button>
