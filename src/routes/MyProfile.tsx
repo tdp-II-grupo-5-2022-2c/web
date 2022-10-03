@@ -8,17 +8,22 @@ const MyProfile = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [form, setForm] = useState({
     name: "",
-    country: ""
+    country: "",
+    date_of_birth: "",
+    lastname: ""
   })
 
   const enableProfileEditing = () => {
     setIsEditing(true)
   }
 
-  const acceptChanges = () => {
+  const acceptChanges = async () => {
     setIsEditing(false)
     console.log(form)
-    // TODO: api call para editar perfil
+    // Actualizo en el back
+    //const { data: updatedUser } = await client.put(`/users`);
+    // Actualizo en el front
+    //await user.restore(user.mail)
   }
 
   const cancelChanges = () => {
@@ -27,7 +32,13 @@ const MyProfile = () => {
 
   const handleChange = ({target: {name, value}}: any) => {
     // TODO: rollback de cambios
+    console.log(name)
     setForm({...form, [name]: value});
+  }
+
+  const getYearsOld = () => {
+    // TODO:calculateYearsOld
+    return "TODO:27 years old"
   }
 
   return (
@@ -70,9 +81,9 @@ const MyProfile = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="text-center"><h3>Juan Carlos<span className="font-weight-light">, 27</span></h3>
+                  <div className="text-center"><h3>TODO:name<span className="font-weight-light">, {getYearsOld()}</span></h3>
 
-                    <div><i className="ni education_hat mr-2"></i>Argentina</div>
+                    <div><i className="ni education_hat mr-2"></i>TODO:country</div>
                     <hr className="my-4"/>
                   </div>
                 </div>
@@ -82,21 +93,24 @@ const MyProfile = () => {
               <div className="bg-secondary shadow card">
                 <div className="bg-white border-0 card-header">
                   <div className="align-items-center row">
-                    <div className="col-8"><h3 className="mb-0">Mis Datos</h3></div>
+                    <div className="col-8">
+                      <h3 className="mb-0">Mis Datos</h3>
+                    </div>
                   </div>
                 </div>
                 <div className="card-body">
-                  <form className=""><h6 className="heading-small text-muted mb-4">User information</h6>
+                  <form className=""><h6 className="heading-small text-muted mb-4">Información usuario</h6>
                     <div className="pl-lg-4">
                       <div className="row">
                         <div className="col-lg-6">
                           <div className="form-group">
                             <label className="form-control-label">Nombre</label>
                             <input
-                              id="input-username" placeholder="Nombre usuario" type="name"
+                              id="input-username" placeholder="Nombre" type="name"
                               name='name'
                               className="form-control-alternative form-control"
                               onChange={handleChange}
+                              value={form.name}
                               disabled={!isEditing}
                             />
                           </div>
@@ -107,7 +121,38 @@ const MyProfile = () => {
                             <input id="input-email" placeholder="juan@example.com"
                                    className="form-control-alternative form-control"
                                    value={user.mail}
+                                   readOnly={true}
                                    disabled={true} />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-6">
+                          <div className="form-group">
+                            <label className="form-control-label">Apellido</label>
+                            <input
+                              id="input-lastname" placeholder="Apellido"
+                              type="lastname"
+                              name='lastname'
+                              className="form-control-alternative form-control"
+                              onChange={handleChange}
+                              value={form.lastname}
+                              disabled={!isEditing}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-lg-6">
+                          <div className="form-group">
+                            <label className="form-control-label">Fecha de nacimiento</label>
+                            <input id="input-date_of_birth"
+                                   placeholder="13-07-1995"
+                                   type="date_of_birth"
+                                   name='date_of_birth'
+                                   className="form-control-alternative form-control"
+                                   value={form.date_of_birth}
+                                   onChange={handleChange}
+                                   disabled={!isEditing}
+                            />
                           </div>
                         </div>
                       </div>
