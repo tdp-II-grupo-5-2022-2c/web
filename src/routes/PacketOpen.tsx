@@ -1,14 +1,18 @@
 import React, {useState} from "react";
 import {Row, Container, Col, Fade, Button, CardText} from "reactstrap";
 import Sticker, {IBackEndSticker} from "../components/Sticker";
-import {getArgentinaPlayersData} from "../data/playersData";
 import {useNavigate} from "react-router-dom";
-import {debug} from "../res/globalStyles";
 import MyNavbar from "../components/MyNavbar";
-import Packet from "./Packet";
+import Packet from "../components/Packet";
 import client from "../services/config";
 import {useUser} from "../context/UserContext";
 import {ROUTES} from "./RoutesNames";
+import MyModal from "../components/MyModal";
+
+const PACKET_OPENING_ERROR_MESSAGES = {
+  NOT_ENOUGH_STICKERS: "En este momento no tenemos paquetes disponibles",
+  SERVER_ERROR: "Ha ocurrido un error al intentar abrir el paquete"
+}
 
 function PacketOpen() {
   const user = useUser();
@@ -16,7 +20,8 @@ function PacketOpen() {
   /*TODO: ojo que este estado es local, no actualiza el user context
   *  este se actualiza recien en el momento que se hace un restore*/
   const [openedPacketStickers, setOpenedPacketStickers] = useState<IBackEndSticker[]>([])
-
+  const [showPacketOpeningError, setShowPacketOpeningError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const fadeInTimeout = 600;
   const navigate = useNavigate();
 
@@ -24,12 +29,35 @@ function PacketOpen() {
     const requestBody = {
       user_id: user.id
     }
-    const {data: openedPacketStickers}  = await client.post(`/stickers/package`, requestBody);
-    setOpenedPacketStickers(openedPacketStickers)
+    try{
+      const {data: openedPacketStickers}  = await client.post(`/stickers/package`, requestBody);
+      setOpenedPacketStickers(openedPacketStickers)
+
+    } catch (error : any){
+      // TODO: meter toda la logica de manejo de error en un servicio global o algo asi
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        if(error.response.data?.detail === "Could not return daily package. Exception: [OPEN_PACKAGE] error: No stickers at the moment to create a package"){
+          setErrorMessage(PACKET_OPENING_ERROR_MESSAGES.SERVER_ERROR)
+        }
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        setErrorMessage(PACKET_OPENING_ERROR_MESSAGES.SERVER_ERROR)
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+      setShowPacketOpeningError(true)
+    }
   }
 
   const goToMyStickers = () => {
     navigate(ROUTES.MYSTICKERS);
+  }
+
+  const closeshowPacketOpeningError = () => {
+    setShowPacketOpeningError(false)
   }
 
   return (
@@ -64,6 +92,10 @@ function PacketOpen() {
             </Col>
           </Row>
         </Container>
+        <MyModal header={"Error al abrir paquete"}
+                 body={errorMessage}
+                 isOpen={showPacketOpeningError}
+                 onAccept={closeshowPacketOpeningError}/>
       </React.Fragment>
   )
 }

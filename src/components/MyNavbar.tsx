@@ -32,8 +32,11 @@ const MyNavbar = (args: any) => {
               <Link to={ROUTES.DAILYPACKET}>Paquete diario</Link>
             </NavItem>
             <NavItem>
-              <Link to="/my-album">Mi Album</Link>
+              <Link to={ROUTES.MYPROFILE}>Mi perfil</Link>
             </NavItem>
+            {/*<NavItem>
+              <Link to="/my-album">Mi Album</Link>
+            </NavItem>*/}
           </Nav>
         </Collapse>
       </Navbar>

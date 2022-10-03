@@ -14,6 +14,7 @@ import {DndProvider} from "react-dnd";
 import PacketOpen from "./routes/PacketOpen";
 import {UserProvider} from "./context/UserContext";
 import {ROUTES} from "./routes/RoutesNames";
+import MyProfile from "./routes/MyProfile";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -45,6 +46,11 @@ root.render(
           <Route path={ROUTES.DAILYPACKET} element={
             <ProtectedRoute>
               <PacketOpen />
+            </ProtectedRoute>
+          } />
+          <Route path={ROUTES.MYPROFILE} element={
+            <ProtectedRoute>
+              <MyProfile />
             </ProtectedRoute>
           } />
         </Routes>

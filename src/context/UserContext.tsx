@@ -12,6 +12,8 @@ import client from "../services/config";
 export interface User {
   id: number;
   mail: string;
+  date_of_birth: string;
+  name: string;
   stickers: IBackEndSticker[]
 }
 
@@ -33,7 +35,7 @@ export const useUser = (): User & UserActions => {
 export const UserProvider = ({ children }: PropsWithChildren<any>) => {
   const [user, setUser] = useState<User>({} as User);
 
-  const userActions = {
+  const userActions : User & UserActions = {
     ...user,
     async getUser (email: string) {
       try{
