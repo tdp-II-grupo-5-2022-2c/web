@@ -32,6 +32,7 @@ function PacketOpen() {
     try{
       const {data: openedPacketStickers}  = await client.post(`/stickers/package`, requestBody);
       setOpenedPacketStickers(openedPacketStickers)
+      await user.restore(user.mail)
 
     } catch (error : any){
       // TODO: meter toda la logica de manejo de error en un servicio global o algo asi

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {ROUTES} from "../routes/RoutesNames";
-import {NavbarToggler} from "reactstrap";
 
 const MyNavbar = (args: any) => {
   const [isOpen, setIsOpen] = useState(false);
