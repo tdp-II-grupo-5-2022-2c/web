@@ -4,6 +4,9 @@ import MyNavbar from "./components/MyNavbar";
 import {useUser} from "./context/UserContext";
 import {ROUTES} from "./routes/RoutesNames";
 
+import './assets/css/argon-dashboard-react.css'
+import '@fortawesome/fontawesome-free/css/all.min.css'
+
 function App() {
 
   const {mail, logout} = useUser();

@@ -1,37 +1,53 @@
-import React from "react";
+import React, {useEffect} from "react";
 import StickerPlaceHolder from "../components/StickerPlaceHolder";
-import {ITeam} from "../routes/MyAlbum";
+import Sticker, {IBackEndSticker} from "./Sticker";
+import {Col, Container, Row} from "reactstrap";
+import {getAlbumPage} from "../data/albumData";
 
 type Props = {
-  team: ITeam,
-  pasteId?: number
-  onPaste?: (pasteId: number) => void;
+  albumStickers: IBackEndSticker[] | {id: string, is_on_album: false}[]
+  country: string,
+  position?: number,
+  pasteId?: string
+  onPaste: (pasteId?: string) => void;
 }
 
-const AlbumPage = ({team, pasteId, onPaste}: Props) => {
+const AlbumPage = ({albumStickers, country, position, pasteId, onPaste}: Props) => {
 
-  // TODO: pasar por Prop el color del background de la pagina del album
-  // TODO: pasar por Prop el pais
   const styles = {
-    albumBg: {
-      backgroundColor: "lightblue"
+    sticker: {
+      height: '16rem',
+      width: '12rem',
+      margin: '0.7rem'
     }
   }
 
-  const OFFSET = 1
+  useEffect(() => {
+    console.log("Album stickers changed")
+  }, [albumStickers])
 
   return (
     <React.Fragment>
-      <div className="container" style={styles.albumBg}>
-        {team && team.players && <div className="row row-cols-auto">
-          {team.players.map((player, index) =>
-            <div key={player.id} className="gy-5">
-              {!pasteId && !onPaste && <StickerPlaceHolder player={player} number={index + OFFSET}/>}
-              {pasteId && onPaste && <StickerPlaceHolder player={player} number={index + OFFSET} pasteId={pasteId} onPaste={() => onPaste(pasteId)}/>}
-            </div>
-          )}
-        </div>}
-      </div>
+      <Container style={getAlbumPage(country).styles}>
+        <Row>
+        { albumStickers.length > 0 &&
+          albumStickers.map((sticker, index) =>
+            <Col key={sticker.id} className="col-md-3 d-flex justify-content-center">
+              {sticker.is_on_album && <Sticker player={sticker}
+                                               style={styles.sticker}
+              />}
+              {!sticker.is_on_album && <StickerPlaceHolder country={country}
+                                                           position={position}
+                                                           index={index}
+                                                           pasteId={pasteId}
+                                                           onPaste={() => onPaste(pasteId)}
+                                                           style={styles.sticker}
+              />}
+            </Col>
+          )
+        }
+        </Row>
+      </Container>
     </React.Fragment>
   );
 }

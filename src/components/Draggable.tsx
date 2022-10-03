@@ -1,21 +1,22 @@
 import {useDrag} from "react-dnd";
+import {IBackEndSticker} from "./Sticker";
 
 export const DraggableTypes = {
   STICKER: "sticker"
 }
 
 type Props = {
-  childrenId: number;
+  sticker: IBackEndSticker;
   children?: any
   type: string
 }
 
-export const Draggable = ({childrenId, children, type} : Props) => {
+export const Draggable = ({sticker, children, type} : Props) => {
 
   const [{ opacity }, dragRef] = useDrag(
     () => ({
       type: type,
-      item: {id: childrenId},
+      item: sticker,
       collect: (monitor) => ({
         opacity: monitor.isDragging() ? 0.5 : 1
       })

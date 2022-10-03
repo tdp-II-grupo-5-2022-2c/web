@@ -1,11 +1,13 @@
 import React, {useEffect, useRef, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
-import {getAlbumData} from "../data/albumData";
+import {ALBUM_PAGES, DEFAULT_COUNTRY_PAGE} from "../data/albumData";
 import AlbumPage from "../components/AlbumPage";
-import {IPlayer} from "../components/Sticker";
-import {useSearchParams} from "react-router-dom";
+import {IBackEndSticker, IPlayer} from "../components/Sticker";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {ISlicedPlayer} from "../components/StickerPlaceHolder";
 import client from "../services/config";
+import {useUser} from "../context/UserContext";
+import {Container, Row, Col, Spinner} from "reactstrap";
 
 // TODO: despues eliminar el IPlayer[] dado que es data mockeada
 export type ITeam = {
@@ -15,125 +17,130 @@ export type ITeam = {
 }
 
 const MyAlbum = () => {
-  //TODO: los equipos son constantes, no tiene sentido que esten en un state
-  // si tiene sentido si los obtengo de una query al back que es lo que supongo que va a pasar
+  const NUM_PLAYERS = 11;
+  const user = useUser();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [selectedCountry, setSelectedCountry] = useState(DEFAULT_COUNTRY_PAGE);
+  const [pasteId, setPasteId] = useState<string | undefined>(undefined);
+  const [position, setPosition] = useState<number | undefined>(undefined);
+  const [albumStickers, setAlbumStickers] = useState([] as any[]);
 
-  const [teams, setTeams] = useState([] as ITeam[])
-  const refTeams = useRef([] as ITeam[])
-  const [selectedPage, setSelectedPage] = useState(0)
-  const [searchParams, setSearchParams] = useSearchParams();
-
+  const [isLoading, setLoading] = useState(true); //TODO Agregar loader del album
   const [isPasting, setIsPasting] = useState(false);
-  const [pasteId, setPasteId] = useState<number | undefined>(0);
-
-
-  /* el album lo podemos hardcodear porque es siempre el mismo asi que
-    una vez montado el album queda asi, pretendo que cada StickerPlaceHolder pueda tener adentro un Sticker
-    como un contenedor, los placeholders van a ser estaticos durante toda la aplicacion, lo que cambia
-    es si contiene o no una figurita
-    */
-  useEffect(() => {
-    console.log("MyAlbum - Did Mount")
-    //TODO: hacer una unica request al back con la data de todos los jugadores del album con sus ids; por country
-    // entonces se llenan los placeholders de cada album
-    const _teams = getAlbumData()
-    setTeams(_teams)
-    refTeams.current = getAlbumData()
-  }, [])
 
   useEffect(() => {
     // TODO: poner en una constante global este queryParam
-    const stickerIdToBePasted = searchParams.get("stickerIdToBePasted")
-    if (stickerIdToBePasted) {
-      console.log("stickerIdToBePasted " + stickerIdToBePasted)
-      goToAlbumPage(stickerIdToBePasted)
-    }
-  }, [searchParams])
+    const country = searchParams.get("country") || undefined;
+    const position = searchParams.get("position") || undefined;
+    const stickerIdToBePasted = searchParams.get("stickerId") || undefined;
 
-  const goToAlbumPage = (stickerId: string) => {
-    const PLAYERS_PER_ALBUM_PAGE = 11
-    let newSelectedPage = selectedPage
-    let counter = 1
-    let notFound = true
-    let teamIndex = 0
-    // TODO: no se que tan mal esta pero la unica forma de tener el state cuando entro por el navigate es usando un useRef
-    while (notFound && teamIndex < refTeams.current.length) {
-      const players = refTeams.current[teamIndex].players
-      let playerIndex = 0
-      while (notFound && playerIndex < players.length) {
-        const player = players[playerIndex]
-        if (player.id.toString() === stickerId) {
-          newSelectedPage = (counter - 1) / (PLAYERS_PER_ALBUM_PAGE)
-          notFound = false
-        }
-        counter++
-        playerIndex++
+    console.log("country: " + country);
+    if (country) {
+      setSelectedCountry(country);
+    }
+    setPasteId(stickerIdToBePasted);
+    setPosition(Number(position) || undefined);
+    findPastedStickers(country)
+  }, [selectedCountry, searchParams])
+
+  const findPastedStickers = async (country?: string) => {
+    setLoading(true);
+    client.get(`/users/${user.id}/stickers?country=${country || DEFAULT_COUNTRY_PAGE}&is_on_album=true`).then((response: any) => {
+      let pastedStickers = (response.status === 200 && response.data) ? response.data : [];
+      processPageData(pastedStickers);
+      setLoading(false);
+    });
+  }
+
+  const processPageData = (stickersOnAlbum: IBackEndSticker[]) => {
+    let stickers: object[] = [];
+    console.log("process page data");
+    console.log(stickersOnAlbum);
+    stickersOnAlbum.forEach((sticker: IBackEndSticker) => {
+      stickers[sticker.number] = sticker;
+    });
+
+    for (let i = 0; i <= NUM_PLAYERS; i++) {
+      if (!stickers.at(i)) {
+        stickers[i] = {id: i.toString(), is_on_album: false}
       }
-      teamIndex++
     }
 
-    newSelectedPage = Math.floor(newSelectedPage)
-    console.log("goToAlbumPage - Paste id album page " + newSelectedPage)
-    console.log("StickerIdToBePaste: " + stickerId)
-    setSelectedPage(newSelectedPage)
-    //setPasteId(stickerId);
-    setIsPasting(true)
-
-    // TODO: bypass: por ahora dejar el paste aca dado que no implementamos la logica de pegado todavia
-    // TODO: ademas esto genera un paste con cada re-render
-    onPaste(stickerId)
+    console.log("processed stickers... ")
+    console.log(stickers)
+    setAlbumStickers(stickers);
   }
 
   const validateSelectedPage = () => {
-    return teams &&
-      selectedPage >= 0 &&
-      selectedPage < teams.length;
+    return albumStickers &&
+        albumStickers.length >= NUM_PLAYERS;
   }
 
   const nextPage = () => {
-    let _nextSelectedPage = selectedPage >= teams.length - 1 ?
-      teams.length - 1 :
-      (selectedPage + 1)
-    setSelectedPage(_nextSelectedPage)
+    let _currentPosition = ALBUM_PAGES.findIndex((element) => element === selectedCountry);
+    let _selectedCountry = DEFAULT_COUNTRY_PAGE;
+    if (_currentPosition >= 0) {
+      _selectedCountry = ALBUM_PAGES.at(_currentPosition + 1) || DEFAULT_COUNTRY_PAGE
+    }
+    navigateTo(_selectedCountry);
   }
 
   const previousPage = () => {
-    let _previousSelectedPage = selectedPage <= 0 ?
-      0 : (selectedPage - 1)
-    setSelectedPage(_previousSelectedPage)
+    let _currentPosition = ALBUM_PAGES.findIndex((element) => element === selectedCountry);
+    let _selectedCountry = DEFAULT_COUNTRY_PAGE;
+    if (_currentPosition >= 0) {
+      _selectedCountry = ALBUM_PAGES.at(_currentPosition - 1) || DEFAULT_COUNTRY_PAGE
+    }
+    navigateTo(_selectedCountry);
   }
 
-  const onPaste = async (pasteId: string) => {
-    // TODO: se debe usar el userContext
-    const mockedUser = {id: "63238bf658c62f37cba18c64"}
+  const navigateTo = (country : string) => {
+    navigate("/my-album?country=" + country, {replace: true});
+  }
 
-    // TODO: poner aca la api call para pegar la figu en el album
+  const onPaste = async (pasteId?: string) => {
+    if (!pasteId) {
+      return;
+    }
+
     const {data: response} = await client.patch(
-      `/users/${mockedUser.id}/stickers/${pasteId}/paste`
+      `/users/${user.id}/stickers/${pasteId}/paste`
     );
 
     console.log("API REQUEST TO PASTE " + pasteId)
     console.log("Response")
     console.log(response)
 
-    setIsPasting(false)
-    setPasteId(undefined)
+    setIsPasting(false);
+    setPasteId(undefined);
+    setPosition(undefined);
+    await findPastedStickers(selectedCountry);
   }
 
   return (
     <React.Fragment>
       <MyNavbar/>
-      <div className="container text-center">
-        <div className="row row-cols-auto">
-          {validateSelectedPage() &&
-              <div>
-                  <AlbumPage team={teams[selectedPage]}/>
-              </div>
+      <Container className="text-center">
+        <Row className="h-100 justify-content-center align-items-center">
+          {isLoading &&
+              <Col className="justify-content-center col-4 align-self-center">
+                <Spinner className="text-gray" type="grow" style={{height: '3rem', width: '3rem'}}></Spinner>
+              </Col>
           }
-        </div>
-        <button className={"btn btn-primary btn-sm m-2"} onClick={previousPage}>Anterior</button>
-        <button className={"btn btn-primary btn-sm m-2"} onClick={nextPage}>Siguiente</button>
-      </div>
+          {!isLoading &&
+              <Col>
+                  <AlbumPage albumStickers={albumStickers}
+                             country={selectedCountry}
+                             position={position}
+                             pasteId={pasteId}
+                             onPaste={() => onPaste(pasteId)}/>
+                <button className={"btn btn-primary btn-sm m-2"} onClick={previousPage}>Anterior</button>
+                <button className={"btn btn-primary btn-sm m-2"} onClick={nextPage}>Siguiente</button>
+              </Col>
+          }
+        </Row>
+      </Container>
     </React.Fragment>
   );
 }
