@@ -10,6 +10,7 @@ import client from "../services/config";
 import MyModal from "../components/MyModal";
 import {useUser} from "../context/UserContext";
 import {Button, CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
+import {ROUTES} from "./RoutesNames";
 
 type Filters = {
   name?: string,
@@ -36,13 +37,13 @@ const MyStickers = () => {
   }, [])
 
   const fetchUserStickers = async () => {
-    try{
+    try {
       const {data: stickers} = await client.get(`/users/${user.id}/stickers`, {
         params: searchFilters
       });
       setFetchedStickers(stickers)
 
-    } catch(error: any){
+    } catch (error: any) {
       console.error(
         "Request failed, response:",
         error
@@ -107,7 +108,7 @@ const MyStickers = () => {
                       onClick={() => onRadioClick(value)}
                       active={searchFilters.country === key}
                     >         {key}
-                  </Button>
+                    </Button>
                   </FormGroup>
                 )}
               </Form>
@@ -119,7 +120,7 @@ const MyStickers = () => {
                 <FormGroup className="mb-0">
                   <InputGroup className="input-group-alternative">
                     <InputGroupText>
-                      <i className="fas fa-search" />
+                      <i className="fas fa-search"/>
                     </InputGroupText>
                     <Input placeholder="Buscar" type="text" id="name" {...register("name", {
                       onChange: handleChange()
@@ -130,18 +131,26 @@ const MyStickers = () => {
             </Row>
             <Row>
               {fetchedStickers.map((player, index) =>
-                  player.quantity > 0 &&
-                    <Col key={player.id} className="col-md-3 p-3 d-flex justify-content-center">
+                player.quantity > 0 &&
+                  <Col key={player.id} className="col-md-3 p-3 d-flex justify-content-center">
                       <Draggable sticker={player} type={DraggableTypes.STICKER}>
-                        <Sticker player={player}
-                          displayBadge={true}/>
+                          <Sticker player={player}
+                                   displayBadge={true}/>
                       </Draggable>
-                    </Col>
+                  </Col>
               )}
               {fetchedStickers && fetchedStickers.length === 0 &&
-                <Col>
-                    <CardText>No se encontró ninguna figurita con este filtro</CardText>
-                </Col>
+                  <Col>
+                      <CardText>No se encontró ninguna figurita con este filtro</CardText>
+                  </Col>
+              }
+              {user.stickers.length === 0 &&
+                  <Col>
+                      <CardText>No tienes figuritas, abrí un nuevo paquete</CardText>
+                      <Button>
+                          <a className="nav-link" href={ROUTES.DAILYPACKET}>Abrir paquete</a>
+                      </Button>
+                  </Col>
               }
               {/*  ACA VA EL DROPZONE PARA LA COLA DE FIGUS REPETIDAS */}
             </Row>
@@ -153,7 +162,8 @@ const MyStickers = () => {
           </Col>
         </Row>
       </Container>
-      <MyModal header={"Figurita Pegada!"} body={"Ya no deberias ver mas tu figurita si era una sola"} isOpen={showPasteOk} onAccept={closeShowPasteOk}/>
+      <MyModal header={"Figurita Pegada!"} body={"Ya no deberias ver mas tu figurita si era una sola"}
+               isOpen={showPasteOk} onAccept={closeShowPasteOk}/>
     </React.Fragment>
   );
 
