@@ -3,5 +3,6 @@ export const ROUTES = {
   SIGNIN: "/sign-in",
   MYSTICKERS: "/my-stickers",
   MYALBUM: "/my-album",
-  DAILYPACKET: "/daily-packet"
+  DAILYPACKET: "/daily-packet",
+  MYPROFILE: "/profile"
 }

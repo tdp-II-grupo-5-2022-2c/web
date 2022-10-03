@@ -31,6 +31,9 @@ const MyNavbar = (args: any) => {
             <NavItem>
               <Link to={ROUTES.DAILYPACKET}>Paquete diario</Link>
             </NavItem>
+            <NavItem>
+              <Link to={ROUTES.MYPROFILE}>Mi perfil</Link>
+            </NavItem>
             {/*<NavItem>
               <Link to="/my-album">Mi Album</Link>
             </NavItem>*/}

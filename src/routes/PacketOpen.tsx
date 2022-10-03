@@ -1,9 +1,7 @@
 import React, {useState} from "react";
 import {Row, Container, Col, Fade, Button, CardText} from "reactstrap";
 import Sticker, {IBackEndSticker} from "../components/Sticker";
-import {getArgentinaPlayersData} from "../data/playersData";
 import {useNavigate} from "react-router-dom";
-import {debug} from "../res/globalStyles";
 import MyNavbar from "../components/MyNavbar";
 import Packet from "./Packet";
 import client from "../services/config";
