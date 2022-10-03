@@ -9,7 +9,7 @@ import {useForm} from "react-hook-form";
 import client from "../services/config";
 import MyModal from "../components/MyModal";
 import {useUser} from "../context/UserContext";
-import {CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
+import {Button, CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
 
 type Filters = {
   name?: string,
@@ -66,27 +66,20 @@ const MyStickers = () => {
     })
   }))
 
-  const onChangeHandler = (event : React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeHandler = ({target: {id, value}}: any) => {
     let _searchFilters = searchFilters;
-    if (event) {
-      // @ts-ignore
-      _searchFilters[event.target.id] = event.target.value;
-    }
     console.log("Search filters")
-    console.log(_searchFilters)
+    console.log("id:" + id + " value:" + value)
+    // @ts-ignore
+    _searchFilters[id] = value;
     setSearchFilters(_searchFilters);
     fetchUserStickers();
   }
 
-  //TODO: Fix checkbox, no anda.
-  const onCheckboxHandler = (event : any) => {
+  const onRadioClick = (value: string) => {
+    console.log("Clicked" + value)
     let _searchFilters = searchFilters;
-    if (event) {
-      // @ts-ignore
-      _searchFilters[event.target.id] = event.target.value;
-    }
-    console.log("Search filters")
-    console.log(_searchFilters)
+    _searchFilters["country"] = value;
     setSearchFilters(_searchFilters);
     fetchUserStickers();
   }
@@ -108,18 +101,13 @@ const MyStickers = () => {
                 <h3 className="text-gray">Pais</h3>
                 {Object.entries(countriesToFilter).map(([key, value]) =>
                   <FormGroup key={value} className="custom-control custom-radio mb-3">
-                    <Input
-                        key={value}
-                        className="custom-control-input"
-                        id="country"
-                        value={value}
-                        checked={searchFilters.country === value}
-                        type="radio"
-                        onClick={(e) => onCheckboxHandler(e)}
-                    />
-                    <label className="custom-control-label" htmlFor="country">
-                      {key}
-                    </label>
+                    <Button
+                      color="primary"
+                      outline
+                      onClick={() => onRadioClick(value)}
+                      active={searchFilters.country === key}
+                    >         {key}
+                  </Button>
                   </FormGroup>
                 )}
               </Form>
