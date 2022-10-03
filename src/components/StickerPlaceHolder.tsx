@@ -57,7 +57,7 @@ const StickerPlaceHolder = ({country, position, index, pasteId, onPaste, style =
           <span className="h1 font-weight-bold" style={styles.text}>{formatNumber(index)}</span>
         </Row>
         {/*<p className="card-text" style={styles.text}>{player.name}</p>*/}
-        <Row>
+        <Row className="m-0 p-0">
           {pasteId && position === index && onPaste && <Button color="primary" size="sm" className="m-2" onClick={() => onPaste(pasteId)}>Pegar</Button>}
         </Row>
       </CardBody>

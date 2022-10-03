@@ -1,7 +1,4 @@
-import {
-  Card, CardFooter,
-  CardImg, CardImgOverlay,
-} from "reactstrap";
+import {Card, CardImg, CardImgOverlay,} from "reactstrap";
 import {globalStickerStyles} from "../res/globalStyles";
 
 // TODO: quitar esto pq tiene info de mas que no necesito
