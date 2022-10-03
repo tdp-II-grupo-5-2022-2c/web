@@ -27,7 +27,7 @@ function PacketOpen() {
 
   const openPacket = async () => {
     const requestBody = {
-      user_id: user.id
+      user_id: user._id
     }
     try{
       const {data: openedPacketStickers}  = await client.post(`/stickers/package`, requestBody);

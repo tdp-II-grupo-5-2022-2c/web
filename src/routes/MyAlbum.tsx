@@ -46,7 +46,7 @@ const MyAlbum = () => {
 
   const findPastedStickers = async (country?: string) => {
     setLoading(true);
-    client.get(`/users/${user.id}/stickers?country=${country || DEFAULT_COUNTRY_PAGE}&is_on_album=true`).then((response: any) => {
+    client.get(`/users/${user._id}/stickers?country=${country || DEFAULT_COUNTRY_PAGE}&is_on_album=true`).then((response: any) => {
       let pastedStickers = (response.status === 200 && response.data) ? response.data : [];
       processPageData(pastedStickers);
       setLoading(false);
@@ -105,7 +105,7 @@ const MyAlbum = () => {
     }
 
     const {data: response} = await client.patch(
-      `/users/${user.id}/stickers/${pasteId}/paste`
+      `/users/${user._id}/stickers/${pasteId}/paste`
     );
 
     console.log("API REQUEST TO PASTE " + pasteId)

@@ -10,10 +10,11 @@ import {IBackEndSticker} from "../components/Sticker";
 import client from "../services/config";
 
 export interface User {
-  id: number;
+  _id: number;
   mail: string;
   date_of_birth: string;
   name: string;
+  lastname: string;
   stickers: IBackEndSticker[]
 }
 
