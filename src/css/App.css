@@ -30,3 +30,14 @@ html, .body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+@font-face {
+  font-family: "qatar-2022-font";
+  src: url("../assets/fonts/qatar-2022-font/Qatar2022-Medium.woff") format('woff');
+}
+
+@font-face {
+  font-family: "qatar-2022-font";
+  src: url("../assets/fonts/qatar-2022-font/Qatar2022-Bold.woff") format('woff');
+  font-weight: bold;
+}
