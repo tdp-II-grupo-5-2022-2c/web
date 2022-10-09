@@ -1,11 +1,12 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
-import {Button} from "reactstrap";
+import {Button, Col} from "reactstrap";
 import ModalForm, {CreateCommunityForm} from "../components/ModalForm";
 import client from "../services/config";
 import MyModal from "../components/MyModal";
 import {CommunityModalMsg} from "../res/strings";
+import Community, {NoUsersCommunity} from "../components/Community";
 
 const MyCommunities = () => {
   const user = useUser();
@@ -16,6 +17,16 @@ const MyCommunities = () => {
     password: "",
   };
   const [createCommunityForm, setCreateCommunityForm] = useState(initialFormState)
+  const [communities, setCommunities] = useState<NoUsersCommunity[]>([])
+
+  useEffect(() => {
+    fetchCommunities()
+  }, [])
+
+  const fetchCommunities = async () => {
+    const {data: fetchedCommunities} = await client.get("/communities")
+    setCommunities(fetchedCommunities)
+  }
 
   const createCommunity = async () => {
     setShowCreateCommunityFormModal(false)
@@ -27,6 +38,7 @@ const MyCommunities = () => {
     console.log(form)
     try {
       const {data: createdCommunity} = await client.post("/communities", form)
+      fetchCommunities()
       setShowCreateOk(true)
     } catch (error : any){
       if (error.response) {
@@ -63,6 +75,13 @@ const MyCommunities = () => {
             <Button onClick={onCreateCommunityClick}>Crear Comunidad</Button>
           </div>
 
+        </div>
+        <div className="row">
+          {communities.map((community, index) =>
+              <div key={community._id} className="col col-sm-3">
+                <Community community={community} isOwner={user._id === community.owner}/>
+              </div>
+          )}
         </div>
       </div>
       <ModalForm header={"Crear comunidad"}
