@@ -4,5 +4,6 @@ export const ROUTES = {
   MYSTICKERS: "/my-stickers",
   MYALBUM: "/my-album",
   DAILYPACKET: "/daily-packet",
-  MYPROFILE: "/profile"
+  MYPROFILE: "/profile",
+  MYCOMMUNITIES: "/communities"
 }
