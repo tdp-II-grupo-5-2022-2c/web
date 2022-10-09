@@ -4,10 +4,13 @@ import {useUser} from "../context/UserContext";
 import {Button} from "reactstrap";
 import ModalForm, {CreateCommunityForm} from "../components/ModalForm";
 import client from "../services/config";
+import MyModal from "../components/MyModal";
+import {CommunityModalMsg} from "../res/strings";
 
 const MyCommunities = () => {
   const user = useUser();
   const [showCreateCommunityFormModal, setShowCreateCommunityFormModal] = useState(false);
+  const [showCreateOk, setShowCreateOk] = useState(false);
   const initialFormState: CreateCommunityForm = {
     name: "",
     password: "",
@@ -24,6 +27,7 @@ const MyCommunities = () => {
     console.log(form)
     try {
       const {data: createdCommunity} = await client.post("/communities", form)
+      setShowCreateOk(true)
     } catch (error : any){
       if (error.response) {
         console.log(error.response);
@@ -46,6 +50,10 @@ const MyCommunities = () => {
     setCreateCommunityForm({...createCommunityForm, [name]: value});
   }
 
+  const closeShowPasteOk = () => {
+    setShowCreateOk(false)
+  }
+
   return (
     <React.Fragment>
       <MyNavbar/>
@@ -64,6 +72,8 @@ const MyCommunities = () => {
                  form={createCommunityForm}
                  handleChange={handleChange}
       />
+      <MyModal header={CommunityModalMsg.COMMUNITY_CREATED_HEAD} body={CommunityModalMsg.COMUNITY_CREATED_BODY}
+               isOpen={showCreateOk} onAccept={closeShowPasteOk}/>
     </React.Fragment>
   );
 
