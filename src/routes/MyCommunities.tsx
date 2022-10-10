@@ -11,13 +11,20 @@ import Community, {NoUsersCommunity} from "../components/Community";
 const MyCommunities = () => {
   const user = useUser();
   const [showCreateCommunityFormModal, setShowCreateCommunityFormModal] = useState(false);
-  const [showCreateOk, setShowCreateOk] = useState(false);
+  const [showCreateCommunityModal, setShowCreateCommunityModal] = useState(false);
   const initialFormState: CreateCommunityForm = {
     name: "",
     password: "",
   };
+  const initialModalState = {
+    header: "",
+    body: "",
+  };
+
   const [createCommunityForm, setCreateCommunityForm] = useState(initialFormState)
   const [communities, setCommunities] = useState<NoUsersCommunity[]>([])
+
+  const [modal, setModal] = useState(initialModalState)
 
   useEffect(() => {
     fetchCommunities()
@@ -28,18 +35,31 @@ const MyCommunities = () => {
     setCommunities(fetchedCommunities)
   }
 
+  const isFormValid = () => {
+    console.log(createCommunityForm)
+    console.log(createCommunityForm.name.length)
+    console.log(createCommunityForm.password.length)
+    return (createCommunityForm.name.length > 0 && createCommunityForm.password.length > 0)
+  }
+
   const createCommunity = async () => {
+    console.log("HOlaaaaaaa")
+    if(!isFormValid()){
+      setModal({header: CommunityModalMsg.CREATE_ERROR_HEAD, body: CommunityModalMsg.CREATE_ERROR_BODY})
+      setShowCreateCommunityModal(true)
+      return
+    }
     setShowCreateCommunityFormModal(false)
     const form = {
       name: createCommunityForm.name,
       owner: user._id,
       users: []
     }
-    console.log(form)
     try {
       const {data: createdCommunity} = await client.post("/communities", form)
+      setModal({header: CommunityModalMsg.CREATE_OK_HEAD, body: CommunityModalMsg.CREATE_OK_BODY})
       fetchCommunities()
-      setShowCreateOk(true)
+      setShowCreateCommunityModal(true)
     } catch (error : any){
       if (error.response) {
         console.log(error.response);
@@ -63,7 +83,7 @@ const MyCommunities = () => {
   }
 
   const closeShowPasteOk = () => {
-    setShowCreateOk(false)
+    setShowCreateCommunityModal(false)
   }
 
   return (
@@ -88,11 +108,12 @@ const MyCommunities = () => {
                  body={"Completa con el nombre de la comunidad y agrega una contraseña"}
                  isOpen={showCreateCommunityFormModal}
                  onAccept={createCommunity}
+                 onCancel={() => {setShowCreateCommunityFormModal(false)}}
                  form={createCommunityForm}
                  handleChange={handleChange}
       />
-      <MyModal header={CommunityModalMsg.COMMUNITY_CREATED_HEAD} body={CommunityModalMsg.COMUNITY_CREATED_BODY}
-               isOpen={showCreateOk} onAccept={closeShowPasteOk}/>
+      <MyModal header={modal.header} body={modal.body}
+               isOpen={showCreateCommunityModal} onAccept={closeShowPasteOk}/>
     </React.Fragment>
   );
 

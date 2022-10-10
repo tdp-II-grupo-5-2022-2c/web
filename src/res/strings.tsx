@@ -1,4 +1,6 @@
 export const CommunityModalMsg = {
-  COMMUNITY_CREATED_HEAD: "Comunidad Creada!",
-  COMUNITY_CREATED_BODY: "Podras ver tu nueva comunidad en la tab Mis Comunidades",
+  CREATE_OK_HEAD: "Comunidad Creada!",
+  CREATE_ERROR_HEAD: "Error al crear Comunidad",
+  CREATE_ERROR_BODY: "Verifique que los campos esten completos",
+  CREATE_OK_BODY: "Podras ver tu nueva comunidad en la tab Mis Comunidades",
 }
