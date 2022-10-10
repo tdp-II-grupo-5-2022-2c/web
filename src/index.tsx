@@ -19,6 +19,7 @@ import PacketOpen from "./routes/PacketOpen";
 import {UserProvider} from "./context/UserContext";
 import {ROUTES} from "./routes/RoutesNames";
 import MyProfile from "./routes/MyProfile";
+import MyCommunities from "./routes/MyCommunities";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -55,6 +56,11 @@ root.render(
           <Route path={ROUTES.MYPROFILE} element={
             <ProtectedRoute>
               <MyProfile />
+            </ProtectedRoute>
+          } />
+          <Route path={ROUTES.MYCOMMUNITIES} element={
+            <ProtectedRoute>
+              <MyCommunities />
             </ProtectedRoute>
           } />
         </Routes>

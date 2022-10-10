@@ -29,6 +29,9 @@ const MyNavbar = (args: any) => {
               <li className="nav-item">
                 <a className="nav-link" href={ROUTES.MYALBUM}>Mi Album</a>
               </li>
+              <li className="nav-item">
+                <a className="nav-link" href={ROUTES.MYCOMMUNITIES}>Mis Comunidades</a>
+              </li>
             </ul>
 
           </div>

@@ -11,6 +11,13 @@ export const globalStickerStyles = {
   }
 }
 
+export const globalCommunityStyles = {
+  community:{
+    width: "24rem",
+    height: "14rem",
+  },
+}
+
 export const debug = {
   container:{
     borderStyle: "solid"
