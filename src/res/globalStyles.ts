@@ -13,8 +13,8 @@ export const globalStickerStyles = {
 
 export const globalCommunityStyles = {
   community:{
-    width: "24rem",
-    height: "14rem",
+    width: "16rem",
+    height: "20rem",
   },
 }
 
