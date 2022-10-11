@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
-import {Button} from "reactstrap";
+import {Button, Card, Collapse, Row} from "reactstrap";
 import ModalForm, {CreateCommunityForm} from "../components/ModalForm";
 import client from "../services/config";
 import MyModal from "../components/MyModal";
 import {CommunityCreationStrings} from "../res/strings";
 import Community, {NoUsersCommunity} from "../components/Community";
+import ChatRoom from "../components/ChatRoom";
 
 const MyCommunities = () => {
   const user = useUser();
@@ -23,11 +24,16 @@ const MyCommunities = () => {
     body: "",
   };
   const [showCreateCommunityResultModal, setShowCreateCommunityResultModal] = useState(false);
-  const [createCommunityResultModal, setCreateCommunityResultModal] = useState(initialModalState)
+  const [createCommunityResultModal, setCreateCommunityResultModal] = useState(initialModalState);
+  const [chatIsOpen, setChatIsOpen] = useState<boolean>(false);
+  const [chatCommunityId, setChatCommunityId] = useState<number|undefined>(undefined);
+
+  const [modal, setModal] = useState(initialModalState)
 
   useEffect(() => {
     fetchCommunitiesAsAdmin()
     fetchCommunitiesAsMember()
+    console.log("chat is open: " + chatIsOpen)
   }, [])
 
   const fetchCommunities = async (ownerId?: number, memberId?: number) => {
@@ -51,6 +57,13 @@ const MyCommunities = () => {
     }
 
     return fetchedCommunities
+    // return [
+    //   {
+    //     _id: 1234,
+    //     name: 'sarasa',
+    //     owner: user._id
+    //   }
+    // ]
   }
 
   const fetchCommunitiesAsAdmin = async () => {
@@ -111,6 +124,18 @@ const MyCommunities = () => {
     setShowCreateCommunityResultModal(false)
   }
 
+  const openChatRoom = (event: MouseEvent) => {
+    // @ts-ignore
+    console.log("open chat - element id: " + event.target.id)
+    // @ts-ignore
+    setChatCommunityId(Number(event.target.id));
+    setChatIsOpen(true);
+  }
+
+  const closeChatRoom = () => {
+    setChatIsOpen(false);
+  }
+
   return (
     <React.Fragment>
       <MyNavbar/>
@@ -123,7 +148,10 @@ const MyCommunities = () => {
               <h2>Comunidades de las que soy administrador</h2>
               {adminCommunities.map((community, index) =>
                 <div key={community._id} className="col col-md-3">
-                  <Community community={community} isOwner={user._id === community.owner}/>
+                  <Community community={community}
+                             isOwner={user._id === community.owner}
+                             openChatRoom={openChatRoom}
+                  />
                 </div>
               )}
               {adminCommunities.length === 0 &&
@@ -134,7 +162,10 @@ const MyCommunities = () => {
               <h2>Comunidades de las que soy miembro</h2>
               {memberCommunities.map((community, index) =>
                 <div key={community._id} className="col col-sm-3">
-                  <Community community={community} isOwner={user._id === community.owner}/>
+                  <Community community={community}
+                             isOwner={user._id === community.owner}
+                             openChatRoom={openChatRoom}
+                  />
                 </div>
               )}
               {memberCommunities.length === 0 &&
@@ -143,9 +174,16 @@ const MyCommunities = () => {
             </div>
           </div>
           <div className="col-md-2">
-            <div className="row">
+            <Row>
               <Button onClick={onCreateCommunityClick}>Crear Comunidad</Button>
-            </div>
+            </Row>
+            <Row>
+              <Collapse isOpen={chatIsOpen}>
+                <Card className="card-translucent">
+                  <ChatRoom id={chatCommunityId}/>
+                </Card>
+              </Collapse>
+            </Row>
           </div>
       </div>
       <ModalForm header={"Crear comunidad"}
