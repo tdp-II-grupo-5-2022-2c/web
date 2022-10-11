@@ -1,23 +1,31 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import '../css/App.css';
-import {useNavigate} from "react-router-dom";
-import {Button, Card, CardHeader, CardBody, Col, Row} from "reactstrap";
+import {useLocation, useNavigate} from "react-router-dom";
+import {Button, Card, CardHeader, Col, Row} from "reactstrap";
 import {useUser} from "../context/UserContext";
 
 export function SignIn() {
   const [error, setError] = useState();
-  const {loginWithGoogle} = useUser();
+  const {loginWithGoogle, ...user} = useUser();
+  const {state} = useLocation();
   const navigate = useNavigate();
 
   const handleGoogleSignIn = async () => {
     try {
       await loginWithGoogle();
-      navigate('/');
+      // @ts-ignore
+      navigate(state?.path || '/');
     } catch (error: any) {
       setError(error.message)
     }
-
   };
+
+  useEffect(() => {
+    if (user.isAuthed()) {
+      // @ts-ignore
+      navigate(state?.path || '/');
+    }
+  }, [user.isAuthed()])
 
   return (
     <React.Fragment>
