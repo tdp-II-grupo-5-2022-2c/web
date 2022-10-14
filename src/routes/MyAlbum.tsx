@@ -2,19 +2,11 @@ import React, {useEffect, useRef, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {ALBUM_PAGES, DEFAULT_COUNTRY_PAGE} from "../data/albumData";
 import AlbumPage from "../components/AlbumPage";
-import {IBackEndSticker, IPlayer} from "../components/Sticker";
+import {ISticker} from "../components/Sticker";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {ISlicedPlayer} from "../components/StickerPlaceHolder";
 import client from "../services/config";
 import {useUser} from "../context/UserContext";
 import {Container, Row, Col, Spinner} from "reactstrap";
-
-// TODO: despues eliminar el IPlayer[] dado que es data mockeada
-export type ITeam = {
-  players: IPlayer[] | ISlicedPlayer[];
-  country: string;
-  pageNumber: number
-}
 
 const MyAlbum = () => {
   const NUM_PLAYERS = 11;
@@ -53,11 +45,11 @@ const MyAlbum = () => {
     });
   }
 
-  const processPageData = (stickersOnAlbum: IBackEndSticker[]) => {
+  const processPageData = (stickersOnAlbum: ISticker[]) => {
     let stickers: object[] = [];
     console.log("process page data");
     console.log(stickersOnAlbum);
-    stickersOnAlbum.forEach((sticker: IBackEndSticker) => {
+    stickersOnAlbum.forEach((sticker: ISticker) => {
       stickers[sticker.number] = sticker;
     });
 

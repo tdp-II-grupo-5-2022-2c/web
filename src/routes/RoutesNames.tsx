@@ -5,5 +5,6 @@ export const ROUTES = {
   MYALBUM: "/my-album",
   DAILYPACKET: "/daily-packet",
   MYPROFILE: "/profile",
-  MYCOMMUNITIES: "/communities"
+  MYCOMMUNITIES: "/my-communities",
+  MY_EXCHANGES: "/my-exchanges"
 }

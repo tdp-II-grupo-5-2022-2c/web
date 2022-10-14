@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
-import Sticker, {IBackEndSticker} from "../components/Sticker";
+import Sticker, {ISticker} from "../components/Sticker";
 import {useDrop} from "react-dnd";
 import {Draggable, DraggableTypes} from "../components/Draggable";
 import DropBoard from "../components/DropBoard";
@@ -19,7 +19,7 @@ type Filters = {
 
 const MyStickers = () => {
   const user = useUser();
-  const [fetchedStickers, setFetchedStickers] = useState([] as IBackEndSticker[])
+  const [fetchedStickers, setFetchedStickers] = useState([] as ISticker[])
   const navigate = useNavigate();
   const [showPasteOk, setShowPasteOk] = useState(false);
   const [searchFilters, setSearchFilters] = useState<Filters>({name: undefined, country: undefined});
@@ -55,13 +55,13 @@ const MyStickers = () => {
     setShowPasteOk(false)
   }
 
-  const addStickerToAlbum = async (sticker: IBackEndSticker) => {
+  const addStickerToAlbum = async (sticker: ISticker) => {
     navigate("../my-album?country=" + sticker.country + "&position=" + sticker.number + "&stickerId=" + sticker.id)
   }
 
   const [{isOver}, drop] = useDrop(() => ({
     accept: DraggableTypes.STICKER,
-    drop: (item: IBackEndSticker) => addStickerToAlbum(item),
+    drop: (item: ISticker) => addStickerToAlbum(item),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     })

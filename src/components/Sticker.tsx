@@ -1,22 +1,7 @@
 import {Card, CardImg, CardImgOverlay,} from "reactstrap";
 import {globalStickerStyles} from "../res/globalStyles";
 
-// TODO: quitar esto pq tiene info de mas que no necesito
-export type IPlayer = {
-  id: number;
-  name: string;
-  dateOfBirth: Date;
-  weight: number;
-  height: number;
-  position: string;
-  country: string;
-  image: string;
-  repeatedCount?: number,
-  isInAlbum?: boolean,
-  isInExchange?: boolean,
-}
-
-export type IBackEndSticker = {
+export type ISticker = {
   id: number;
   image: string;
   name: string;
@@ -27,7 +12,7 @@ export type IBackEndSticker = {
 }
 
 type Props = {
-  player: IBackEndSticker,
+  player: ISticker,
   style?: object,
   displayBadge?: boolean
 }

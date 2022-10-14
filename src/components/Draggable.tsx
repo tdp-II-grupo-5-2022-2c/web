@@ -1,12 +1,12 @@
 import {useDrag} from "react-dnd";
-import {IBackEndSticker} from "./Sticker";
+import {ISticker} from "./Sticker";
 
 export const DraggableTypes = {
   STICKER: "sticker"
 }
 
 type Props = {
-  sticker: IBackEndSticker;
+  sticker: ISticker;
   children?: any
   type: string
 }
