@@ -16,6 +16,7 @@ type Props = {
   onCancel?: () => void
 }
 
+// TODO: ver de volver esto un componente mas especifico de MyModal
 const ModalForm = ({header, body, form, isOpen, handleChange, onAccept, onCancel} : Props) => {
 
   return (

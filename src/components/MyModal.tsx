@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
+import {Button, Modal, ModalBody, ModalFooter} from "reactstrap";
 
 type Props = {
   header: string,
@@ -14,7 +14,11 @@ const MyModal = ({header, body, isOpen, onAccept, onCancel} : Props) => {
   return (
     <div>
       <Modal isOpen={isOpen}>
-        <ModalHeader>{header}</ModalHeader>
+        <div className="modal-header">
+          <h1 className="modal-title fs-5">
+            {header}
+          </h1>
+        </div>
         <ModalBody>{body}</ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={onAccept}>

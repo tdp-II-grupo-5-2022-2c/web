@@ -37,8 +37,6 @@ function PacketOpen() {
     } catch (error : any){
       // TODO: meter toda la logica de manejo de error en un servicio global o algo asi
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
         if(error.response.data?.detail === "Could not return daily package. Exception: [OPEN_PACKAGE] error: No stickers at the moment to create a package"){
           setErrorMessage(PACKET_OPENING_ERROR_MESSAGES.SERVER_ERROR)
         }
