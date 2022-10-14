@@ -5,29 +5,25 @@ import {Button} from "reactstrap";
 import ModalForm, {CreateCommunityForm} from "../components/ModalForm";
 import client from "../services/config";
 import MyModal from "../components/MyModal";
-import {CommunityModalMsg} from "../res/strings";
+import {CommunityCreationStrings} from "../res/strings";
 import Community, {NoUsersCommunity} from "../components/Community";
-import {debug} from "../res/globalStyles";
 
 const MyCommunities = () => {
   const user = useUser();
   const [showCreateCommunityFormModal, setShowCreateCommunityFormModal] = useState(false);
-  const [showCreateCommunityModal, setShowCreateCommunityModal] = useState(false);
-
   const initialFormState: CreateCommunityForm = {
     name: "",
     password: "",
   };
+  const [createCommunityForm, setCreateCommunityForm] = useState(initialFormState)
+  const [adminCommunities, setAdminCommunities] = useState<NoUsersCommunity[]>([])
+  const [memberCommunities, setMemberCommunities] = useState<NoUsersCommunity[]>([])
   const initialModalState = {
     header: "",
     body: "",
   };
-
-  const [createCommunityForm, setCreateCommunityForm] = useState(initialFormState)
-  const [adminCommunities, setAdminCommunities] = useState<NoUsersCommunity[]>([])
-  const [memberCommunities, setMemberCommunities] = useState<NoUsersCommunity[]>([])
-
-  const [modal, setModal] = useState(initialModalState)
+  const [showCreateCommunityResultModal, setShowCreateCommunityResultModal] = useState(false);
+  const [createCommunityResultModal, setCreateCommunityResultModal] = useState(initialModalState)
 
   useEffect(() => {
     fetchCommunitiesAsAdmin()
@@ -62,7 +58,7 @@ const MyCommunities = () => {
   }
 
   const fetchCommunitiesAsMember = async () => {
-    setAdminCommunities(await fetchCommunities(undefined, user._id))
+    setMemberCommunities(await fetchCommunities(undefined, user._id))
   }
 
   const isFormValid = () => {
@@ -71,8 +67,8 @@ const MyCommunities = () => {
 
   const createCommunity = async () => {
     if (!isFormValid()) {
-      setModal({header: CommunityModalMsg.CREATE_ERROR_HEAD, body: CommunityModalMsg.CREATE_ERROR_BODY})
-      setShowCreateCommunityModal(true)
+      setCreateCommunityResultModal({header: CommunityCreationStrings.COMMUNITY_CREATION_ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_BAD_FORM})
+      setShowCreateCommunityResultModal(true)
       return
     }
     setShowCreateCommunityFormModal(false)
@@ -83,12 +79,16 @@ const MyCommunities = () => {
     }
     try {
       const {data: createdCommunity} = await client.post("/communities", form)
-      setModal({header: CommunityModalMsg.CREATE_OK_HEAD, body: CommunityModalMsg.CREATE_OK_BODY})
+      setCreateCommunityResultModal({header: CommunityCreationStrings.COMMUNITY_CREATION_OK_HEAD, body: CommunityCreationStrings.COMMUNITY_CREATED})
       fetchCommunitiesAsAdmin()
       fetchCommunitiesAsMember()
-      setShowCreateCommunityModal(true)
+      setShowCreateCommunityResultModal(true)
     } catch (error: any) {
       if (error.response) {
+        if(error.response.data?.detail === "TODO: error comunidad mismo nombre"){
+          setCreateCommunityResultModal({header:CommunityCreationStrings.COMMUNITY_CREATION_ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_ALREADY_EXISTS})
+          setShowCreateCommunityResultModal(true)
+        }
         console.log(error.response);
       } else if (error.request) {
         console.log(error.request);
@@ -96,8 +96,6 @@ const MyCommunities = () => {
         console.log('Error', error.message);
       }
     }
-
-    // TODO Fetchear las comunidades para incluir la recien creada
   }
 
   const onCreateCommunityClick = async () => {
@@ -110,7 +108,7 @@ const MyCommunities = () => {
   }
 
   const closeShowPasteOk = () => {
-    setShowCreateCommunityModal(false)
+    setShowCreateCommunityResultModal(false)
   }
 
   return (
@@ -160,8 +158,8 @@ const MyCommunities = () => {
                  form={createCommunityForm}
                  handleChange={handleChange}
       />
-      <MyModal header={modal.header} body={modal.body}
-               isOpen={showCreateCommunityModal} onAccept={closeShowPasteOk}/>
+      <MyModal header={createCommunityResultModal.header} body={createCommunityResultModal.body}
+               isOpen={showCreateCommunityResultModal} onAccept={closeShowPasteOk}/>
     </React.Fragment>
   );
 

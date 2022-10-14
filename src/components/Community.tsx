@@ -1,6 +1,7 @@
 import {Card, CardBody, CardImgOverlay,} from "reactstrap";
 import {globalCommunityStyles} from "../res/globalStyles";
 
+// TODO: se llama asi pq todavia no tiene usuarios
 export type NoUsersCommunity = {
   "_id": number,
   "name": string,

@@ -1,6 +1,7 @@
-export const CommunityModalMsg = {
-  CREATE_OK_HEAD: "Comunidad Creada!",
-  CREATE_ERROR_HEAD: "Error al crear Comunidad",
-  CREATE_ERROR_BODY: "Verifique que los campos esten completos",
-  CREATE_OK_BODY: "Podras ver tu nueva comunidad en la tab Mis Comunidades",
+export const CommunityCreationStrings = {
+  COMMUNITY_CREATION_OK_HEAD: "Comunidad Creada!",
+  COMMUNITY_CREATION_ERROR_HEAD: "Error al crear Comunidad",
+  COMMUNITY_BAD_FORM: "Verifique que los campos esten completos",
+  COMMUNITY_ALREADY_EXISTS: "Esta Comunidad ya existe",
+  COMMUNITY_CREATED: "Podras ver tu nueva comunidad en la pestaña Mis Comunidades",
 }
