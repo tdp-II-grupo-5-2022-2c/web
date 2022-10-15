@@ -1,11 +1,11 @@
 import React, {useEffect} from "react";
 import StickerPlaceHolder from "../components/StickerPlaceHolder";
-import Sticker, {IBackEndSticker} from "./Sticker";
+import Sticker, {ISticker} from "./Sticker";
 import {Col, Container, Row} from "reactstrap";
 import {getAlbumPage} from "../data/albumData";
 
 type Props = {
-  albumStickers: IBackEndSticker[] | {id: string, is_on_album: false}[]
+  albumStickers: ISticker[] | {id: string, is_on_album: false}[]
   country: string,
   position?: number,
   pasteId?: string

@@ -1,23 +1,8 @@
 import {Card, CardImg, CardImgOverlay,} from "reactstrap";
 import {globalStickerStyles} from "../res/globalStyles";
 
-// TODO: quitar esto pq tiene info de mas que no necesito
-export type IPlayer = {
-  id: number;
-  name: string;
-  dateOfBirth: Date;
-  weight: number;
-  height: number;
-  position: string;
-  country: string;
-  image: string;
-  repeatedCount?: number,
-  isInAlbum?: boolean,
-  isInExchange?: boolean,
-}
-
-export type IBackEndSticker = {
-  id: number;
+export type ISticker = {
+  id: string;
   image: string;
   name: string;
   number: number;
@@ -26,24 +11,33 @@ export type IBackEndSticker = {
   is_on_album: boolean
 }
 
+export type IStickerData = {
+  "id": string,
+  "name": string,
+  "weight": number,
+  "height": number,
+  "position": string,
+  "country": string,
+  "image": string,
+  "number": number,
+  "date_of_birth": string
+  "quantity": number | undefined
+
+}
+
 type Props = {
-  player: IBackEndSticker,
+  player: ISticker | IStickerData,
   style?: object,
   displayBadge?: boolean
 }
 
 const Sticker = ({player, style = {}, displayBadge = false}: Props) => {
 
-  //TODO: ver el tema del tamaño de imagen, al parecer corta la imagen si es muy grande y no la estira si es muy chica
-  // tener en cuenta que la foto es de 300 por 200; ver de fijar eso como un maximo
-  // una buena solucion es que las imagenes NO se ajusten al tamaño de la ventana sino que la persona tenga que scrollear
-  // si es muy chica la pantalla, es decir se mantienen siempre del mismo tamaño
-
   return (
     <Card
         style={{...globalStickerStyles.sticker, ...style}}
     >
-      {displayBadge && player.quantity > 1 &&
+      {displayBadge && player.quantity && player.quantity > 1 &&
           <span style={{fontSize: 25 }} className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-gradient-gray">
             &nbsp;{player.quantity}&nbsp;
           </span>}

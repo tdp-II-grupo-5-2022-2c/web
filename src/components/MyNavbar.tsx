@@ -22,7 +22,6 @@ const MyNavbar = (args: any) => {
               <li className="nav-item">
                 <a className="nav-link" href={ROUTES.DAILYPACKET}>Paquete diario</a>
               </li>
-
               <li className="nav-item">
                 <a className="nav-link" href={ROUTES.MYPROFILE}>Mi perfil</a>
               </li>
@@ -32,8 +31,10 @@ const MyNavbar = (args: any) => {
               <li className="nav-item">
                 <a className="nav-link" href={ROUTES.MYCOMMUNITIES}>Mis Comunidades</a>
               </li>
+              <li className="nav-item">
+                <a className="nav-link" href={ROUTES.MY_EXCHANGES}>Mis Intercambios</a>
+              </li>
             </ul>
-
           </div>
         </div>
       </nav>

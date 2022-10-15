@@ -1,6 +1,3 @@
-import {getArgentinaPlayersData, getMexicoPlayersData, getQatarPlayersData} from "./playersData";
-import {ITeam} from "../routes/MyAlbum";
-
 export type AlbumPage = {
   styles: object
 }
@@ -37,27 +34,6 @@ const ALBUM_PAGES_METADATA = new Map<string, AlbumPage>([
 export const ALBUM_PAGES = ["QAT", "MEX", "ARG", "FRA"]
 
 export const DEFAULT_COUNTRY_PAGE = "QAT";
-
-/*export function getAlbumData() {
-
-  return [
-    {
-      players: getQatarPlayersData(),
-      country: "Qatar",
-      pageNumber: 1,
-    },
-    {
-      players: getArgentinaPlayersData(),
-      country: "Argentina",
-      pageNumber: 2,
-    },
-    {
-      players: getMexicoPlayersData(),
-      country: "Mexico",
-      pageNumber: 3,
-    },
-  ] as ITeam[]
-}*/
 
 export function getAlbumPage(country: string) : AlbumPage {
   // TODO: no tengo idea de Typescript :)

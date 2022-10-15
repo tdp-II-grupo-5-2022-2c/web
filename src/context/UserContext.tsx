@@ -6,7 +6,7 @@ import {
   signOut
 } from 'firebase/auth';
 import {auth} from '../firebase';
-import {IBackEndSticker} from "../components/Sticker";
+import {ISticker} from "../components/Sticker";
 import client from "../services/config";
 
 export interface User {
@@ -15,7 +15,7 @@ export interface User {
   date_of_birth: string;
   name: string;
   lastname: string;
-  stickers: IBackEndSticker[]
+  stickers: ISticker[]
 }
 
 interface UserActions {

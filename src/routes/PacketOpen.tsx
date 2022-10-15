@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Row, Container, Col, Fade, Button, CardText} from "reactstrap";
-import Sticker, {IBackEndSticker} from "../components/Sticker";
+import Sticker, {ISticker} from "../components/Sticker";
 import {useNavigate} from "react-router-dom";
 import MyNavbar from "../components/MyNavbar";
 import Packet from "../components/Packet";
@@ -19,7 +19,7 @@ function PacketOpen() {
   /*Tiene las 5 figuritas que se muestran*/
   /*TODO: ojo que este estado es local, no actualiza el user context
   *  este se actualiza recien en el momento que se hace un restore*/
-  const [openedPacketStickers, setOpenedPacketStickers] = useState<IBackEndSticker[]>([])
+  const [openedPacketStickers, setOpenedPacketStickers] = useState<ISticker[]>([])
   const [showPacketOpeningError, setShowPacketOpeningError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const fadeInTimeout = 600;
