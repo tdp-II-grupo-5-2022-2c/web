@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useRef, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import Sticker, {ISticker, IStickerData} from "../components/Sticker";
 import {useDrop} from "react-dnd";
@@ -27,18 +27,24 @@ const MyStickers = () => {
   const [showPasteOk, setShowPasteOk] = useState(false);
 
   const [stickersToGive, setStickersToGive] = useState<ISticker[]>([]);
-  const [stickersToReceive, setStickersToReceive] = useState<ISticker[]>([]);
+  const [stickersToReceive, setStickersToReceive] = useState<IStickerData[]>([]);
 
   const [fetchedStickers, setFetchedStickers] = useState<ISticker[]>([])
   const [allStickers, setAllStickers] = useState<IStickerData[]>([])
-  const [searchFilters, setSearchFilters] = useState<Filters>({name: undefined, country: undefined});
+  const initialFilterState: Filters = {
+    name: undefined,
+    country: undefined
+  }
+  const _searchFilters = useRef<Filters>(initialFilterState);
   const [isCreatingExchange, setIsCreatingExchange] = useState<boolean>(false)
+  const _isCreatingExchange = useRef(false);
 
   const countriesToFilter = {
     'Argentina': 'ARG',
     'Mexico': 'MEX',
     'Francia': 'FRA',
-    'Qatar': 'QAT'
+    'Qatar': 'QAT',
+    'Todos': 'ALL'
   }
 
   useEffect(() => {
@@ -46,9 +52,10 @@ const MyStickers = () => {
   }, [])
 
   const fetchUserStickers = async () => {
+    console.log(_searchFilters.current)
     try {
       const {data: stickers} = await client.get(`/users/${user._id}/stickers`, {
-        params: searchFilters
+        params: _searchFilters.current
       });
       setFetchedStickers(stickers)
 
@@ -82,13 +89,15 @@ const MyStickers = () => {
   }
 
   const addStickerToExchange = async (sticker: ISticker) => {
-      console.log("adding sticker to give")
+    console.log("adding sticker to give")
+    if (!_isCreatingExchange.current) {
       setStickersToGive(oldStickersToGive => [...oldStickersToGive, sticker]);
+    }
   }
 
-  const addStickerToExchangeReceive = async (sticker: ISticker) => {
-      console.log("adding sticker to receive")
-      setStickersToReceive(oldStickersToReceive => [...oldStickersToReceive, sticker]);
+  const addStickerToExchangeReceive = async (sticker: IStickerData) => {
+    console.log("adding sticker to receive")
+    setStickersToReceive(oldStickersToReceive => [...oldStickersToReceive, sticker]);
   }
 
   const [{isOverAlbum}, dropAlbum] = useDrop(() => ({
@@ -109,27 +118,24 @@ const MyStickers = () => {
 
   const [{isOverExchangeReceive}, dropExchangeReceive] = useDrop(() => ({
     accept: DraggableTypes.STICKER,
-    drop: (sticker: ISticker) => addStickerToExchangeReceive(sticker),
+    drop: (sticker: IStickerData) => addStickerToExchangeReceive(sticker),
     collect: (monitor) => ({
       isOverExchangeReceive: monitor.isOver(),
     })
   }))
 
   const onChangeHandler = ({target: {id, value}}: any) => {
-    let _searchFilters = searchFilters;
-    console.log("Search filters")
-    console.log("id:" + id + " value:" + value)
     // @ts-ignore
-    _searchFilters[id] = value;
-    setSearchFilters(_searchFilters);
+    _searchFilters.current[id] = value;
     fetchUserStickers();
   }
 
-  const onRadioClick = (value: string) => {
-    console.log("Clicked" + value)
-    let _searchFilters = searchFilters;
-    _searchFilters["country"] = value;
-    setSearchFilters(_searchFilters);
+  const onCountryClick = (value: string) => {
+    _searchFilters.current["country"] = value
+    if (value === countriesToFilter.Todos) {
+      _searchFilters.current = initialFilterState;
+    }
+    console.log(_searchFilters)
     fetchUserStickers();
   }
 
@@ -142,19 +148,21 @@ const MyStickers = () => {
   async function createExchange() {
     await fetchAllStickers()
     setIsCreatingExchange(true)
+    _isCreatingExchange.current = true
   }
 
   function clearExchange() {
     setStickersToGive([])
     setStickersToReceive([])
     setIsCreatingExchange(false)
+    _isCreatingExchange.current = false
   }
 
-  function onConfirmExchange() {
+  function confirmExchange() {
     console.log("Exchange Confirmed!!")
   }
 
-  const StickersList = ({stickers} : {stickers: ISticker[]}) => {
+  const StickersList = ({stickers}: { stickers: ISticker[] }) => {
     return <React.Fragment>
       {stickers.map((player, index) =>
         player.quantity > 0 &&
@@ -173,15 +181,15 @@ const MyStickers = () => {
     </React.Fragment>;
   }
 
-  const AllStickersList = ({stickers} : {stickers: IStickerData[]}) => {
+  const AllStickersList = ({stickers}: { stickers: IStickerData[] }) => {
     return <React.Fragment>
       {stickers.map((player, index) =>
-          <Col key={player.id} className="col-md-3 p-3 d-flex justify-content-center">
-              <Draggable sticker={player} type={DraggableTypes.STICKER}>
-                  <Sticker player={player}
-                           displayBadge={true}/>
-              </Draggable>
-          </Col>
+        <Col key={player.id} className="col-md-3 p-3 d-flex justify-content-center">
+          <Draggable sticker={player} type={DraggableTypes.STICKER}>
+            <Sticker player={player}
+                     displayBadge={true}/>
+          </Draggable>
+        </Col>
       )}
       {stickers && stickers.length === 0 && user.stickers.length > 0 &&
           <Col>
@@ -205,9 +213,9 @@ const MyStickers = () => {
                     <Button
                       color="primary"
                       outline
-                      onClick={() => onRadioClick(value)}
-                      active={searchFilters.country === key}
-                    >         {key}
+                      onClick={() => onCountryClick(value)}
+                    >
+                      {key}
                     </Button>
                   </FormGroup>
                 )}
@@ -246,16 +254,25 @@ const MyStickers = () => {
             <div className="row" ref={dropAlbum}>
               <DropBoard title={MyStickersStrings.PASTE_TO_ALBUM_TITLE} body={MyStickersStrings.PASTE_TO_ALBUM_BODY}/>
             </div>
-              {!isCreatingExchange &&
-                  <div className="row" ref={dropExchange}>
-                  <Exchange stickersToGive={stickersToGive} stickersToReceive={stickersToReceive} onCreateExchange={createExchange}
-                        onClearExchange={clearExchange} isCreatingExchange={isCreatingExchange} onConfirmExchange={onConfirmExchange}/>
-                  </div>
-              }
+            {stickersToGive.length !== 0 &&
+                <div className="container">
+                    <div className="row">
+                        <Button
+                            onClick={isCreatingExchange ? confirmExchange : createExchange}> {isCreatingExchange ? "Confirmar" : "Crear Intercambio"}</Button>
+                    </div>
+                    <div className="row">
+                        <Button onClick={clearExchange}>Cancelar</Button>
+                    </div>
+                </div>
+            }
+            <div className="row" ref={dropExchange}>
+              <Exchange placedStickers={stickersToGive} title={MyStickersStrings.EXCHANGE_GIVE_TITLE}
+                        hint={MyStickersStrings.EXCHANGE_GIVE_HINT} disable={isCreatingExchange}/>
+            </div>
             {isCreatingExchange &&
                 <div className="row" ref={dropExchangeReceive}>
-                  <Exchange stickersToGive={stickersToGive} stickersToReceive={stickersToReceive} onCreateExchange={createExchange}
-                            onClearExchange={clearExchange} isCreatingExchange={isCreatingExchange} onConfirmExchange={onConfirmExchange}/>
+                    <Exchange placedStickers={stickersToReceive} title={MyStickersStrings.EXCHANGE_RECEIVE_TITLE}
+                              hint={MyStickersStrings.EXCHANGE_RECEIVE_HINT} disable={false}/>
                 </div>
             }
           </Col>
