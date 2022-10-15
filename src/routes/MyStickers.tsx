@@ -91,7 +91,11 @@ const MyStickers = () => {
   const addStickerToExchange = async (sticker: ISticker) => {
     console.log("adding sticker to give")
     if (!_isCreatingExchange.current) {
-      setStickersToGive(oldStickersToGive => [...oldStickersToGive, sticker]);
+      setStickersToGive(oldStickersToGive => (
+        oldStickersToGive.findIndex(
+          (element:ISticker) => element.id === sticker.id) < 0 ? [...oldStickersToGive, sticker]
+          : [...oldStickersToGive]
+      ));
     }
   }
 
@@ -251,9 +255,9 @@ const MyStickers = () => {
             </Row>
           </Col>
           <Col className="col-md-2">
-            <div className="row" ref={dropAlbum}>
+            {!isCreatingExchange && <div className="row" ref={dropAlbum}>
               <DropBoard title={MyStickersStrings.PASTE_TO_ALBUM_TITLE} body={MyStickersStrings.PASTE_TO_ALBUM_BODY}/>
-            </div>
+            </div>}
             {stickersToGive.length !== 0 &&
                 <div className="container">
                     <div className="row">
