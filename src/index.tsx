@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import "./assets/plugins/nucleo/css/nucleo.css";
 import './assets/css/argon-dashboard-react.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import './css/App.css';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';

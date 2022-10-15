@@ -12,7 +12,7 @@ import {useUser} from "../context/UserContext";
 import {Button, CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
 import {ROUTES} from "./RoutesNames";
 import {MyStickersStrings} from "../res/strings";
-import Exchange from "../components/Exchange";
+import ExchangeCreator from "../components/ExchangeCreator";
 
 type Filters = {
   name?: string,
@@ -270,13 +270,13 @@ const MyStickers = () => {
                 </div>
             }
             <div className="row" ref={dropExchange}>
-              <Exchange placedStickers={stickersToGive} title={MyStickersStrings.EXCHANGE_GIVE_TITLE}
-                        hint={MyStickersStrings.EXCHANGE_GIVE_HINT} disable={isCreatingExchange}/>
+              <ExchangeCreator placedStickers={stickersToGive} title={MyStickersStrings.EXCHANGE_GIVE_TITLE}
+                               hint={MyStickersStrings.EXCHANGE_GIVE_HINT} disable={isCreatingExchange}/>
             </div>
             {isCreatingExchange &&
                 <div className="row" ref={dropExchangeReceive}>
-                    <Exchange placedStickers={stickersToReceive} title={MyStickersStrings.EXCHANGE_RECEIVE_TITLE}
-                              hint={MyStickersStrings.EXCHANGE_RECEIVE_HINT} disable={false}/>
+                    <ExchangeCreator placedStickers={stickersToReceive} title={MyStickersStrings.EXCHANGE_RECEIVE_TITLE}
+                                     hint={MyStickersStrings.EXCHANGE_RECEIVE_HINT} disable={false}/>
                 </div>
             }
           </Col>

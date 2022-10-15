@@ -1,7 +1,6 @@
 import React, {useState} from "react";
-import '../css/App.css';
 import {useNavigate} from "react-router-dom";
-import {Button, Card, CardHeader, CardBody, Col, Row} from "reactstrap";
+import {Button, Card, CardHeader, Col, Row} from "reactstrap";
 import {useUser} from "../context/UserContext";
 
 export function SignIn() {

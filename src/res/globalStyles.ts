@@ -5,9 +5,9 @@ export const globalStickerStyles = {
     width: "16rem",
     height: "20rem",
   },
-  button:{
-    backgroundColor: stickerColors.primary,
-    color: stickerColors.white,
+  stickerSmall: {
+    width: "8rem",
+    height: "10rem",
   }
 }
 

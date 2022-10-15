@@ -1,48 +1,55 @@
-import React from "react";
 import Sticker, {ISticker, IStickerData} from "./Sticker";
-import {Button} from "reactstrap";
+import React from "react";
+import {globalStickerStyles} from "../res/globalStyles";
 
-type Props = {
-  placedStickers: ISticker[] | IStickerData[],
-  hint?: string
-  title?: string
-  disable: boolean
+export type IExchange = {
+  _id: string,
+  sender_id: string,
+  stickers_to_give: ISticker[],
+  stickers_to_receive: IStickerData[],
+  blacklist_user_ids: string[],
+  completed: boolean
 }
 
-const Exchange = ({placedStickers, hint, title, disable}: Props) => {
+type Props = {
+  exchange: IExchange,
+}
 
+const Exchange = ({exchange}: Props) => {
   const styles = {
-    card:{
-      width: "18rem"
+    exchange: {
+      width: "24rem",
+      height: "14rem",
     },
-    sticker:{
-      width: "12rem",
-      height: "8rem"
-    }
   }
-
   return (
-    <div className={disable ? "card bg-gradient-gray" : "card"} style={styles.card}>
-        <div className="card-body">
-          <div className="row">
-            <div className="row">
-              {placedStickers.length === 0 && <p className="card-text">{hint ? hint : "Suelta aqui las figuritas que quieres agregar"}</p>}
+    <div className="card" style={styles.exchange}>
+      <div className="card-body">
+        <h5 className="card-title">Usuario da</h5>
+        <div className="row">
+          {exchange.stickers_to_give.map((sticker, index) =>
+            <div className="col">
+              <Sticker player={sticker}
+                       style={globalStickerStyles.stickerSmall}
+                       displayBadge={true}
+              />
             </div>
-            <div className="row">
-              <div className="col">
-                {placedStickers.length > 0 && <p className="card-text">{title ? title : "Figuritas colocadas"}</p>}
-                {placedStickers.map((sticker, index) =>
-                  <div key={sticker.id} className="col col-sm-3">
-                    <Sticker player={sticker} style={styles.sticker}/>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          )}
         </div>
+        <h5 className="card-title">Usuario recibe</h5>
+        <div className="row">
+          {exchange.stickers_to_receive.map((sticker, index) =>
+            <div className="col">
+              <Sticker player={sticker}
+                       style={globalStickerStyles.stickerSmall}
+                       displayBadge={true}
+              />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
-
 }
 
 export default Exchange
