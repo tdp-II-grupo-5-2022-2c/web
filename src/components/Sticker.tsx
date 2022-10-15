@@ -2,7 +2,7 @@ import {Card, CardImg, CardImgOverlay,} from "reactstrap";
 import {globalStickerStyles} from "../res/globalStyles";
 
 export type ISticker = {
-  id: number;
+  id: string;
   image: string;
   name: string;
   number: number;

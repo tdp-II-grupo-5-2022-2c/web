@@ -7,8 +7,6 @@ import Sticker, {ISticker} from "../components/Sticker";
 const MyExchanges = () => {
   const user = useUser();
 
-  const [exchangeStickers, setExchangeStickers] = useState<ISticker[]>([])
-
   return (
     <React.Fragment>
       <MyNavbar/>
@@ -18,12 +16,8 @@ const MyExchanges = () => {
         </div>
         <div className="col-md-8">
           <div className="row">
-            <h2>Comunidades de las que soy administrador</h2>
-            {exchangeStickers.map((sticker, index) =>
-              <div key={sticker.id} className="col col-md-3">
-                <Sticker player={sticker}/>
-              </div>
-            )}
+            <h2>Mis Intercambios</h2>
+
           </div>
         </div>
         <div className="col-md-2">

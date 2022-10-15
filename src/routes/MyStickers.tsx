@@ -12,6 +12,7 @@ import {useUser} from "../context/UserContext";
 import {Button, CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
 import {ROUTES} from "./RoutesNames";
 import {MyStickersStrings} from "../res/strings";
+import Exchange from "../components/Exchange";
 
 type Filters = {
   name?: string,
@@ -25,6 +26,8 @@ const MyStickers = () => {
   const [showPasteOk, setShowPasteOk] = useState(false);
   const [searchFilters, setSearchFilters] = useState<Filters>({name: undefined, country: undefined});
   const {register} = useForm();
+
+  const [stickersToGive, setStickersToGive] = useState<ISticker[]>([]);
 
   const countriesToFilter = {
     'Argentina': 'ARG',
@@ -62,6 +65,7 @@ const MyStickers = () => {
 
   const addStickerToExchange = async (sticker: ISticker) => {
     console.log("adding sticker to exchange")
+    setStickersToGive(oldStickersToGive => [...oldStickersToGive, sticker]);
   }
 
   const [{isOverAlbum}, dropAlbum] = useDrop(() => ({
@@ -102,6 +106,14 @@ const MyStickers = () => {
     return (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.value.length >= 3 || e.target.value.length === 0) onChangeHandler(e)
     };
+  }
+
+  function createExchange() {
+    console.log("Creating exchange")
+  }
+
+  function clearExchange() {
+    setStickersToGive([])
   }
 
   return (
@@ -165,7 +177,6 @@ const MyStickers = () => {
                       </Button>
                   </Col>
               }
-              {/*  ACA VA EL DROPZONE PARA LA COLA DE FIGUS REPETIDAS */}
             </Row>
           </Col>
           <Col className="col-md-2">
@@ -173,7 +184,7 @@ const MyStickers = () => {
               <DropBoard title={MyStickersStrings.PASTE_TO_ALBUM_TITLE} body={MyStickersStrings.PASTE_TO_ALBUM_BODY}/>
             </div>
             <div className="row" ref={dropExchange}>
-              <DropBoard title={MyStickersStrings.MOVE_TO_EXCHANGES_TITLE} body={MyStickersStrings.MOVE_TO_EXCHANGES_BODY}/>
+              <Exchange stickersToGive={stickersToGive} stickersToReceive={[]} onCreateExchange={createExchange} onClearExchange={clearExchange}/>
             </div>
           </Col>
         </Row>
