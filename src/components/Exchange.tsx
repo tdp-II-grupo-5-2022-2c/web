@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import Sticker, {ISticker} from "./Sticker";
 import {Button} from "reactstrap";
 
@@ -6,10 +6,12 @@ type Props = {
   stickersToGive: ISticker[],
   stickersToReceive: ISticker[]
   onCreateExchange: () => void;
+  onConfirmExchange: () => void;
   onClearExchange: () => void;
+  isCreatingExchange: boolean
 }
 
-const Exchange = ({stickersToGive, stickersToReceive, onCreateExchange, onClearExchange}: Props) => {
+const Exchange = ({stickersToGive, stickersToReceive, onCreateExchange, onConfirmExchange, onClearExchange, isCreatingExchange}: Props) => {
 
   const styles = {
     card:{
@@ -24,18 +26,36 @@ const Exchange = ({stickersToGive, stickersToReceive, onCreateExchange, onClearE
   return (
     <div className="card" style={styles.card}>
         <div className="card-body">
-          {stickersToGive.length === 0 && <p className="card-text">Suelta aqui las figuritas que quieras intercambiar</p>}
-          {stickersToGive.length !== 0 &&
-              <React.Fragment>
-                <Button onClick={onCreateExchange}>Crear Intercambio</Button>
-                <Button onClick={onClearExchange}>Limpiar</Button>
-              </React.Fragment>
-          }
-          {stickersToGive.map((sticker, index) =>
-            <div key={sticker.id} className="col col-sm-3">
-              <Sticker player={sticker} style={styles.sticker}/>
+          <div className="row">
+            <div className="row">
+              {stickersToGive.length === 0 && <p className="card-text">Suelta aqui las figuritas que quieras intercambiar</p>}
+              {stickersToGive.length !== 0 &&
+                  <React.Fragment>
+                      <Button onClick={isCreatingExchange ? onConfirmExchange : onCreateExchange}> {isCreatingExchange ? "Confirmar" : "Crear Intercambio"}</Button>
+                      <Button onClick={onClearExchange}>Cancelar</Button>
+                  </React.Fragment>
+              }
             </div>
-          )}
+            <div className="row">
+              <div className="col">
+                {isCreatingExchange && <p className="card-text">Figuritas a intercambiar</p>}
+                {stickersToGive.map((sticker, index) =>
+                  <div key={sticker.id} className="col col-sm-3">
+                    <Sticker player={sticker} style={styles.sticker}/>
+                  </div>
+                )}
+              </div>
+              {isCreatingExchange && <div className="col">
+                {stickersToReceive.length === 0 && <p className="card-text">Suelta aqui las figuritas que quieras recibir</p>}
+                {stickersToReceive.length > 0 && <p className="card-text">Figuritas a recibir</p>}
+                {stickersToReceive.map((sticker, index) =>
+                  <div key={sticker.id} className="col col-sm-3">
+                    <Sticker player={sticker} style={styles.sticker}/>
+                  </div>
+                )}
+              </div>}
+            </div>
+          </div>
         </div>
     </div>
   )

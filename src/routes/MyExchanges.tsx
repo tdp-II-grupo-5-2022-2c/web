@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
 import {Button} from "reactstrap";
-import Sticker, {ISticker} from "../components/Sticker";
 
 const MyExchanges = () => {
   const user = useUser();
