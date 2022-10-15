@@ -11,6 +11,7 @@ import MyModal from "../components/MyModal";
 import {useUser} from "../context/UserContext";
 import {Button, CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
 import {ROUTES} from "./RoutesNames";
+import {MyStickersStrings} from "../res/strings";
 
 type Filters = {
   name?: string,
@@ -59,11 +60,23 @@ const MyStickers = () => {
     navigate("../my-album?country=" + sticker.country + "&position=" + sticker.number + "&stickerId=" + sticker.id)
   }
 
-  const [{isOver}, drop] = useDrop(() => ({
+  const addStickerToExchange = async (sticker: ISticker) => {
+    console.log("adding sticker to exchange")
+  }
+
+  const [{isOverAlbum}, dropAlbum] = useDrop(() => ({
     accept: DraggableTypes.STICKER,
     drop: (item: ISticker) => addStickerToAlbum(item),
     collect: (monitor) => ({
-      isOver: monitor.isOver(),
+      isOverAlbum: monitor.isOver(),
+    })
+  }))
+
+  const [{isOverExchange}, dropExchange] = useDrop(() => ({
+    accept: DraggableTypes.STICKER,
+    drop: (sticker: ISticker) => addStickerToExchange(sticker),
+    collect: (monitor) => ({
+      isOverExchange: monitor.isOver(),
     })
   }))
 
@@ -156,8 +169,11 @@ const MyStickers = () => {
             </Row>
           </Col>
           <Col className="col-md-2">
-            <div className="h-100" ref={drop}>
-              <DropBoard/>
+            <div className="row" ref={dropAlbum}>
+              <DropBoard title={MyStickersStrings.PASTE_TO_ALBUM_TITLE} body={MyStickersStrings.PASTE_TO_ALBUM_BODY}/>
+            </div>
+            <div className="row" ref={dropExchange}>
+              <DropBoard title={MyStickersStrings.MOVE_TO_EXCHANGES_TITLE} body={MyStickersStrings.MOVE_TO_EXCHANGES_BODY}/>
             </div>
           </Col>
         </Row>
