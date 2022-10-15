@@ -31,14 +31,14 @@ const MyCommunities = () => {
   }, [])
 
   const fetchCommunities = async (ownerId?: number, memberId?: number) => {
-    const form = {
-      owner_id: ownerId || "",
-      member_id: memberId || ""
+    const _params = {
+      owner_id: ownerId || undefined,
+      member_id: memberId || undefined
     }
-    let fetchedCommunities: any = []
 
+    let fetchedCommunities: any = []
     try {
-      const response = await client.get(`/communities?${form.owner_id}&${form.member_id}`)
+      const response = await client.get(`/communities`, {params: _params})
       fetchedCommunities = response.data
     } catch (error: any) {
       if (error.response) {
