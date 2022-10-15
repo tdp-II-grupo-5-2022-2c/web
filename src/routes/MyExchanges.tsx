@@ -28,6 +28,30 @@ const mockedExchanges = [
         quantity: 0,
         country: "ARG",
         is_on_album: true
+      } as ISticker,      {
+        id: "6328a87545188115b66b51b3",
+        image: "https://picsum.photos/300/200",
+        name: "Julian Alvarez",
+        number: 11,
+        quantity: 0,
+        country: "ARG",
+        is_on_album: true
+      } as ISticker,      {
+        id: "6328a87545188115b66b51b7",
+        image: "https://picsum.photos/300/200",
+        name: "Julian Alvarez",
+        number: 11,
+        quantity: 0,
+        country: "ARG",
+        is_on_album: true
+      } as ISticker,      {
+        id: "6328a87545188115b66b51b8",
+        image: "https://picsum.photos/300/200",
+        name: "Julian Alvarez",
+        number: 11,
+        quantity: 0,
+        country: "ARG",
+        is_on_album: true
       } as ISticker,
     ],
     stickers_to_receive: [
@@ -84,10 +108,10 @@ const MyExchanges = () => {
       <MyNavbar/>
       <div className="container">
         <div className="row">
-          <div className="col-md-2 debugRed">
+          <div className="col-md-2">
             <Button onClick={undefined}>Crear Intercambio</Button>
           </div>
-          <div className="col-md-8 debugBlue">
+          <div className="col-md-8">
             <h2>Mis Intercambios</h2>
             {communityExchanges.map((exchange, index) =>
               <div key={exchange._id} className="col col-md-3">
@@ -95,7 +119,7 @@ const MyExchanges = () => {
               </div>
             )}
           </div>
-          <div className="col-md-2 debugRed">
+          <div className="col-md-2">
             <Button onClick={undefined}>Crear Intercambio</Button>
           </div>
         </div>

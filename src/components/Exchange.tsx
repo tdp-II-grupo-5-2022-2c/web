@@ -27,14 +27,17 @@ const Exchange = ({exchange}: Props) => {
       <div className="card-body">
         <h5 className="card-title">Usuario da</h5>
         <div className="row">
-          {exchange.stickers_to_give.map((sticker, index) =>
-            <div className="col">
-              <Sticker player={sticker}
-                       style={globalStickerStyles.stickerSmall}
-                       displayBadge={true}
-              />
-            </div>
+          <div className="row" style={{ height: "10em", width:'10em', overflowX:"scroll",overflowY: "hidden", whiteSpace: "nowrap" }}>
+            {exchange.stickers_to_give.map((sticker, index) =>
+              <div className="col">
+                <Sticker player={sticker}
+                         style={globalStickerStyles.stickerSmall}
+                         displayBadge={true}
+                />
+              </div>
+
           )}
+          </div>
         </div>
         <h5 className="card-title">Usuario recibe</h5>
         <div className="row">
