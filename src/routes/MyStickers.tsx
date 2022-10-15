@@ -21,16 +21,17 @@ type Filters = {
 
 const MyStickers = () => {
   const user = useUser();
-  const [fetchedStickers, setFetchedStickers] = useState([] as ISticker[])
   const navigate = useNavigate();
-  const [showPasteOk, setShowPasteOk] = useState(false);
-  const [searchFilters, setSearchFilters] = useState<Filters>({name: undefined, country: undefined});
   const {register} = useForm();
+
+  const [showPasteOk, setShowPasteOk] = useState(false);
 
   const [stickersToGive, setStickersToGive] = useState<ISticker[]>([]);
   const [stickersToReceive, setStickersToReceive] = useState<ISticker[]>([]);
 
-  const [allStickers, setAllStickers] = useState<IStickerData[]>([]);
+  const [fetchedStickers, setFetchedStickers] = useState<ISticker[]>([])
+  const [allStickers, setAllStickers] = useState<IStickerData[]>([])
+  const [searchFilters, setSearchFilters] = useState<Filters>({name: undefined, country: undefined});
   const [isCreatingExchange, setIsCreatingExchange] = useState<boolean>(false)
 
   const countriesToFilter = {
@@ -169,14 +170,6 @@ const MyStickers = () => {
               <CardText>No se encontró ninguna figurita con este filtro</CardText>
           </Col>
       }
-      {user.stickers.length === 0 &&
-          <Col>
-              <CardText>No tienes figuritas, abrí un nuevo paquete</CardText>
-              <Button>
-                  <a className="nav-link" href={ROUTES.DAILYPACKET}>Abrir paquete</a>
-              </Button>
-          </Col>
-      }
     </React.Fragment>;
   }
 
@@ -193,14 +186,6 @@ const MyStickers = () => {
       {stickers && stickers.length === 0 && user.stickers.length > 0 &&
           <Col>
               <CardText>No se encontró ninguna figurita con este filtro</CardText>
-          </Col>
-      }
-      {user.stickers.length === 0 &&
-          <Col>
-              <CardText>No tienes figuritas, abrí un nuevo paquete</CardText>
-              <Button>
-                  <a className="nav-link" href={ROUTES.DAILYPACKET}>Abrir paquete</a>
-              </Button>
           </Col>
       }
     </React.Fragment>;
@@ -247,6 +232,14 @@ const MyStickers = () => {
             <Row>
               {!isCreatingExchange && <StickersList stickers={fetchedStickers}/>}
               {isCreatingExchange && <AllStickersList stickers={allStickers}/>}
+              {!isCreatingExchange && user.stickers.length === 0 && fetchedStickers.length === 0 &&
+                  <Col>
+                      <CardText>No tienes figuritas, abrí un nuevo paquete</CardText>
+                      <Button>
+                          <a className="nav-link" href={ROUTES.DAILYPACKET}>Abrir paquete</a>
+                      </Button>
+                  </Col>
+              }
             </Row>
           </Col>
           <Col className="col-md-2">
