@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
-import {Button} from "reactstrap";
+import {Button, Row} from "reactstrap";
 import ModalForm, {CreateCommunityForm} from "../components/ModalForm";
 import client from "../services/config";
 import MyModal from "../components/MyModal";
 import {CommunityCreationStrings} from "../res/strings";
-import Community, {NoUsersCommunity} from "../components/Community";
+import CommunityCard, {NoUsersCommunity} from "../components/CommunityCard";
+import {useNavigate} from "react-router-dom";
 
 const MyCommunities = () => {
   const user = useUser();
@@ -23,7 +24,10 @@ const MyCommunities = () => {
     body: "",
   };
   const [showCreateCommunityResultModal, setShowCreateCommunityResultModal] = useState(false);
-  const [createCommunityResultModal, setCreateCommunityResultModal] = useState(initialModalState)
+  const [createCommunityResultModal, setCreateCommunityResultModal] = useState(initialModalState);
+
+  const [modal, setModal] = useState(initialModalState)
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCommunitiesAsAdmin()
@@ -111,6 +115,12 @@ const MyCommunities = () => {
     setShowCreateCommunityResultModal(false)
   }
 
+  const viewCommunity = (event: MouseEvent) => {
+    // @ts-ignore
+    let communityId = event.target.id;
+    navigate(`/communities/${communityId}`)
+  }
+
   return (
     <React.Fragment>
       <MyNavbar/>
@@ -123,7 +133,10 @@ const MyCommunities = () => {
               <h2>Comunidades de las que soy administrador</h2>
               {adminCommunities.map((community, index) =>
                 <div key={community._id} className="col col-md-3">
-                  <Community community={community} isOwner={user._id === community.owner}/>
+                  <CommunityCard community={community}
+                                 isOwner={user._id === community.owner}
+                                 onClick={viewCommunity}
+                  />
                 </div>
               )}
               {adminCommunities.length === 0 &&
@@ -134,7 +147,10 @@ const MyCommunities = () => {
               <h2>Comunidades de las que soy miembro</h2>
               {memberCommunities.map((community, index) =>
                 <div key={community._id} className="col col-sm-3">
-                  <Community community={community} isOwner={user._id === community.owner}/>
+                  <CommunityCard community={community}
+                                 isOwner={user._id === community.owner}
+                                 onClick={viewCommunity}
+                  />
                 </div>
               )}
               {memberCommunities.length === 0 &&
@@ -143,9 +159,9 @@ const MyCommunities = () => {
             </div>
           </div>
           <div className="col-md-2">
-            <div className="row">
+            <Row>
               <Button onClick={onCreateCommunityClick}>Crear Comunidad</Button>
-            </div>
+            </Row>
           </div>
       </div>
       <ModalForm header={"Crear comunidad"}

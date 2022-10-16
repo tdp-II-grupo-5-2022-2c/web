@@ -1,15 +1,22 @@
 import {useUser} from "../context/UserContext";
+import {Navigate, useLocation} from "react-router-dom";
+import React from "react";
 
-export function ProtectedRoute({children} : any) {
-    const user = useUser();
-    console.log("PROTECTED ROUTE")
-    console.log(user)
-    if (!user._id) {
-        // TODO: si en vez de null pongo que navege a signin tiene un comportamiento raro donde el useUser
-        // me devuelve null en el el user haciendo que "pierdas" la sesion y te tengas que volver a logear
-        // a pesar de que el context tiene al user
-        return null
-    }
+export function ProtectedRoute({children}: any) {
+  const user = useUser();
+  const location = useLocation();
 
-    return <>{children}</>
+  if (user.isAuthed() === undefined) {
+    return null; //TODO: Podriamos poner un Spinner aca
+  }
+
+  return (
+      <React.Fragment>
+        {user.isAuthed() ? (
+            <>{children}</>
+        ) : (
+            <Navigate to="/sign-in" replace state={{path: location.pathname}}/>
+        )}
+      </React.Fragment>
+  )
 }
