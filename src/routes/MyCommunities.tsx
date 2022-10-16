@@ -6,8 +6,8 @@ import ModalForm, {CreateCommunityForm} from "../components/ModalForm";
 import client from "../services/config";
 import MyModal from "../components/MyModal";
 import {CommunityCreationStrings} from "../res/strings";
-import Community, {NoUsersCommunity} from "../components/Community";
-import ChatRoom from "../components/ChatRoom";
+import CommunityCard, {NoUsersCommunity} from "../components/CommunityCard";
+import {useNavigate} from "react-router-dom";
 
 const MyCommunities = () => {
   const user = useUser();
@@ -25,15 +25,13 @@ const MyCommunities = () => {
   };
   const [showCreateCommunityResultModal, setShowCreateCommunityResultModal] = useState(false);
   const [createCommunityResultModal, setCreateCommunityResultModal] = useState(initialModalState);
-  const [chatIsOpen, setChatIsOpen] = useState<boolean>(false);
-  const [chatCommunityId, setChatCommunityId] = useState<number|undefined>(undefined);
 
   const [modal, setModal] = useState(initialModalState)
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCommunitiesAsAdmin()
     fetchCommunitiesAsMember()
-    console.log("chat is open: " + chatIsOpen)
   }, [])
 
   const fetchCommunities = async (ownerId?: number, memberId?: number) => {
@@ -57,13 +55,6 @@ const MyCommunities = () => {
     }
 
     return fetchedCommunities
-    // return [
-    //   {
-    //     _id: 1234,
-    //     name: 'sarasa',
-    //     owner: user._id
-    //   }
-    // ]
   }
 
   const fetchCommunitiesAsAdmin = async () => {
@@ -124,16 +115,10 @@ const MyCommunities = () => {
     setShowCreateCommunityResultModal(false)
   }
 
-  const openChatRoom = (event: MouseEvent) => {
+  const viewCommunity = (event: MouseEvent) => {
     // @ts-ignore
-    console.log("open chat - element id: " + event.target.id)
-    // @ts-ignore
-    setChatCommunityId(Number(event.target.id));
-    setChatIsOpen(true);
-  }
-
-  const closeChatRoom = () => {
-    setChatIsOpen(false);
+    let communityId = event.target.id;
+    navigate(`/communities/${communityId}`)
   }
 
   return (
@@ -148,9 +133,9 @@ const MyCommunities = () => {
               <h2>Comunidades de las que soy administrador</h2>
               {adminCommunities.map((community, index) =>
                 <div key={community._id} className="col col-md-3">
-                  <Community community={community}
-                             isOwner={user._id === community.owner}
-                             openChatRoom={openChatRoom}
+                  <CommunityCard community={community}
+                                 isOwner={user._id === community.owner}
+                                 onClick={viewCommunity}
                   />
                 </div>
               )}
@@ -162,9 +147,9 @@ const MyCommunities = () => {
               <h2>Comunidades de las que soy miembro</h2>
               {memberCommunities.map((community, index) =>
                 <div key={community._id} className="col col-sm-3">
-                  <Community community={community}
-                             isOwner={user._id === community.owner}
-                             openChatRoom={openChatRoom}
+                  <CommunityCard community={community}
+                                 isOwner={user._id === community.owner}
+                                 onClick={viewCommunity}
                   />
                 </div>
               )}
@@ -176,13 +161,6 @@ const MyCommunities = () => {
           <div className="col-md-2">
             <Row>
               <Button onClick={onCreateCommunityClick}>Crear Comunidad</Button>
-            </Row>
-            <Row>
-              <Collapse isOpen={chatIsOpen}>
-                <Card className="card-translucent">
-                  <ChatRoom id={chatCommunityId}/>
-                </Card>
-              </Collapse>
             </Row>
           </div>
       </div>

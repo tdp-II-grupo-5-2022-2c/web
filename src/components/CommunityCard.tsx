@@ -11,10 +11,10 @@ export type NoUsersCommunity = {
 type Props = {
   community: NoUsersCommunity,
   isOwner: boolean,
-  openChatRoom: (event: MouseEvent) => void,
+  onClick: (event: MouseEvent) => void,
 }
 
-const Community = ({community, isOwner, openChatRoom}: Props) => {
+const CommunityCard = ({community, isOwner, onClick}: Props) => {
 
   return (
     <Card style={{...globalCommunityStyles.community}}>
@@ -32,10 +32,10 @@ const Community = ({community, isOwner, openChatRoom}: Props) => {
       </CardBody>
       <CardFooter>
         {/*// @ts-ignore*/}
-        <Button color="primary" id={community._id.toString()} onClick={openChatRoom}>Chat</Button>
+        <Button color="primary" id={community._id.toString()} onClick={onClick}>Ver</Button>
       </CardFooter>
     </Card>
   )
 }
 
-export default Community
+export default CommunityCard
