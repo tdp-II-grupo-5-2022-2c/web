@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
-import {Button, Card, Collapse, Row} from "reactstrap";
+import {Button, Row} from "reactstrap";
 import ModalForm, {CreateCommunityForm} from "../components/ModalForm";
 import client from "../services/config";
 import MyModal from "../components/MyModal";

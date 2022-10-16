@@ -1,7 +1,7 @@
 import {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {getMessages} from "../../firebase";
 import {useUser} from "../../context/UserContext";
-import {Col, List, Row} from "reactstrap";
+import {List} from "reactstrap";
 import "./styles.css";
 
 
@@ -30,7 +30,7 @@ function MessageList({roomId}: Props) {
   useLayoutEffect(() => {
     if (containerRef.current) {
       // @ts-ignore
-      // TODO: La idea de esto es que me posicione al final el chat, no anda
+      //TODO: Debería mover el scroll del chat solo, está moviendo también el de toda la pagina.
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
       console.log("current container ref")
     }

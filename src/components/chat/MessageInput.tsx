@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useUser} from "../../context/UserContext";
 import {sendMessage} from "../../firebase";
-import {Button, Col, Form, FormGroup, Input, InputGroup, Row} from "reactstrap";
+import {Button, Form, Input, InputGroup, Row} from "reactstrap";
 import "./styles.css";
 
 type Props = {
