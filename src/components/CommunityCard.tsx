@@ -1,4 +1,4 @@
-import {Card, CardBody, CardImgOverlay,} from "reactstrap";
+import {Button, Card, CardBody, CardFooter, CardImgOverlay,} from "reactstrap";
 import {globalCommunityStyles} from "../res/globalStyles";
 
 // TODO: se llama asi pq todavia no tiene usuarios
@@ -10,10 +10,11 @@ export type NoUsersCommunity = {
 
 type Props = {
   community: NoUsersCommunity,
-  isOwner: boolean
+  isOwner: boolean,
+  onClick: (event: MouseEvent) => void,
 }
 
-const Community = ({community, isOwner}: Props) => {
+const CommunityCard = ({community, isOwner, onClick}: Props) => {
 
   return (
     <Card style={{...globalCommunityStyles.community}}>
@@ -29,8 +30,12 @@ const Community = ({community, isOwner}: Props) => {
           <br/>
         </CardImgOverlay>
       </CardBody>
+      <CardFooter>
+        {/*// @ts-ignore*/}
+        <Button color="primary" id={community._id.toString()} onClick={onClick}>Ver</Button>
+      </CardFooter>
     </Card>
   )
 }
 
-export default Community
+export default CommunityCard

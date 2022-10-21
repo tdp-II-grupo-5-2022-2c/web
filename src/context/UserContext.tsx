@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, useContext, useEffect, useState} from 'react';
+import React, {PropsWithChildren, useCallback, useContext, useEffect, useLayoutEffect, useState} from 'react';
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -19,6 +19,7 @@ export interface User {
 }
 
 interface UserActions {
+  isAuthed: () => boolean | undefined;
   loginWithGoogle: () => Promise<any>;
   logout: () => Promise<any> | void;
   getUser: (email: string) => Promise<any>;
@@ -35,9 +36,13 @@ export const useUser = (): User & UserActions => {
 
 export const UserProvider = ({ children }: PropsWithChildren<any>) => {
   const [user, setUser] = useState<User>({} as User);
+  const [authed, setAuthed] = useState<boolean | undefined>(undefined);
 
   const userActions : User & UserActions = {
     ...user,
+    isAuthed() {
+      return authed;
+    },
     async getUser (email: string) {
       try{
         const { data: user } = await client.get(`/users?mail=${email}`);
@@ -75,6 +80,7 @@ export const UserProvider = ({ children }: PropsWithChildren<any>) => {
             const newCreatedUser = await userActions.getUser(email)
             if (newCreatedUser) {
               setUser(newCreatedUser)
+              setAuthed(true);
             }
           }
         }
@@ -83,6 +89,7 @@ export const UserProvider = ({ children }: PropsWithChildren<any>) => {
 
     async logout () {
       await signOut(auth)
+      setAuthed(false);
     },
 
     // si el user de google existe en el back, lo traigo, caso contrario
@@ -90,8 +97,10 @@ export const UserProvider = ({ children }: PropsWithChildren<any>) => {
     // para evitar quedar en un loop de logeo fallido
     async restore(email: string) {
       const user =  await userActions.getUser(email)
-      if(!user){
-        await signOut(auth)
+      if (!user) {
+        this.logout();
+      } else {
+        setAuthed(true);
       }
       console.log("RESTORING")
       console.log(user)
@@ -100,15 +109,19 @@ export const UserProvider = ({ children }: PropsWithChildren<any>) => {
   }
 
   useEffect(() => {
-    onAuthStateChanged(auth, currentUser => {
+    const unsubscribe = onAuthStateChanged(auth, currentUser => {
       // Si esta logeado me devuelve el user, si no esta logeado devuelve null
-      if(currentUser){
+      if (currentUser) {
         const email : string | null = currentUser.email
-        if(email){
+        if (email) {
           userActions.restore(email)
         }
       }
+      if (currentUser === null) {
+        setAuthed(false);
+      }
     });
+    return unsubscribe;
   }, []);
 
   return (
