@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
-import {Button} from "reactstrap";
 import client from "../services/config";
 import Exchange, {IExchange} from "../components/Exchange";
 import {ISticker, IStickerData} from "../components/Sticker";
+import {debugStyle, globalExchangesStyles} from "../res/globalStyles";
 
 const mockedExchanges = [
   {
@@ -28,7 +28,7 @@ const mockedExchanges = [
         quantity: 0,
         country: "ARG",
         is_on_album: true
-      } as ISticker,      {
+      } as ISticker, {
         id: "6328a87545188115b66b51b3",
         image: "https://picsum.photos/300/200",
         name: "Julian Alvarez",
@@ -36,7 +36,7 @@ const mockedExchanges = [
         quantity: 0,
         country: "ARG",
         is_on_album: true
-      } as ISticker,      {
+      } as ISticker, {
         id: "6328a87545188115b66b51b7",
         image: "https://picsum.photos/300/200",
         name: "Julian Alvarez",
@@ -44,7 +44,7 @@ const mockedExchanges = [
         quantity: 0,
         country: "ARG",
         is_on_album: true
-      } as ISticker,      {
+      } as ISticker, {
         id: "6328a87545188115b66b51b8",
         image: "https://picsum.photos/300/200",
         name: "Julian Alvarez",
@@ -106,21 +106,37 @@ const MyExchanges = () => {
   return (
     <React.Fragment>
       <MyNavbar/>
+      <div className="row">
+        <h1>Mis Intercambios</h1>
+      </div>
+
       <div className="container">
         <div className="row">
-          <div className="col-md-2">
-            <Button onClick={undefined}>Crear Intercambio</Button>
-          </div>
-          <div className="col-md-8">
-            <h2>Mis Intercambios</h2>
+          <div className="col-md-9 py-4 card">
             {communityExchanges.map((exchange, index) =>
               <div key={exchange._id} className="col col-md-3">
                 <Exchange exchange={exchange}/>
               </div>
             )}
           </div>
-          <div className="col-md-2">
-            <Button onClick={undefined}>Crear Intercambio</Button>
+          <div className="col-md-3 card py-4">
+            <p>Leyenda</p>
+            <div className="row d-flex align-items-center">
+              <div className="col-3 d-flex align-content-start">
+                <p className="text-red" style={globalExchangesStyles.arrows}>{"->"}</p>
+              </div>
+              <div className="col-9 d-flex align-content-start">
+                <p>{"Figuritas a dar"}</p>
+              </div>
+            </div>
+            <div className="row d-flex align-items-center">
+              <div className="col-3 d-flex align-content-start">
+                <p className="text-green" style={globalExchangesStyles.arrows}>{"<-"}</p>
+              </div>
+              <div className="col-9 d-flex align-content-start">
+                {"Figuritas a recibir"}
+              </div>
+            </div>
           </div>
         </div>
       </div>

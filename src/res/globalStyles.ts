@@ -18,7 +18,13 @@ export const globalCommunityStyles = {
   },
 }
 
-export const debug = {
+export const globalExchangesStyles = {
+  arrows:{
+    fontSize: "50px"
+  },
+}
+
+export const debugStyle = {
   container:{
     borderStyle: "solid"
   },
