@@ -14,7 +14,7 @@ import {ROUTES} from "./RoutesNames";
 import {MyStickersStrings} from "../res/strings";
 import ExchangeCreator from "../components/ExchangeCreator";
 
-type Filters = {
+export type Filters = {
   name?: string,
   country?: string
 }
@@ -203,12 +203,17 @@ const MyStickers = () => {
     </React.Fragment>;
   }
 
+  const goToCreateExchange = () => {
+    navigate("../create-exchange")
+  }
+
   return (
     <React.Fragment>
       <MyNavbar/>
       <Container fluid>
         <Row>
           <Col className="col-md-2">
+            <Button onClick={goToCreateExchange}>Intercambiar</Button>
             <Row className="h-100 m-7">
               <Form>
                 <h3 className="text-gray">Pais</h3>
