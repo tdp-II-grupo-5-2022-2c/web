@@ -112,22 +112,6 @@ const MyStickers = () => {
     })
   }))
 
-  const [{isOverExchange}, dropExchange] = useDrop(() => ({
-    accept: DraggableTypes.STICKER,
-    drop: (sticker: ISticker) => addStickerToExchange(sticker),
-    collect: (monitor) => ({
-      isOverExchange: monitor.isOver(),
-    })
-  }))
-
-  const [{isOverExchangeReceive}, dropExchangeReceive] = useDrop(() => ({
-    accept: DraggableTypes.STICKER,
-    drop: (sticker: IStickerData) => addStickerToExchangeReceive(sticker),
-    collect: (monitor) => ({
-      isOverExchangeReceive: monitor.isOver(),
-    })
-  }))
-
   const onChangeHandler = ({target: {id, value}}: any) => {
     // @ts-ignore
     _searchFilters.current[id] = value;
@@ -147,23 +131,6 @@ const MyStickers = () => {
     return (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.value.length >= 3 || e.target.value.length === 0) onChangeHandler(e)
     };
-  }
-
-  async function createExchange() {
-    await fetchAllStickers()
-    setIsCreatingExchange(true)
-    _isCreatingExchange.current = true
-  }
-
-  function clearExchange() {
-    setStickersToGive([])
-    setStickersToReceive([])
-    setIsCreatingExchange(false)
-    _isCreatingExchange.current = false
-  }
-
-  function confirmExchange() {
-    console.log("Exchange Confirmed!!")
   }
 
   const StickersList = ({stickers}: { stickers: ISticker[] }) => {
@@ -263,27 +230,6 @@ const MyStickers = () => {
             {!isCreatingExchange && <div className="row" ref={dropAlbum}>
               <DropBoard title={MyStickersStrings.PASTE_TO_ALBUM_TITLE} body={MyStickersStrings.PASTE_TO_ALBUM_BODY}/>
             </div>}
-            {stickersToGive.length !== 0 &&
-                <div className="container">
-                    <div className="row">
-                        <Button
-                            onClick={isCreatingExchange ? confirmExchange : createExchange}> {isCreatingExchange ? "Confirmar" : "Crear Intercambio"}</Button>
-                    </div>
-                    <div className="row">
-                        <Button onClick={clearExchange}>Cancelar</Button>
-                    </div>
-                </div>
-            }
-            <div className="row" ref={dropExchange}>
-              <ExchangeCreator placedStickers={stickersToGive} title={MyStickersStrings.EXCHANGE_GIVE_TITLE}
-                               hint={MyStickersStrings.EXCHANGE_GIVE_HINT} disable={isCreatingExchange}/>
-            </div>
-            {isCreatingExchange &&
-                <div className="row" ref={dropExchangeReceive}>
-                    <ExchangeCreator placedStickers={stickersToReceive} title={MyStickersStrings.EXCHANGE_RECEIVE_TITLE}
-                                     hint={MyStickersStrings.EXCHANGE_RECEIVE_HINT} disable={false}/>
-                </div>
-            }
           </Col>
         </Row>
       </Container>

@@ -6,11 +6,14 @@ import {useUser} from "../context/UserContext";
 import {ISticker} from "../components/Sticker";
 import MyNavbar from "../components/MyNavbar";
 import {HTML5Backend} from "react-dnd-html5-backend";
-import {DndProvider} from "react-dnd";
+import {DndProvider, useDrop} from "react-dnd";
 import {debugStyle, globalStickerStyles} from "../res/globalStyles";
 import {isSearchValid} from "../services/validator";
 import {Button} from "reactstrap";
 import StickerStack from "../components/stickers/StickerStack";
+import DropBoard from "../components/DropBoard";
+import {CreateExchangeStrings, MyStickersStrings} from "../res/strings";
+import {DraggableTypes} from "../components/Draggable";
 
 const CreateExchange = () => {
   const user = useUser()
@@ -22,6 +25,7 @@ const CreateExchange = () => {
   const [fetchedStickers, setFetchedStickers] = useState<ISticker[]>([])
 
   const [isGiving, setIsGiving] = useState(true);
+  const [stickersToGive, setStickersToGive] = useState<ISticker[]>([])
 
   const PICKING_STATE_TITLE = {
     give: "Selecciona las figuritas a dar",
@@ -53,6 +57,24 @@ const CreateExchange = () => {
   const clean = () => {
     //
   }
+
+  const addStickerToExchangeGive = async (sticker: ISticker) => {
+    console.log("adding sticker to give")
+      setStickersToGive(oldStickersToGive => (
+        oldStickersToGive.findIndex(
+          (element:ISticker) => element.id === sticker.id) < 0 ? [...oldStickersToGive, sticker]
+          : [...oldStickersToGive]
+      ));
+  }
+
+  const [{isOverExchange}, dropExchangeGive] = useDrop(() => ({
+    accept: DraggableTypes.STICKER,
+    drop: (sticker: ISticker) => addStickerToExchangeGive(sticker),
+    collect: (monitor) => ({
+      isOverExchange: monitor.isOver(),
+    })
+  }))
+
 
   const SearchBar = () => {
     return (
@@ -97,7 +119,10 @@ const CreateExchange = () => {
         <div className="row">
           <div className="col">
             <p>Voy a dar</p>
-            <StickerStack stickers={[]}/>
+            <StickerStack stickers={stickersToGive}/>
+            <div ref={dropExchangeGive}>
+                <DropBoard title={""} body={CreateExchangeStrings.EXCHANGE_GIVE_HINT}/>
+            </div>
           </div>
           <div className="col">
             <p>Voy a recibir</p>
@@ -108,23 +133,21 @@ const CreateExchange = () => {
   }
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <React.Fragment>
-        <MyNavbar/>
-        <div className="container" style={debugStyle.container}>
-          <div className="row">
-            {/*Selector de figuritas*/}
-            <div className="col">
-              <StickersPicker/>
-            </div>
-            {/*Intercambio*/}
-            <div className="col">
-              <MyExchangeCreator/>
-            </div>
+    <React.Fragment>
+      <MyNavbar/>
+      <div className="container" style={debugStyle.container}>
+        <div className="row">
+          {/*Selector de figuritas*/}
+          <div className="col">
+            <StickersPicker/>
+          </div>
+          {/*Intercambio*/}
+          <div className="col">
+            <MyExchangeCreator/>
           </div>
         </div>
-      </React.Fragment>
-    </DndProvider>
+      </div>
+    </React.Fragment>
 
   )
 }

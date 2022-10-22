@@ -74,12 +74,14 @@ root.render(
           } />
           <Route path={ROUTES.MY_EXCHANGES} element={
             <ProtectedRoute>
-              <MyExchanges />
+               <MyExchanges />
             </ProtectedRoute>
           } />
           <Route path={ROUTES.CREATE_EXCHANGE} element={
             <ProtectedRoute>
-              <CreateExchange />
+              <DndProvider backend={HTML5Backend}>
+                <CreateExchange />
+              </DndProvider>
             </ProtectedRoute>
           } />
         </Routes>

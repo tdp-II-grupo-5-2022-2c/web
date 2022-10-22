@@ -9,8 +9,11 @@ export const CommunityCreationStrings = {
 export const MyStickersStrings = {
   PASTE_TO_ALBUM_TITLE: "Pegar en album",
   PASTE_TO_ALBUM_BODY: "Arrastra hasta aqui la figurita que quieres pegar",
-  EXCHANGE_GIVE_TITLE: "Figuritas a dar",
-  EXCHANGE_RECEIVE_TITLE: "Figuritas a recibir",
-  EXCHANGE_GIVE_HINT: "Suelta aqui las figuritas que quieras intercambiar",
-  EXCHANGE_RECEIVE_HINT: "Suelta aqui las figuritas que quieras recibir"
+}
+
+export const CreateExchangeStrings = {
+    EXCHANGE_GIVE_TITLE: "Figuritas a dar",
+    EXCHANGE_RECEIVE_TITLE: "Figuritas a recibir",
+    EXCHANGE_GIVE_HINT: "Suelta aqui las figuritas que quieras intercambiar",
+    EXCHANGE_RECEIVE_HINT: "Suelta aqui las figuritas que quieras recibir"
 }
