@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
 import Stickers from "../components/stickers/Stickers";
-import client from "../services/config";
 import fetchUserStickers from "../services/apicalls";
 import {Filters} from "./MyStickers";
 import {useUser} from "../context/UserContext";
@@ -8,7 +7,10 @@ import {ISticker} from "../components/Sticker";
 import MyNavbar from "../components/MyNavbar";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from "react-dnd";
-import {debugStyle} from "../res/globalStyles";
+import {debugStyle, globalStickerStyles} from "../res/globalStyles";
+import {isSearchValid} from "../services/validator";
+import {Button} from "reactstrap";
+import StickerStack from "../components/stickers/StickerStack";
 
 const CreateExchange = () => {
   const user = useUser()
@@ -18,6 +20,13 @@ const CreateExchange = () => {
   }
   const _searchFilters = useRef<Filters>(initialFilterState);
   const [fetchedStickers, setFetchedStickers] = useState<ISticker[]>([])
+
+  const [isGiving, setIsGiving] = useState(true);
+
+  const PICKING_STATE_TITLE = {
+    give: "Selecciona las figuritas a dar",
+    receive: "Selecciona las figuritas a recibir"
+  }
 
   useEffect(() => {
     _fetchUserStickers()
@@ -29,36 +38,76 @@ const CreateExchange = () => {
     setFetchedStickers(stickers)
   }
 
+  const onChangeHandler = ({target: {id, value}}: any) => {
+    // @ts-ignore
+    _searchFilters.current[id] = value.toLowerCase();
+    if(isSearchValid(value)){
+      _fetchUserStickers();
+    }
+  }
+
+  const selectReceive = () => {
+    setIsGiving(false)
+  }
+
+  const clean = () => {
+    //
+  }
+
+  const SearchBar = () => {
+    return (
+      <div className="d-flex flex-row align-items-center">
+        <i className="fas fa-search"/>
+        <input
+          id="name"
+          type="text"
+          placeholder="Buscar"
+          onChange={onChangeHandler}
+        />
+      </div>
+    );
+  }
+
   const StickersPicker = () => {
     return (
-      <div className="card" style={debugStyle.containerRed}>
+      <div className="card p-1" style={debugStyle.containerRed}>
         {/*TODO titulo depende de que estoy eligiendo*/}
         <div className="row">
-
+          <h1>{PICKING_STATE_TITLE.give}</h1>
         </div>
         {/*Buscador y botones*/}
         <div className="row">
-
+          <div className="d-flex flex-row">
+            <SearchBar/>
+            <Button onClick={selectReceive}>A recibir</Button>
+            <Button onClick={clean}>Limpiar</Button>
+          </div>
         </div>
         <div className="row">
           {/*Listado de stickers*/}
-          {/*TODO: crear un componente reutilizable
-          para la lista de figuritas pq lo uso mucho*/}
-          <Stickers stickers={fetchedStickers}/>
+          <Stickers stickers={fetchedStickers} style={globalStickerStyles.stickerSmall}/>
         </div>
       </div>
     )
   }
 
   const MyExchangeCreator = () => {
-    return(
+    return (
       <div className="card" style={debugStyle.containerBlue}>
-        <p>Aca va el creador de intercambio</p>
+        <div className="row">
+          <div className="col">
+            <p>Voy a dar</p>
+            <StickerStack stickers={[]}/>
+          </div>
+          <div className="col">
+            <p>Voy a recibir</p>
+          </div>
+        </div>
       </div>
     )
   }
 
-  return(
+  return (
     <DndProvider backend={HTML5Backend}>
       <React.Fragment>
         <MyNavbar/>
@@ -77,7 +126,7 @@ const CreateExchange = () => {
       </React.Fragment>
     </DndProvider>
 
-)
+  )
 }
 
 export default CreateExchange
