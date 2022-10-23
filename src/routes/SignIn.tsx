@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import '../css/App.css';
 import {useLocation, useNavigate} from "react-router-dom";
 import {Button, Card, CardHeader, Col, Row} from "reactstrap";
 import {useUser} from "../context/UserContext";

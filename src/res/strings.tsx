@@ -19,4 +19,10 @@ export const CreateExchangeStrings = {
     EXCHANGE_CREATED: "Intercambio creado exitosamente"
 }
 
+export const ExchangeStrings = {
+  EXCHANGE_ACCEPT_OK: "Intercambio realizado con éxito",
+  EXCHANGE_ACCEPT_ERROR: "Hubo un error al aceptar intercambio",
+  EXCHANGE_REJECT_ERROR: "Hubo un error al rechazar intercambio",
+}
+
 
