@@ -29,9 +29,11 @@ const CreateExchange = () => {
   const [stickersToReceive, setStickersToReceive] = useState<IStickerData[]>([])
 
   const PICKING_STATE_TITLE = {
-    give: "Selecciona las figuritas a dar",
-    receive: "Selecciona las figuritas a recibir"
+    give: "Seleccionando las figuritas a dar",
+    receive: "Seleccionando las figuritas a recibir"
   }
+
+  const MAX_STICKERS_PER_EXCHANGE = 5
 
   useEffect(() => {
     _fetchUserStickers()
@@ -74,19 +76,18 @@ const CreateExchange = () => {
   }
 
   function contains(oldStickers: ISticker[], sticker: ISticker) {
-    const result: number = oldStickers.findIndex((element: ISticker) => element.id === sticker.id);
-    if(result < 0){
-      console.log("no se encontro duplicado")
+    if(oldStickers.length >= MAX_STICKERS_PER_EXCHANGE){
+      return 0
     }
+    const result: number = oldStickers.findIndex((element: ISticker) => element.id === sticker.id);
     return result
   }
 
   function contains2(oldStickers: IStickerData[], sticker:  IStickerData) {
-    const result: number = oldStickers.findIndex((element: IStickerData) => element._id === sticker._id);
-    console.log(sticker._id)
-    if(result < 0){
-      console.log("no se encontro duplicado")
+    if(oldStickers.length >= MAX_STICKERS_PER_EXCHANGE){
+      return 0
     }
+    const result: number = oldStickers.findIndex((element: IStickerData) => element._id === sticker._id);
     return result
   }
 
@@ -126,26 +127,27 @@ const CreateExchange = () => {
     })
   }))
 
-  const SearchBar = () => {
-    return (
-      <div className="d-flex flex-row align-items-center">
-        <i className="fas fa-search"/>
-        <input
-          id="name"
-          type="text"
-          placeholder="Buscar"
-          onChange={onChangeHandler}
-        />
-      </div>
-    );
-  }
-
   const StickersPicker = () => {
+
+    const SearchBar = () => {
+      return (
+        <div className="d-flex flex-row align-items-center">
+          <i className="fas fa-search"/>
+          <input
+            id="name"
+            type="text"
+            placeholder="Buscar"
+            onChange={onChangeHandler}
+          />
+        </div>
+      );
+    }
+
     return (
       <div className="card p-1" style={debugStyle.containerRed}>
         {/*TODO titulo depende de que estoy eligiendo*/}
         <div className="row">
-          <h1>{PICKING_STATE_TITLE.give}</h1>
+          <h1>{isGiving ? PICKING_STATE_TITLE.give : PICKING_STATE_TITLE.receive}</h1>
         </div>
         {/*Buscador y botones*/}
         <div className="row">
@@ -157,7 +159,7 @@ const CreateExchange = () => {
             <Button onClick={clean}>Limpiar</Button>
           </div>
         </div>
-        <div className="row row-cols-auto">
+        <div className="row row-cols-3">
           {/*Listado de stickers*/}
           {isGiving ?
             <Stickers stickers={fetchedStickers} style={globalStickerStyles.stickerSmall}/>
@@ -169,22 +171,35 @@ const CreateExchange = () => {
   }
 
   const MyExchangeCreator = () => {
+
+    const PlayersInfo = ({stickers}: {stickers: ISticker[] | IStickerData[]}) => {
+      return (
+        <React.Fragment>
+          {stickers.map((sticker, index) =>
+            <p className="m-0 p-0">{`${sticker.country} ${sticker.name} ${sticker.number}`.slice(0,30)}</p>
+          )}
+        </React.Fragment>
+      )
+    }
+
     return (
       <div className="card" style={debugStyle.containerBlue}>
         <div className="row">
           <div className="col">
-            <p>Voy a dar</p>
             <div ref={dropExchangeGive}>
+              <p>Voy a dar</p>
               <StickerStack stickers={stickersToGive}/>
+              <PlayersInfo stickers={stickersToGive}/>
               {isGiving && <div className="card text-center">
                 <p>{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
               </div>}
             </div>
           </div>
           <div className="col">
-            <p>Voy a recibir</p>
             <div ref={dropExchangeReceive}>
+              <p>Voy a recibir</p>
               <StickerStack2 stickers={stickersToReceive}/>
+              <PlayersInfo stickers={stickersToReceive}/>
               {!isGiving && <div className="card text-center">
                 <p>{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
               </div>}
