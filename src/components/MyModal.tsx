@@ -3,7 +3,7 @@ import {Button, Modal, ModalBody, ModalFooter} from "reactstrap";
 
 type Props = {
   header: string,
-  body: string,
+  body: any,
   isOpen: boolean;
   onAccept: () => void
   onCancel?: () => void
@@ -22,7 +22,7 @@ export const MyModal = ({header, body, isOpen, onAccept, onCancel} : Props) => {
         <ModalBody>{body}</ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={onAccept}>
-            OK!
+            Aceptar
           </Button>{' '}
           {onCancel && <Button color="secondary" onClick={onCancel}>
             Cancel

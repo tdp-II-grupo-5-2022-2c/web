@@ -6,7 +6,7 @@ import ModalForm, {CreateCommunityForm} from "../components/ModalForm";
 import client from "../services/config";
 import {MyModal} from "../components/MyModal";
 import {CommunityCreationStrings} from "../res/strings";
-import CommunityCard, {NoUsersCommunity} from "../components/CommunityCard";
+import CommunityCard, {NoUsersCommunity} from "../components/communities/CommunityCard";
 import {useNavigate} from "react-router-dom";
 
 const MyCommunities = () => {
