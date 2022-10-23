@@ -19,6 +19,7 @@ const MyNavbar = (args: any) => {
               <a className="nav-link text-white" href={ROUTES.MYALBUM}>Mi album</a>
               <a className="nav-link text-white" href={ROUTES.MYCOMMUNITIES}>Mis comunidades</a>
               <a className="nav-link text-white" href={ROUTES.MY_EXCHANGES}>Mis intercambios</a>
+              <a className="nav-link text-white" href={ROUTES.TEST}>Test</a>
           </div>
         </div>
       </nav>

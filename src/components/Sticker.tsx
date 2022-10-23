@@ -36,7 +36,6 @@ const Sticker = ({player, style = {}, displayBadge = false}: Props) => {
   return (
     <Card
         style={{...globalStickerStyles.sticker, ...style}}
-        className="debugRed"
     >
       {displayBadge && player.quantity !== undefined && player.quantity > 1 &&
           <span style={{fontSize: 25 }} className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-gradient-gray">

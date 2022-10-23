@@ -8,6 +8,14 @@
   border-width: 2px;
 }
 
+.text-qatar-secondary-dark {
+  color: #8D1B3D;
+}
+
+.text-qatar-secondary {
+  color: #E50053;
+}
+
 @font-face {
   font-family: "qatar-2022-font";
   src: url("../assets/fonts/qatar-2022-font/Qatar2022-Medium.woff") format('woff');

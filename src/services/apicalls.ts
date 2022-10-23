@@ -29,4 +29,34 @@ export const fetchAllStickers = async () => {
   }
 }
 
+export const fetchCommunityExchanges = async (userId: number, communityId:string) => {
+  try {
+    const {data: exchanges} = await client.get(`/users/${userId}/communities/${communityId}/exchanges`);
+    return exchanges
+
+  } catch (error: any) {
+    console.error(
+      "Request failed, response:",
+      error
+    );
+    return []
+  }
+}
+
+const fetchCommunities = async (ownerId?: number, memberId?: number) => {
+  try {
+    const {data: communities} = await client.get(`/communities`)
+    return communities
+  } catch (error: any) {
+    if (error.response) {
+      console.log(error.response);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      console.log('Error', error.message);
+    }
+  }
+  return []
+}
+
 
