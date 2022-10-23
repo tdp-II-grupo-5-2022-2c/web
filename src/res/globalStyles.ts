@@ -6,8 +6,8 @@ export const globalStickerStyles = {
     height: "20rem",
   },
   stickerSmall: {
-    width: "8rem",
-    height: "10rem",
+    width: "10rem",
+    height: "12rem",
   }
 }
 

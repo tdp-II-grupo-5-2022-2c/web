@@ -1,6 +1,7 @@
 import Sticker, {ISticker, IStickerData} from "./Sticker";
 import React from "react";
-import {globalStickerStyles} from "../res/globalStyles";
+import {StickerStack, StickerStack2} from "./stickers/StickerStack";
+import PlayersInfo from "./stickers/PlayersInfo";
 
 export type IExchange = {
   _id: string,
@@ -18,9 +19,9 @@ type Props = {
 const Exchange = ({exchange}: Props) => {
   const styles = {
     exchange: {
-      width: "26rem",
+      width: "29rem",
       height: "24rem",
-      backgroundImage: `url("/images/qatar_bg_3.jpeg")`
+      backgroundImage: `url("/images/bg_exchange.jpg")`
     },
     arrows: {
       fontSize: "50px"
@@ -32,44 +33,22 @@ const Exchange = ({exchange}: Props) => {
 
   return (
     <div className="card" style={styles.exchange}>
-      <div className="card-body">
+      <div className="card-body text-center">
         <div className="row">
           <h1 className="text-white">Jessica Jones</h1>
         </div>
         <div className="row">
           <div className="col">
-            {exchange.stickers_to_give.map((sticker, index) =>
-              <div style={{position: "absolute", left: `${BASE - index * OFFSET}px`}}>
-                <Sticker player={sticker}
-                         style={globalStickerStyles.stickerSmall}
-                         displayBadge={true}
-                />
-              </div>
-            )}
-            <div className="row" style={{position: "absolute", top: "170px"}}>
-              {exchange.stickers_to_give.map((sticker, index) =>
-                <p className="text-white my--1 text-truncate">{sticker.country} {sticker.number} {sticker.name}</p>
-              )}
-            </div>
+            <StickerStack stickers={exchange.stickers_to_give} offset={0.5}/>
+            <PlayersInfo stickers={exchange.stickers_to_give}/>
           </div>
-          <div className="col" style={{position: "absolute", left: "170px"}}>
+          <div className="col position-absolute">
             <h1 className="text-red" style={styles.arrows}>{"->"}</h1>
             <h1 className="text-green" style={styles.arrows}>{"<-"}</h1>
           </div>
           <div className="col">
-            {exchange.stickers_to_receive.map((sticker, index) =>
-              <div style={{position: "absolute", left: `${BASE * 2 - index * OFFSET}px`}}>
-                <Sticker player={sticker}
-                         style={globalStickerStyles.stickerSmall}
-                         displayBadge={true}
-                />
-              </div>
-            )}
-            <div className="row" style={{position: "absolute", left: "20px", top: "170px"}}>
-              {exchange.stickers_to_give.map((sticker, index) =>
-                <p className="text-white my--1 text-truncate">{sticker.country} {sticker.number} {sticker.name}</p>
-              )}
-            </div>
+            <StickerStack2 stickers={exchange.stickers_to_receive}/>
+              <PlayersInfo stickers={exchange.stickers_to_receive}/>
           </div>
         </div>
       </div>
