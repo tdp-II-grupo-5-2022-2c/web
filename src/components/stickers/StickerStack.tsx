@@ -1,16 +1,17 @@
 import Sticker, {ISticker, IStickerData} from "../Sticker";
-import {debugStyle, globalStickerStyles} from "../../res/globalStyles";
+import {globalStickerStyles} from "../../res/globalStyles";
 import React from "react";
 
 type Props = {
-  stickers: ISticker[]
+  stickers: ISticker[],
+  offset?: number
 }
 
-export const StickerStack = ({stickers}: Props) => {
-  const OFFSET = 1
+export const StickerStack = ({stickers, offset}: Props) => {
+  const OFFSET = offset || 1
 
   return(
-    <div className="d-flex flex-row position-relative" style={debugStyle.container}>
+    <div className="d-flex flex-row position-relative">
       {stickers && stickers.length > 0 &&
         (
           <>
@@ -37,14 +38,15 @@ export const StickerStack = ({stickers}: Props) => {
 }
 
 type Props2 = {
-  stickers: IStickerData[]
+  stickers: IStickerData[],
+  offset?: number
 }
 
-export const StickerStack2 = ({stickers}: Props2) => {
-  const OFFSET = 1
+export const StickerStack2 = ({stickers, offset}: Props2) => {
+  const OFFSET = offset || 1
 
   return(
-    <div className="d-flex flex-row position-relative" style={debugStyle.container}>
+    <div className="d-flex flex-row position-relative">
       {stickers && stickers.length > 0 &&
         (
           <>

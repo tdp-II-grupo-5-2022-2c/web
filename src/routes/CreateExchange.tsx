@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {ChangeEvent, useEffect, useRef, useState} from "react";
 import {Stickers, AllStickers} from "../components/stickers/Stickers";
 import {fetchAllStickers, fetchUserStickers} from "../services/apicalls";
 import {Filters} from "./MyStickers";
@@ -6,12 +6,14 @@ import {useUser} from "../context/UserContext";
 import {ISticker, IStickerData} from "../components/Sticker";
 import MyNavbar from "../components/MyNavbar";
 import {useDrop} from "react-dnd";
-import {debugStyle, globalStickerStyles} from "../res/globalStyles";
+import {globalStickerStyles} from "../res/globalStyles";
 import {isSearchValid} from "../services/validator";
-import {Button} from "reactstrap";
+import {Button, Form, FormGroup, Input, InputGroup, InputGroupText} from "reactstrap";
 import {StickerStack, StickerStack2} from "../components/stickers/StickerStack";
 import {CreateExchangeStrings} from "../res/strings";
 import {DraggableTypes} from "../components/Draggable";
+import {useForm} from "react-hook-form";
+import PlayersInfo from "../components/stickers/PlayersInfo";
 
 const CreateExchange = () => {
   const user = useUser()
@@ -27,6 +29,8 @@ const CreateExchange = () => {
   const _isGiving = useRef(true);
   const [stickersToGive, setStickersToGive] = useState<ISticker[]>([])
   const [stickersToReceive, setStickersToReceive] = useState<IStickerData[]>([])
+
+  const {register} = useForm();
 
   const PICKING_STATE_TITLE = {
     give: "Seleccionando las figuritas a dar",
@@ -51,10 +55,14 @@ const CreateExchange = () => {
 
   const onChangeHandler = ({target: {id, value}}: any) => {
     // @ts-ignore
-    _searchFilters.current[id] = value.toLowerCase();
-    if(isSearchValid(value)){
-      _fetchUserStickers();
-    }
+    _searchFilters.current[id] = value;
+    _fetchUserStickers();
+  }
+
+  const handleChange = () => {
+    return (e: ChangeEvent<HTMLInputElement>) => {
+      if (isSearchValid(e.target.value)) onChangeHandler(e)
+    };
   }
 
   const selectReceive = () => {
@@ -129,25 +137,34 @@ const CreateExchange = () => {
 
   const StickersPicker = () => {
 
+    const styles = {
+      stickersPickers:{
+        backgroundImage: `url("/images/bg_stickers.jpeg")`
+      }
+    }
+
     const SearchBar = () => {
       return (
-        <div className="d-flex flex-row align-items-center">
-          <i className="fas fa-search"/>
-          <input
-            id="name"
-            type="text"
-            placeholder="Buscar"
-            onChange={onChangeHandler}
-          />
-        </div>
+        <Form className="navbar-search">
+          <FormGroup className="mb-0">
+            <InputGroup className="input-group-alternative">
+              <InputGroupText>
+                <i className="fas fa-search"/>
+              </InputGroupText>
+              <Input placeholder="Buscar" type="text" id="name" {...register("name", {
+                onChange: handleChange()
+              })} />
+            </InputGroup>
+          </FormGroup>
+        </Form>
       );
     }
 
     return (
-      <div className="card p-1" style={debugStyle.containerRed}>
+      <div className="card p-1" style={styles.stickersPickers}>
         {/*TODO titulo depende de que estoy eligiendo*/}
         <div className="row">
-          <h1>{isGiving ? PICKING_STATE_TITLE.give : PICKING_STATE_TITLE.receive}</h1>
+          <h1 className="text-white">{isGiving ? PICKING_STATE_TITLE.give : PICKING_STATE_TITLE.receive}</h1>
         </div>
         {/*Buscador y botones*/}
         <div className="row">
@@ -172,37 +189,35 @@ const CreateExchange = () => {
 
   const MyExchangeCreator = () => {
 
-    const PlayersInfo = ({stickers}: {stickers: ISticker[] | IStickerData[]}) => {
-      return (
-        <React.Fragment>
-          {stickers.map((sticker, index) =>
-            <p className="m-0 p-0">{`${sticker.country} ${sticker.name} ${sticker.number}`.slice(0,30)}</p>
-          )}
-        </React.Fragment>
-      )
+    const styles = {
+      exchangeCreation:{
+        backgroundImage: `url("/images/bg_exchange.jpg")`
+      }
     }
 
     return (
-      <div className="card" style={debugStyle.containerBlue}>
-        <div className="row">
-          <div className="col">
-            <div ref={dropExchangeGive}>
-              <p>Voy a dar</p>
-              <StickerStack stickers={stickersToGive}/>
-              <PlayersInfo stickers={stickersToGive}/>
-              {isGiving && <div className="card text-center">
-                <p>{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
-              </div>}
+      <div className="card" style={styles.exchangeCreation}>
+        <div className="card-body text-center">
+          <div className="row">
+            <div className="col">
+              <div ref={dropExchangeGive}>
+                <h1 className="text-white">Voy a dar</h1>
+                <StickerStack stickers={stickersToGive}/>
+                <PlayersInfo stickers={stickersToGive}/>
+                {isGiving && <div className="card text-center">
+                    <p>{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
+                </div>}
+              </div>
             </div>
-          </div>
-          <div className="col">
-            <div ref={dropExchangeReceive}>
-              <p>Voy a recibir</p>
-              <StickerStack2 stickers={stickersToReceive}/>
-              <PlayersInfo stickers={stickersToReceive}/>
-              {!isGiving && <div className="card text-center">
-                <p>{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
-              </div>}
+            <div className="col">
+              <div ref={dropExchangeReceive}>
+                <h1 className="text-white">Voy a recibir</h1>
+                <StickerStack2 stickers={stickersToReceive}/>
+                <PlayersInfo stickers={stickersToReceive}/>
+                {!isGiving && <div className="card text-center">
+                    <p>{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
+                </div>}
+              </div>
             </div>
           </div>
         </div>
@@ -213,7 +228,7 @@ const CreateExchange = () => {
   return (
     <React.Fragment>
       <MyNavbar/>
-      <div className="container" style={debugStyle.container}>
+      <div className="container">
         <div className="row">
           {/*Selector de figuritas*/}
           <div className="col">
