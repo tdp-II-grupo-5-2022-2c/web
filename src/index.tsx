@@ -23,6 +23,7 @@ import MyProfile from "./routes/MyProfile";
 import MyCommunities from "./routes/MyCommunities";
 import MyExchanges from "./routes/MyExchanges";
 import Community from "./routes/Community";
+import CreateExchange from "./routes/CreateExchange";
 import {ErrorHandler} from "./context/ErrorHandler";
 
 const root = ReactDOM.createRoot(
@@ -76,6 +77,13 @@ root.render(
               <Route path={ROUTES.MY_EXCHANGES} element={
                 <ProtectedRoute>
                   <MyExchanges />
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.CREATE_EXCHANGE} element={
+                <ProtectedRoute>
+                  <DndProvider backend={HTML5Backend}>
+                    <CreateExchange />
+                  </DndProvider>
                 </ProtectedRoute>
               } />
             </Routes>

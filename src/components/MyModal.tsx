@@ -9,7 +9,7 @@ type Props = {
   onCancel?: () => void
 }
 
-const MyModal = ({header, body, isOpen, onAccept, onCancel} : Props) => {
+export const MyModal = ({header, body, isOpen, onAccept, onCancel} : Props) => {
 
   return (
     <div>
@@ -33,4 +33,39 @@ const MyModal = ({header, body, isOpen, onAccept, onCancel} : Props) => {
   )
 }
 
-export default MyModal;
+export type IMODAL = {
+  header: string,
+  body: string
+}
+
+type Props2 = {
+  modal: IMODAL
+  isOpen: boolean;
+  onAccept: () => void
+  onCancel?: () => void
+}
+
+export const MyModal2 = ({modal, isOpen, onAccept, onCancel} : Props2) => {
+
+  return (
+    <div>
+      <Modal isOpen={isOpen}>
+        <div className="modal-header">
+          <h1 className="modal-title fs-5">
+            {modal.header}
+          </h1>
+        </div>
+        <ModalBody>{modal.body}</ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={onAccept}>
+            OK!
+          </Button>{' '}
+          {onCancel && <Button color="secondary" onClick={onCancel}>
+              Cancel
+          </Button>}
+        </ModalFooter>
+      </Modal>
+    </div>
+  )
+}
+

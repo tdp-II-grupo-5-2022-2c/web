@@ -4,7 +4,7 @@ import {useUser} from "../context/UserContext";
 import client from "../services/config";
 import Exchange, {IExchange} from "../components/Exchange";
 import {ISticker, IStickerData} from "../components/Sticker";
-import {debugStyle, globalExchangesStyles} from "../res/globalStyles";
+import {globalExchangesStyles} from "../res/globalStyles";
 
 const mockedExchanges = [
   {
@@ -56,7 +56,7 @@ const mockedExchanges = [
     ],
     stickers_to_receive: [
       {
-        id: "6328a84a45188115b66b51b8",
+        _id: "6328a84a45188115b66b51b8",
         name: "Emiliano Martinez",
         weight: 990,
         height: 170,

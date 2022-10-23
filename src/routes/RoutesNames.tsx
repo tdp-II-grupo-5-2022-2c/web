@@ -7,5 +7,6 @@ export const ROUTES = {
   MYPROFILE: "/profile",
   MYCOMMUNITIES: "/my-communities",
   COMMUNITY: "/communities/:community_id",
-  MY_EXCHANGES: "/my-exchanges"
+  MY_EXCHANGES: "/my-exchanges",
+  CREATE_EXCHANGE: "/create-exchange"
 }

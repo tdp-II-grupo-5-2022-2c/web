@@ -3,6 +3,8 @@ import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
 import {Button} from "reactstrap";
 import client from "../services/config";
+import {ROUTES} from "./RoutesNames";
+import {useNavigate} from "react-router-dom";
 
 const MyProfile = () => {
   const user = useUser();
@@ -14,6 +16,7 @@ const MyProfile = () => {
     lastname: ""
   };
   const [form, setForm] = useState(initialState)
+  const navigate = useNavigate()
 
   const enableProfileEditing = () => {
     setIsEditing(true)
@@ -41,6 +44,16 @@ const MyProfile = () => {
     // TODO:calculateYearsOld
     return user.date_of_birth
   }
+
+  const handleLogout = () => {
+    try {
+      user.logout();
+    } catch (error) {
+      console.error(error)
+    }
+    navigate(ROUTES.SIGNIN);
+  };
+
 
   return (
     <React.Fragment>
@@ -109,6 +122,7 @@ const MyProfile = () => {
                       <span className="font-weight-light"> {getYearsOld()}</span>
                     </h3>
                     <div><i className="ni education_hat mr-2"></i>{/*TODO:country*/}</div>
+                    <Button onClick={handleLogout}>Cerrar Sesion</Button>
                     <hr className="my-4"/>
                   </div>
                 </div>
