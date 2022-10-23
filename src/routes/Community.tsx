@@ -6,11 +6,17 @@ import client from "../services/config";
 import MyNavbar from "../components/MyNavbar";
 import {Col, Container, Row} from "reactstrap";
 import ChatRoom from "../components/chat/ChatRoom";
+import {useUser} from "../context/UserContext";
+import { useErrorHandler } from "../context/ErrorHandler";
 
 
 function Community() {
   const { community_id } = useParams();
+  const user = useUser();
+  const { setErrorResponse } = useErrorHandler();
+
   const [community, setCommunity] = useState<NoUsersCommunity|undefined>(undefined);
+  const [responseStatusCode, setResponseStatusCode] = useState<number>();
 
   const fetchCommunity = async () => {
     if (!community_id) {
@@ -19,10 +25,18 @@ function Community() {
 
     let _community: NoUsersCommunity | undefined = undefined;
     try {
-      const response = await client.get(`/communities/${community_id}`);
+      const response = await client.get(`/communities/${community_id}`, {
+        headers: {
+          'x-user-id': user._id
+        }
+      });
       _community = response.data
     } catch (error: any) {
       console.log(error.response || error.request || error.message);
+      setErrorResponse({
+        statusCode: error.response?.status || 500,
+        message: "¡Ups! Hubo un problema obteniendo esta comunidad"
+      });
     }
     setCommunity(_community);
   }
@@ -39,8 +53,14 @@ function Community() {
             <h1>{community?.name}</h1>
           </Row>
           <Row>
-            <Col className="col-md-4 offset-md-8 vh-100">
+            <Col className="col-md-4">
+
+            </Col>
+            <Col className="col-md-4 vh-100">
               <ChatRoom roomId={community_id}/>
+            </Col>
+            <Col className="col-md-4">
+
             </Col>
           </Row>
         </Container>

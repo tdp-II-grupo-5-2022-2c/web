@@ -23,6 +23,7 @@ import MyProfile from "./routes/MyProfile";
 import MyCommunities from "./routes/MyCommunities";
 import MyExchanges from "./routes/MyExchanges";
 import Community from "./routes/Community";
+import {ErrorHandler} from "./context/ErrorHandler";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -31,53 +32,55 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
       <BrowserRouter>
-        <UserProvider>
-        <Routes>
-          <Route path="/" element={
-            <ProtectedRoute>
-              <App/>
-            </ProtectedRoute>
-          }/>
-          <Route path={ROUTES.SIGNIN} element={<SignIn/>}/>
-          <Route path={ROUTES.MYSTICKERS} element={
-            <ProtectedRoute>
-              <DndProvider backend={HTML5Backend}>
-                <MyStickers/>
-              </DndProvider>
-            </ProtectedRoute>
-          }/>
-          <Route path={ROUTES.MYALBUM} element={
-            <ProtectedRoute>
-              <MyAlbum/>
-            </ProtectedRoute>
-          } />
-          <Route path={ROUTES.DAILYPACKET} element={
-            <ProtectedRoute>
-              <PacketOpen />
-            </ProtectedRoute>
-          } />
-          <Route path={ROUTES.MYPROFILE} element={
-            <ProtectedRoute>
-              <MyProfile />
-            </ProtectedRoute>
-          } />
-          <Route path={ROUTES.MYCOMMUNITIES} element={
-            <ProtectedRoute>
-              <MyCommunities />
-            </ProtectedRoute>
-          } />
-          <Route path={ROUTES.COMMUNITY} element={
-            <ProtectedRoute>
-              <Community />
-            </ProtectedRoute>
-          } />
-          <Route path={ROUTES.MY_EXCHANGES} element={
-            <ProtectedRoute>
-              <MyExchanges />
-            </ProtectedRoute>
-          } />
-        </Routes>
-        </UserProvider>
+        <ErrorHandler>
+          <UserProvider>
+            <Routes>
+              <Route path="/" element={
+                <ProtectedRoute>
+                  <App/>
+                </ProtectedRoute>
+              }/>
+              <Route path={ROUTES.SIGNIN} element={<SignIn/>}/>
+              <Route path={ROUTES.MYSTICKERS} element={
+                <ProtectedRoute>
+                  <DndProvider backend={HTML5Backend}>
+                    <MyStickers/>
+                  </DndProvider>
+                </ProtectedRoute>
+              }/>
+              <Route path={ROUTES.MYALBUM} element={
+                <ProtectedRoute>
+                  <MyAlbum/>
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.DAILYPACKET} element={
+                <ProtectedRoute>
+                  <PacketOpen />
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.MYPROFILE} element={
+                <ProtectedRoute>
+                  <MyProfile />
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.MYCOMMUNITIES} element={
+                <ProtectedRoute>
+                  <MyCommunities />
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.COMMUNITY} element={
+                <ProtectedRoute>
+                  <Community />
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.MY_EXCHANGES} element={
+                <ProtectedRoute>
+                  <MyExchanges />
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </UserProvider>
+        </ErrorHandler>
       </BrowserRouter>
   </React.StrictMode>
 );

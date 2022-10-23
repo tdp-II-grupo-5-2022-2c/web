@@ -1,4 +1,4 @@
-import {Container} from "reactstrap";
+import {Card, Container} from "reactstrap";
 import MessageInput from "./MessageInput";
 import "./styles.css"
 import MessageList from "./MessageList";
@@ -13,10 +13,10 @@ function ChatRoom({roomId}: Props) {
   return (
       <>
         <h2>💬 Chat</h2>
-        <Container className="messages-container card-translucent container-fluid" fluid>
+        <Card className="messages-container card-translucent container-fluid" fluid>
           <MessageList roomId={roomId}/>
           <MessageInput roomId={roomId}/>
-        </Container>
+        </Card>
       </>
   )
 }

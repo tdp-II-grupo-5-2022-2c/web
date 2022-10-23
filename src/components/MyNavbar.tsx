@@ -8,7 +8,7 @@ const MyNavbar = (args: any) => {
 
   return (
     <React.Fragment>
-      <nav className="navbar navbar-expand navbar-light bg-light">
+      <nav className="navbar navbar-expand navbar-light bg-light mb-4">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">Figus Qatar</a>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">

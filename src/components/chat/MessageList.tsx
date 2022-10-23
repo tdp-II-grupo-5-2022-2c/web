@@ -9,7 +9,7 @@ type Props = {
   roomId: string | undefined
 }
 
-type Message = {
+type MessageInfo = {
   id: string,
   user_id: number,
   displayName: string,
@@ -18,7 +18,7 @@ type Message = {
 }
 
 function MessageList({roomId}: Props) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<MessageInfo[]>([]);
   const user = useUser();
   const containerRef = useRef(null);
 
@@ -32,7 +32,6 @@ function MessageList({roomId}: Props) {
       // @ts-ignore
       //TODO: Debería mover el scroll del chat solo, está moviendo también el de toda la pagina.
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
-      console.log("current container ref")
     }
   })
 
