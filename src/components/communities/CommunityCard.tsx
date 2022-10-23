@@ -1,5 +1,5 @@
 import {Button, Card, CardBody, CardFooter, CardImgOverlay,} from "reactstrap";
-import {globalCommunityStyles} from "../res/globalStyles";
+import {globalCommunityStyles} from "../../res/globalStyles";
 
 // TODO: se llama asi pq todavia no tiene usuarios
 export type NoUsersCommunity = {

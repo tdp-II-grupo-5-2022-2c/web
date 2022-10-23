@@ -8,7 +8,7 @@ const MyNavbar = (args: any) => {
 
   return (
     <React.Fragment>
-      <nav className="navbar navbar-expand navbar-light bg-gradient-orange">
+      <nav className="navbar navbar-expand navbar-light bg-gradient-orange mb-4">
         <div className="container-fluid">
           <a className="navbar-brand text-white" href="/">{"FIFA WORLD CUP\nQat_ar2022"}</a>
           <div className="collapse navbar-collapse d-flex">

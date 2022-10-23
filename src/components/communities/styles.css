@@ -1,0 +1,11 @@
+.users-container {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid var(--color-gray);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 70%;
+    overflow-y: auto;
+}

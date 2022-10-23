@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import 'bootstrap/dist/css/bootstrap.css'
-import "./assets/plugins/nucleo/css/nucleo.css";
+import './assets/plugins/nucleo/css/nucleo.css';
 import './assets/css/argon-dashboard-react.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import './css/App.css';
@@ -24,6 +24,7 @@ import MyCommunities from "./routes/MyCommunities";
 import MyExchanges from "./routes/MyExchanges";
 import Community from "./routes/Community";
 import CreateExchange from "./routes/CreateExchange";
+import {ErrorHandler} from "./context/ErrorHandler";
 import Test from "./routes/Test";
 
 const root = ReactDOM.createRoot(
@@ -33,65 +34,67 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
       <BrowserRouter>
-        <UserProvider>
-        <Routes>
-          <Route path="/" element={
-            <ProtectedRoute>
-              <App/>
-            </ProtectedRoute>
-          }/>
-          <Route path={ROUTES.SIGNIN} element={<SignIn/>}/>
-          <Route path={ROUTES.MYSTICKERS} element={
-            <ProtectedRoute>
-              <DndProvider backend={HTML5Backend}>
-                <MyStickers/>
-              </DndProvider>
-            </ProtectedRoute>
-          }/>
-          <Route path={ROUTES.MYALBUM} element={
-            <ProtectedRoute>
-              <MyAlbum/>
-            </ProtectedRoute>
-          } />
-          <Route path={ROUTES.DAILYPACKET} element={
-            <ProtectedRoute>
-              <PacketOpen />
-            </ProtectedRoute>
-          } />
-          <Route path={ROUTES.MYPROFILE} element={
-            <ProtectedRoute>
-              <MyProfile />
-            </ProtectedRoute>
-          } />
-          <Route path={ROUTES.MYCOMMUNITIES} element={
-            <ProtectedRoute>
-              <MyCommunities />
-            </ProtectedRoute>
-          } />
-          <Route path={ROUTES.COMMUNITY} element={
-            <ProtectedRoute>
-              <Community />
-            </ProtectedRoute>
-          } />
-          <Route path={ROUTES.MY_EXCHANGES} element={
-            <ProtectedRoute>
-               <MyExchanges />
-            </ProtectedRoute>
-          } />
-          <Route path={ROUTES.CREATE_EXCHANGE} element={
-            <ProtectedRoute>
-              <DndProvider backend={HTML5Backend}>
-                <CreateExchange />
-              </DndProvider>
-            </ProtectedRoute>
-          } />
-          <Route path={ROUTES.TEST} element={
-            <ProtectedRoute>
-              <Test />
-            </ProtectedRoute>
-          } />
-        </Routes>
-        </UserProvider>
+        <ErrorHandler>
+          <UserProvider>
+            <Routes>
+              <Route path="/" element={
+                <ProtectedRoute>
+                  <App/>
+                </ProtectedRoute>
+              }/>
+              <Route path={ROUTES.SIGNIN} element={<SignIn/>}/>
+              <Route path={ROUTES.MYSTICKERS} element={
+                <ProtectedRoute>
+                  <DndProvider backend={HTML5Backend}>
+                    <MyStickers/>
+                  </DndProvider>
+                </ProtectedRoute>
+              }/>
+              <Route path={ROUTES.MYALBUM} element={
+                <ProtectedRoute>
+                  <MyAlbum/>
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.DAILYPACKET} element={
+                <ProtectedRoute>
+                  <PacketOpen />
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.MYPROFILE} element={
+                <ProtectedRoute>
+                  <MyProfile />
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.MYCOMMUNITIES} element={
+                <ProtectedRoute>
+                  <MyCommunities />
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.COMMUNITY} element={
+                <ProtectedRoute>
+                  <Community />
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.MY_EXCHANGES} element={
+                <ProtectedRoute>
+                  <MyExchanges />
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.CREATE_EXCHANGE} element={
+                <ProtectedRoute>
+                  <DndProvider backend={HTML5Backend}>
+                    <CreateExchange />
+                  </DndProvider>
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.TEST} element={
+                <ProtectedRoute>
+                  <Test />
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </UserProvider>
+        </ErrorHandler>
       </BrowserRouter>
   </React.StrictMode>
 );
