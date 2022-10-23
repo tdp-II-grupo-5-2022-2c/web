@@ -1,19 +1,18 @@
 import Sticker, {ISticker, IStickerData} from "../Sticker";
 import React from "react";
-import {CardText, Col} from "reactstrap";
+import {CardText} from "reactstrap";
 import {Draggable, DraggableTypes} from "../Draggable";
 
 type Props = {
-  stickers: ISticker[] | IStickerData[],
+  stickers: ISticker[],
   style?: object
 }
 
-const Stickers = ({stickers, style} : Props) => {
+export const Stickers = ({stickers, style} : Props) => {
   return <React.Fragment>
-    <div className="d-flex flex-row">
       {stickers && stickers.map((player, index) =>
-        (player.quantity !== undefined && player.quantity) > 0 &&
-          <div className="m-1" key={player.id} >
+        (player.quantity > 0) &&
+          <div className="p-0 col" key={player.id} >
               <Draggable sticker={player} type={DraggableTypes.STICKER}>
                   <Sticker player={player}
                            displayBadge={true}
@@ -22,11 +21,33 @@ const Stickers = ({stickers, style} : Props) => {
               </Draggable>
           </div>
       )}
-    </div>
     {stickers.length === 0 &&
         <CardText>No se encontró ninguna figurita con este filtro</CardText>
     }
   </React.Fragment>;
 }
 
-export default Stickers
+type Props2 = {
+  stickers: IStickerData[],
+  style?: object
+}
+
+export const AllStickers = ({stickers, style} : Props2) => {
+  return (<React.Fragment>
+    {stickers && stickers.map((player, index) =>
+        <div className="p-0 col" key={player._id}>
+            <Draggable sticker={player} type={DraggableTypes.STICKER} >
+                <Sticker player={player}
+                         displayBadge={true}
+                         style={style}
+                />
+            </Draggable>
+        </div>
+    )}
+    {stickers.length === 0 &&
+        <CardText>No se encontró ninguna figurita con este filtro</CardText>
+    }
+  </React.Fragment>
+  );
+}
+

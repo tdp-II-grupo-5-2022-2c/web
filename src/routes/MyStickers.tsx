@@ -12,7 +12,6 @@ import {useUser} from "../context/UserContext";
 import {Button, CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
 import {ROUTES} from "./RoutesNames";
 import {MyStickersStrings} from "../res/strings";
-import ExchangeCreator from "../components/ExchangeCreator";
 
 export type Filters = {
   name?: string,
@@ -26,18 +25,12 @@ const MyStickers = () => {
 
   const [showPasteOk, setShowPasteOk] = useState(false);
 
-  const [stickersToGive, setStickersToGive] = useState<ISticker[]>([]);
-  const [stickersToReceive, setStickersToReceive] = useState<IStickerData[]>([]);
-
   const [fetchedStickers, setFetchedStickers] = useState<ISticker[]>([])
-  const [allStickers, setAllStickers] = useState<IStickerData[]>([])
   const initialFilterState: Filters = {
     name: undefined,
     country: undefined
   }
   const _searchFilters = useRef<Filters>(initialFilterState);
-  const [isCreatingExchange, setIsCreatingExchange] = useState<boolean>(false)
-  const _isCreatingExchange = useRef(false);
 
   const countriesToFilter = {
     'Argentina': 'ARG',
@@ -67,41 +60,12 @@ const MyStickers = () => {
     }
   }
 
-  const fetchAllStickers = async () => {
-    try {
-      const {data: stickers} = await client.get(`/stickers`);
-      console.log(stickers)
-      setAllStickers(stickers)
-    } catch (error: any) {
-      console.error(
-        "Request failed, response:",
-        error
-      );
-    }
-  }
-
   const closeShowPasteOk = () => {
     setShowPasteOk(false)
   }
 
   const addStickerToAlbum = async (sticker: ISticker) => {
     navigate("../my-album?country=" + sticker.country + "&position=" + sticker.number + "&stickerId=" + sticker.id)
-  }
-
-  const addStickerToExchange = async (sticker: ISticker) => {
-    console.log("adding sticker to give")
-    if (!_isCreatingExchange.current) {
-      setStickersToGive(oldStickersToGive => (
-        oldStickersToGive.findIndex(
-          (element:ISticker) => element.id === sticker.id) < 0 ? [...oldStickersToGive, sticker]
-          : [...oldStickersToGive]
-      ));
-    }
-  }
-
-  const addStickerToExchangeReceive = async (sticker: IStickerData) => {
-    console.log("adding sticker to receive")
-    setStickersToReceive(oldStickersToReceive => [...oldStickersToReceive, sticker]);
   }
 
   const [{isOverAlbum}, dropAlbum] = useDrop(() => ({
@@ -143,24 +107,6 @@ const MyStickers = () => {
                            displayBadge={true}/>
               </Draggable>
           </Col>
-      )}
-      {stickers && stickers.length === 0 && user.stickers.length > 0 &&
-          <Col>
-              <CardText>No se encontró ninguna figurita con este filtro</CardText>
-          </Col>
-      }
-    </React.Fragment>;
-  }
-
-  const AllStickersList = ({stickers}: { stickers: IStickerData[] }) => {
-    return <React.Fragment>
-      {stickers.map((player, index) =>
-        <Col key={player.id} className="col-md-3 p-3 d-flex justify-content-center">
-          <Draggable sticker={player} type={DraggableTypes.STICKER}>
-            <Sticker player={player}
-                     displayBadge={true}/>
-          </Draggable>
-        </Col>
       )}
       {stickers && stickers.length === 0 && user.stickers.length > 0 &&
           <Col>
@@ -214,9 +160,8 @@ const MyStickers = () => {
               </Form>
             </Row>
             <Row>
-              {!isCreatingExchange && <StickersList stickers={fetchedStickers}/>}
-              {isCreatingExchange && <AllStickersList stickers={allStickers}/>}
-              {!isCreatingExchange && user.stickers.length === 0 && fetchedStickers.length === 0 &&
+              <StickersList stickers={fetchedStickers}/>
+              {user.stickers.length === 0 && fetchedStickers.length === 0 &&
                   <Col>
                       <CardText>No tienes figuritas, abrí un nuevo paquete</CardText>
                       <Button>
@@ -227,9 +172,9 @@ const MyStickers = () => {
             </Row>
           </Col>
           <Col className="col-md-2">
-            {!isCreatingExchange && <div className="row" ref={dropAlbum}>
+            <div className="row" ref={dropAlbum}>
               <DropBoard title={MyStickersStrings.PASTE_TO_ALBUM_TITLE} body={MyStickersStrings.PASTE_TO_ALBUM_BODY}/>
-            </div>}
+            </div>
           </Col>
         </Row>
       </Container>

@@ -12,16 +12,16 @@ export type ISticker = {
 }
 
 export type IStickerData = {
-  "id": string,
-  "name": string,
-  "weight": number,
-  "height": number,
-  "position": string,
-  "country": string,
-  "image": string,
-  "number": number,
-  "date_of_birth": string
-  "quantity": number | undefined
+  _id: string,
+  name: string,
+  weight: number,
+  height: number,
+  position: string,
+  country: string,
+  image: string,
+  number: number,
+  date_of_birth: string
+  quantity: number | undefined
 
 }
 

@@ -25,7 +25,7 @@ export const Draggable = ({sticker, children, type} : Props) => {
   )
 
   return (
-    <div ref={dragRef} style={{ opacity }}>
+    <div className="p-0" ref={dragRef} style={{opacity}} >
       {children}
     </div>
   )

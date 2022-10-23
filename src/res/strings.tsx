@@ -14,6 +14,6 @@ export const MyStickersStrings = {
 export const CreateExchangeStrings = {
     EXCHANGE_GIVE_TITLE: "Figuritas a dar",
     EXCHANGE_RECEIVE_TITLE: "Figuritas a recibir",
-    EXCHANGE_GIVE_HINT: "Suelta aqui las figuritas que quieras intercambiar",
+    EXCHANGE_GIVE_HINT: "Arrastra hasta aqui para agregar una figurita",
     EXCHANGE_RECEIVE_HINT: "Suelta aqui las figuritas que quieras recibir"
 }
