@@ -7,7 +7,7 @@ import Packet from "../components/Packet";
 import client from "../services/config";
 import {useUser} from "../context/UserContext";
 import {ROUTES} from "./RoutesNames";
-import MyModal from "../components/MyModal";
+import {MyModal} from "../components/MyModal";
 
 const PACKET_OPENING_ERROR_MESSAGES = {
   NOT_ENOUGH_STICKERS: "En este momento no tenemos paquetes disponibles",

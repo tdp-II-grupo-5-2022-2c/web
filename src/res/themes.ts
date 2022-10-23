@@ -6,7 +6,8 @@ export const stickerColors = {
 
 export const qatarColors = {
   primary: "#FFFFFF",
-  secondary: "#8D1B3D",
+  secondaryDark: "#8D1B3D",
+  secondary: "#E50053",
 }
 
 export const albumColors = {

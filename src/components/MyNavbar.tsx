@@ -8,33 +8,17 @@ const MyNavbar = (args: any) => {
 
   return (
     <React.Fragment>
-      <nav className="navbar navbar-expand navbar-light bg-light">
+      <nav className="navbar navbar-expand navbar-light bg-gradient-orange">
         <div className="container-fluid">
-          <a className="navbar-brand" href="/">Figus Qatar</a>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a className="nav-link" href={ROUTES.HOME}>Home</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href={ROUTES.MYSTICKERS}>Mis Figus</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href={ROUTES.DAILYPACKET}>Paquete diario</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href={ROUTES.MYPROFILE}>Mi perfil</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href={ROUTES.MYALBUM}>Mi Album</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href={ROUTES.MYCOMMUNITIES}>Mis Comunidades</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href={ROUTES.MY_EXCHANGES}>Mis Intercambios</a>
-              </li>
-            </ul>
+          <a className="navbar-brand text-white" href="/">{"FIFA WORLD CUP\nQat_ar2022"}</a>
+          <div className="collapse navbar-collapse d-flex">
+              <a className="nav-link text-white" href={ROUTES.HOME}>Home</a>
+              <a className="nav-link text-white" href={ROUTES.MYSTICKERS}>Mis Figus</a>
+              <a className="nav-link text-white" href={ROUTES.DAILYPACKET}>Paquete diario</a>
+              <a className="nav-link text-white" href={ROUTES.MYPROFILE}>Mi perfil</a>
+              <a className="nav-link text-white" href={ROUTES.MYALBUM}>Mi Album</a>
+              <a className="nav-link text-white" href={ROUTES.MYCOMMUNITIES}>Mis Comunidades</a>
+              <a className="nav-link text-white" href={ROUTES.MY_EXCHANGES}>Mis Intercambios</a>
           </div>
         </div>
       </nav>

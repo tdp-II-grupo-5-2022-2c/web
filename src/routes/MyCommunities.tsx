@@ -4,7 +4,7 @@ import {useUser} from "../context/UserContext";
 import {Button, Row} from "reactstrap";
 import ModalForm, {CreateCommunityForm} from "../components/ModalForm";
 import client from "../services/config";
-import MyModal from "../components/MyModal";
+import {MyModal} from "../components/MyModal";
 import {CommunityCreationStrings} from "../res/strings";
 import CommunityCard, {NoUsersCommunity} from "../components/CommunityCard";
 import {useNavigate} from "react-router-dom";

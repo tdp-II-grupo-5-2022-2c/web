@@ -1,4 +1,4 @@
-import {stickerColors} from "./themes";
+import {qatarColors, stickerColors} from "./themes";
 
 export const globalStickerStyles = {
   sticker:{
@@ -22,6 +22,18 @@ export const globalExchangesStyles = {
   arrows:{
     fontSize: "50px"
   },
+}
+
+export const globalButtonsStyle = {
+  primary:{
+    backgroundColor: qatarColors.secondaryDark,
+  },
+  alternative:{
+    backgroundColor: qatarColors.secondary,
+  },
+  white:{
+    backgroundColor: qatarColors.primary,
+  }
 }
 
 export const debugStyle = {
