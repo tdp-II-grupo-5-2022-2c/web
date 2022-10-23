@@ -6,7 +6,7 @@ import {useUser} from "../context/UserContext";
 import {ISticker, IStickerData} from "../components/Sticker";
 import MyNavbar from "../components/MyNavbar";
 import {useDrop} from "react-dnd";
-import {globalStickerStyles} from "../res/globalStyles";
+import {globalButtonsStyle, globalStickerStyles} from "../res/globalStyles";
 import {isSearchValid} from "../services/validator";
 import {Button, Form, FormGroup, Input, InputGroup, InputGroupText} from "reactstrap";
 import {StickerStack, StickerStack2} from "../components/stickers/StickerStack";
@@ -14,6 +14,9 @@ import {CreateExchangeStrings} from "../res/strings";
 import {DraggableTypes} from "../components/Draggable";
 import {useForm} from "react-hook-form";
 import PlayersInfo from "../components/stickers/PlayersInfo";
+import {MyModal2} from "../components/MyModal";
+import {useNavigate} from "react-router-dom";
+import {ROUTES} from "./RoutesNames";
 
 const CreateExchange = () => {
   const user = useUser()
@@ -30,6 +33,18 @@ const CreateExchange = () => {
   const [stickersToGive, setStickersToGive] = useState<ISticker[]>([])
   const [stickersToReceive, setStickersToReceive] = useState<IStickerData[]>([])
 
+  const [isReadyToCreate, setIsReadyToCreate] = useState(false)
+
+  const initialModalState = {
+    header: "",
+    body: "",
+  };
+  const [modal, setModal] = useState(initialModalState)
+  const [showModal, setShowModal] = useState(false)
+  const [errorModal, setErrorModal] = useState(initialModalState)
+  const [showErrorModal, setShowErrorModal] = useState(false)
+
+  const navigate = useNavigate();
   const {register} = useForm();
 
   const PICKING_STATE_TITLE = {
@@ -42,6 +57,12 @@ const CreateExchange = () => {
   useEffect(() => {
     _fetchUserStickers()
   }, [])
+
+  useEffect(() => {
+    if(stickersToGive.length > 0 && stickersToReceive.length > 0){
+      setIsReadyToCreate(true)
+    }
+  }, [stickersToGive.length, stickersToReceive.length])
 
   const _fetchUserStickers = async () => {
     const stickers = await fetchUserStickers(user._id, _searchFilters.current)
@@ -107,6 +128,7 @@ const CreateExchange = () => {
           : [...oldStickersToGive]
       ));
     }
+
   }
 
   const addStickerToExchangeReceive = async (sticker: IStickerData) => {
@@ -135,6 +157,40 @@ const CreateExchange = () => {
     })
   }))
 
+  const createExchange = async () => {
+    const form = {
+      user: user._id,
+      stickers_to_give: [],
+      stickers_to_receive: []
+    }
+    try {
+      //const {data: createdExchange} = await client.post("/exchanges", form)
+      setModal({header:"TODO: falta pegarle al endpoint", body: CreateExchangeStrings.EXCHANGE_CREATED})
+      setShowModal(true)
+    } catch (error: any) {
+      if (error.response) {
+        if(error.response.data?.detail === "TODO: error comunidad mismo nombre"){
+          setErrorModal({header:"", body: "Error al crear intercambio"})
+          setShowErrorModal(true)
+        }
+        console.log(error.response);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+    }
+  }
+
+  const closeModal = () => {
+    setShowModal(false)
+    navigate(`../${ROUTES.MY_EXCHANGES}`)
+  }
+
+  const closeErrorModal = () => {
+    setShowErrorModal(false)
+  }
+
   const StickersPicker = () => {
 
     const styles = {
@@ -162,9 +218,12 @@ const CreateExchange = () => {
 
     return (
       <div className="card p-1" style={styles.stickersPickers}>
-        {/*TODO titulo depende de que estoy eligiendo*/}
+        <div className="card-body">
         <div className="row">
           <h1 className="text-white">{isGiving ? PICKING_STATE_TITLE.give : PICKING_STATE_TITLE.receive}</h1>
+          {isReadyToCreate &&
+              <h1 className="text-green m-0">{CreateExchangeStrings.EXCHANGE_READY}</h1>}
+
         </div>
         {/*Buscador y botones*/}
         <div className="row">
@@ -183,7 +242,7 @@ const CreateExchange = () => {
             : <AllStickers stickers={allStickers} style={globalStickerStyles.stickerSmall}/>
           }
         </div>
-      </div>
+      </div></div>
     )
   }
 
@@ -204,8 +263,8 @@ const CreateExchange = () => {
                 <h1 className="text-white">Voy a dar</h1>
                 <StickerStack stickers={stickersToGive}/>
                 <PlayersInfo stickers={stickersToGive}/>
-                {isGiving && <div className="card text-center">
-                    <p>{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
+                {isGiving && <div className="text-center" style={globalButtonsStyle.alternative}>
+                    <p className="text-white">{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
                 </div>}
               </div>
             </div>
@@ -214,10 +273,11 @@ const CreateExchange = () => {
                 <h1 className="text-white">Voy a recibir</h1>
                 <StickerStack2 stickers={stickersToReceive}/>
                 <PlayersInfo stickers={stickersToReceive}/>
-                {!isGiving && <div className="card text-center">
-                    <p>{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
+                {!isGiving && <div className="text-center" style={globalButtonsStyle.alternative}>
+                    <p className="text-white">{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
                 </div>}
               </div>
+
             </div>
           </div>
         </div>
@@ -228,18 +288,24 @@ const CreateExchange = () => {
   return (
     <React.Fragment>
       <MyNavbar/>
+      <h1>Creando Intercambio</h1>
       <div className="container">
         <div className="row">
           {/*Selector de figuritas*/}
           <div className="col">
             <StickersPicker/>
-          </div>
+           </div>
           {/*Intercambio*/}
           <div className="col">
             <MyExchangeCreator/>
+            {isReadyToCreate && <Button style={globalButtonsStyle.alternative} block onClick={createExchange}>
+              <p className="text-white m-0">Confirmar</p>
+            </Button>}
           </div>
         </div>
       </div>
+      <MyModal2 modal={modal} isOpen={showModal} onAccept={closeModal}/>
+      <MyModal2 modal={errorModal} isOpen={showErrorModal} onAccept={closeErrorModal}/>
     </React.Fragment>
 
   )

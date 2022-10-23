@@ -15,5 +15,8 @@ export const CreateExchangeStrings = {
     EXCHANGE_GIVE_TITLE: "Figuritas a dar",
     EXCHANGE_RECEIVE_TITLE: "Figuritas a recibir",
     EXCHANGE_GIVE_HINT: "Arrastra hasta aqui para agregar una figurita",
-    EXCHANGE_RECEIVE_HINT: "Suelta aqui las figuritas que quieras recibir"
+    EXCHANGE_READY: "¡Todo listo, apreta Confirmar para publicar tu intercambio!",
+    EXCHANGE_CREATED: "Intercambio creado exitosamente"
 }
+
+

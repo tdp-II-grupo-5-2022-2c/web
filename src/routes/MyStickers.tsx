@@ -7,7 +7,7 @@ import DropBoard from "../components/DropBoard";
 import {useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import client from "../services/config";
-import MyModal from "../components/MyModal";
+import {MyModal} from "../components/MyModal";
 import {useUser} from "../context/UserContext";
 import {Button, CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
 import {ROUTES} from "./RoutesNames";
