@@ -60,6 +60,18 @@ const CreateExchange = () => {
   }, [])
 
   useEffect(() => {
+    if(stickersToGive.length > 0){
+      const stickersToGiveCpy = stickersToGive.slice()
+      const index = fetchedStickers.findIndex(element => stickersToGiveCpy[stickersToGiveCpy.length-1].id === element.id)
+      if(index > 0){
+        const fetchedStickersCpy = fetchedStickers.slice()
+        fetchedStickersCpy[index].quantity = fetchedStickersCpy[index].quantity - 1
+        setFetchedStickers(fetchedStickersCpy)
+      }
+    }
+  }, [stickersToGive.length])
+
+  useEffect(() => {
     if(stickersToGive.length > 0 && stickersToReceive.length > 0){
       setIsReadyToCreate(true)
     }
@@ -99,6 +111,7 @@ const CreateExchange = () => {
   }
 
   const clean = () => {
+    _fetchUserStickers()
     setStickersToGive([])
     setStickersToReceive([])
     setIsGiving(true)
@@ -244,7 +257,7 @@ const CreateExchange = () => {
         <div className="card-body">
         <div className="row">
           <h1 className="text-white">{isGiving ? PICKING_STATE_TITLE.give : PICKING_STATE_TITLE.receive}</h1>
-          {isReadyToCreate &&
+          {stickersToGive.length > 0 && stickersToReceive.length > 0 &&
               <h1 className="text-green m-0">{CreateExchangeStrings.EXCHANGE_READY}</h1>}
 
         </div>
@@ -321,7 +334,7 @@ const CreateExchange = () => {
           {/*Intercambio*/}
           <div className="col">
             <MyExchangeCreator/>
-            {isReadyToCreate && <Button style={globalButtonsStyle.alternative} block onClick={createExchange}>
+            {stickersToGive.length > 0 && stickersToReceive.length > 0 && <Button style={globalButtonsStyle.alternative} block onClick={createExchange}>
               <p className="text-white m-0">Confirmar</p>
             </Button>}
           </div>
