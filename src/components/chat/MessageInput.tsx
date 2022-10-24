@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useUser} from "../../context/UserContext";
-import {sendMessage} from "../../firebase";
+import {getCurrentTimestamp, getMessages, sendMessage} from "../../firebase";
 import {Button, Form, Input, InputGroup, Row} from "reactstrap";
 import "./styles.css";
+import {MessageInfo} from "./MessageList";
 
 type Props = {
   roomId: string | undefined
@@ -11,19 +12,60 @@ type Props = {
 function MessageInput({roomId}: Props) {
   const user = useUser();
   const [value, setValue] = useState<string>('');
+  const [messages, setMessages] = useState<MessageInfo[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string|undefined>(undefined);
+
   const MAX_LENGTH = 50;
+  const MAX_PERIOD_MESSAGES_USER = 5;
+  const MAX_PERIOD = 60; //2 minutos (segundos)
 
   const handleChange = (event: any) => {
-    setValue(event.target.value);
+    if (event.target.value.length <= MAX_LENGTH) {
+      setValue(event.target.value);
+    }
   }
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    sendMessage(roomId, user, value).then((response) => {
-      console.log("Send message response... " + JSON.stringify(response));
-    });
-    setValue('');
+    if (userLimitMessages()) {
+      setErrorMessage("Debes esperar un momento antes de publicar mas mensajes");
+    } else {
+      setErrorMessage(undefined);
+      sendMessage(roomId, user, value);
+      setValue('');
+    }
   }
+
+  const userLimitMessages = () => {
+    let lastMessages = messages.slice(-MAX_PERIOD_MESSAGES_USER);
+    console.log("last messages: " + JSON.stringify(lastMessages));
+    if (!lastMessages)
+      return false;
+
+    for (let i = 0; i < lastMessages.length; i++) {
+      if (!lastMessages.at(i)) {
+        return false
+      }
+
+      if (lastMessages.at(i)?.user_id !== user._id) {
+        return false;
+      }
+
+      // @ts-ignore
+      let messageAge = getCurrentTimestamp().seconds - lastMessages.at(i)?.timestamp.seconds;
+      console.log("Message: " + lastMessages.at(i)?.text +  " Message age: " + messageAge);
+      if (messageAge > MAX_PERIOD) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  useEffect(() => {
+    const unsubscribe = getMessages(roomId, setMessages);
+    return unsubscribe;
+  }, [roomId]);
 
   return (
       <>
@@ -45,7 +87,7 @@ function MessageInput({roomId}: Props) {
                 Enviar
               </Button>
             </InputGroup>
-            {value.length > MAX_LENGTH && <small className="text-danger">Este es un mensaje muy largo que supera el límite</small>}
+            {errorMessage && <small className="text-danger">{errorMessage}</small>}
           </Row>
         </Form>
       </>

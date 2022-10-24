@@ -6,6 +6,7 @@ import {
   addDoc,
   collection,
   serverTimestamp,
+    Timestamp,
   onSnapshot,
   query,
   orderBy,
@@ -74,4 +75,8 @@ function getMessages(roomId, callback) {
   )
 }
 
-export {sendMessage, getMessages};
+function getCurrentTimestamp() {
+  return Timestamp.fromDate(new Date());
+}
+
+export {sendMessage, getMessages, getCurrentTimestamp};
