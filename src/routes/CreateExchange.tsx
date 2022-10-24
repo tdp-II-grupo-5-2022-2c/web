@@ -216,6 +216,9 @@ const CreateExchange = () => {
     const styles = {
       stickersPickers:{
         backgroundImage: `url("/images/bg_stickers.jpeg")`
+      },
+      stickersPickersReceive:{
+        backgroundImage: `url("/images/qatar_bg_4.jpeg")`
       }
     }
 
@@ -237,7 +240,7 @@ const CreateExchange = () => {
     }
 
     return (
-      <div className="card p-1" style={styles.stickersPickers}>
+      <div className="card p-1" style={isGiving ? styles.stickersPickers : styles.stickersPickersReceive}>
         <div className="card-body">
         <div className="row">
           <h1 className="text-white">{isGiving ? PICKING_STATE_TITLE.give : PICKING_STATE_TITLE.receive}</h1>
