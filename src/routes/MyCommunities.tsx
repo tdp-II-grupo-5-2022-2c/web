@@ -1,23 +1,43 @@
-import React, {useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
-import {Button, Row} from "reactstrap";
+import {
+  Badge,
+  Button,
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  InputGroup,
+  InputGroupText,
+  ListGroup,
+  ListGroupItem,
+  Row
+} from "reactstrap";
 import ModalForm, {CreateCommunityForm} from "../components/ModalForm";
 import client from "../services/config";
 import {MyModal} from "../components/MyModal";
 import {CommunityCreationStrings} from "../res/strings";
-import CommunityCard, {NoUsersCommunity} from "../components/communities/CommunityCard";
 import {useNavigate} from "react-router-dom";
+import {useForm} from "react-hook-form";
+
+export type NoUsersCommunity = {
+  "_id": string,
+  "name": string,
+  "owner": number,
+}
 
 const MyCommunities = () => {
   const user = useUser();
+  const {register} = useForm();
+
   const [showCreateCommunityFormModal, setShowCreateCommunityFormModal] = useState(false);
   const initialFormState: CreateCommunityForm = {
     name: "",
     password: "",
   };
   const [createCommunityForm, setCreateCommunityForm] = useState(initialFormState)
-  const [adminCommunities, setAdminCommunities] = useState<NoUsersCommunity[]>([])
   const [memberCommunities, setMemberCommunities] = useState<NoUsersCommunity[]>([])
   const initialModalState = {
     header: "",
@@ -26,18 +46,21 @@ const MyCommunities = () => {
   const [showCreateCommunityResultModal, setShowCreateCommunityResultModal] = useState(false);
   const [createCommunityResultModal, setCreateCommunityResultModal] = useState(initialModalState);
 
-  const [modal, setModal] = useState(initialModalState)
   const navigate = useNavigate();
+  const [searchFilters, setSearchFilters] = useState<{name: string|undefined, owner: boolean|undefined}>({
+    name: undefined,
+    owner: undefined
+  });
 
   useEffect(() => {
-    fetchCommunitiesAsAdmin()
     fetchCommunitiesAsMember()
   }, [])
 
-  const fetchCommunities = async (ownerId?: number, memberId?: number) => {
+  const fetchCommunities = async (ownerId?: number, memberId?: number, name?: string) => {
     const _params = {
-      owner_id: ownerId || undefined,
-      member_id: memberId || undefined
+      owner: ownerId || undefined,
+      member: memberId || undefined,
+      name: name || undefined
     }
 
     let fetchedCommunities: any = []
@@ -55,10 +78,6 @@ const MyCommunities = () => {
     }
 
     return fetchedCommunities
-  }
-
-  const fetchCommunitiesAsAdmin = async () => {
-    setAdminCommunities(await fetchCommunities(user._id))
   }
 
   const fetchCommunitiesAsMember = async () => {
@@ -84,7 +103,6 @@ const MyCommunities = () => {
     try {
       const {data: createdCommunity} = await client.post("/communities", form)
       setCreateCommunityResultModal({header: CommunityCreationStrings.COMMUNITY_CREATION_OK_HEAD, body: CommunityCreationStrings.COMMUNITY_CREATED})
-      fetchCommunitiesAsAdmin()
       fetchCommunitiesAsMember()
       setShowCreateCommunityResultModal(true)
     } catch (error: any) {
@@ -115,55 +133,91 @@ const MyCommunities = () => {
     setShowCreateCommunityResultModal(false)
   }
 
-  const viewCommunity = (event: MouseEvent) => {
+  const viewCommunity = (event: any) => {
     // @ts-ignore
+    console.log("target")
+    console.log(event.target)
     let communityId = event.target.id;
     navigate(`/communities/${communityId}`)
+  }
+
+  const searchCommunities = async () => {
+    console.log(searchFilters)
+    if(searchFilters.owner === false || searchFilters.owner === undefined)
+      setMemberCommunities(await fetchCommunities(undefined, user._id, searchFilters.name));
+    else
+      setMemberCommunities(await fetchCommunities(user._id, undefined, searchFilters.name))
+  }
+
+  const onChangeFilterHandler = ({target: {id, value}}: any) => {
+    // @ts-ignore
+    console.log("value: " + value)
+    let _searchFilters = searchFilters
+    _searchFilters.name = value
+    setSearchFilters(_searchFilters);
+    searchCommunities();
+  }
+
+  const handleFilterChange = () => {
+    return (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.value.length >= 3 || e.target.value.length === 0) onChangeFilterHandler(e)
+    };
   }
 
   return (
     <React.Fragment>
       <MyNavbar/>
-        <div className="row">
-          <div className="col-md-2">
-            <div className="row"></div>
-          </div>
-          <div className="col-md-8">
-            <div className="row">
-              <h2>Comunidades de las que soy administrador</h2>
-              {adminCommunities.map((community, index) =>
-                <div key={community._id} className="col col-md-3">
-                  <CommunityCard community={community}
-                                 isOwner={user._id === community.owner}
-                                 onClick={viewCommunity}
-                  />
-                </div>
-              )}
-              {adminCommunities.length === 0 &&
-                  <p>No eres administrador de ninguna comunidad, todavía</p>
-              }
-            </div>
-            <div className="row">
-              <h2>Comunidades de las que soy miembro</h2>
-              {memberCommunities.map((community, index) =>
-                <div key={community._id} className="col col-sm-3">
-                  <CommunityCard community={community}
-                                 isOwner={user._id === community.owner}
-                                 onClick={viewCommunity}
-                  />
-                </div>
-              )}
-              {memberCommunities.length === 0 &&
-                  <p>Al parecer no perteneces a ninguna comunidad, todavía</p>
-              }
-            </div>
-          </div>
-          <div className="col-md-2">
+      <Container fluid>
+        <Row>
+          <Col lg={6} md={6} sm={6}>
+            <h1>Comunidades</h1>
+          </Col>
+          <Col className="text-end mb-1" lg={6} md={6} sm={6}>
+            <Button color="success" onClick={onCreateCommunityClick}>Crear Comunidad</Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col lg={2} md={12}>
             <Row>
-              <Button onClick={onCreateCommunityClick}>Crear Comunidad</Button>
+              <Col lg={12} md={6}>
+                <Button className="ml-0 mb-2" color="primary" block> Administrador </Button>
+              </Col>
+              <Col lg={12} md={6}>
+                <Button className="ml-0 mb-2" color="default" block> Todos </Button>
+              </Col>
             </Row>
-          </div>
-      </div>
+          </Col>
+          <Col className="offset-lg-1" lg={6} md={12}>
+            <Row>
+              <Form className="navbar-search">
+                <FormGroup className="mb-0">
+                  <InputGroup className="input-group-alternative bg-white">
+                    <InputGroupText>
+                      <i className="fas fa-search"/>
+                    </InputGroupText>
+                    <Input placeholder="Buscar" type="text" id="name" {...register("name", {
+                      onChange: handleFilterChange()
+                    })} />
+                  </InputGroup>
+                </FormGroup>
+              </Form>
+            </Row>
+            <ListGroup>
+            {memberCommunities
+                .sort((a,b) => a.owner === user._id ? -1 : 0)
+                .map((community, index) =>
+            <ListGroupItem className="justify-content-between" key={community._id} action onClick={viewCommunity} id={community._id} tag="button">
+              <span id={community._id} className="mr-2">{community.name}</span>
+              {
+                user._id === community.owner &&
+                <Badge id={community._id} pill color="default">Administrador</Badge>
+              }
+            </ListGroupItem>
+            )}
+            </ListGroup>
+          </Col>
+        </Row>
+      </Container>
       <ModalForm header={"Crear comunidad"}
                  body={"Completa con el nombre de la comunidad y agrega una contraseña"}
                  isOpen={showCreateCommunityFormModal}
