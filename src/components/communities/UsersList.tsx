@@ -3,8 +3,9 @@ import {Card, List, Media} from "reactstrap";
 import "./styles.css"
 
 type UserInfo = {
-  user_id: number,
-  name: string
+  id: string,
+  name: string,
+  lastname: string
 }
 
 type Props = {
@@ -18,7 +19,7 @@ function UsersList({users}: Props) {
         <Card className="bg-transparent border-0">
           <List type="unstyled">
             {users.map((x) => (
-              <Media key={x.user_id} className="align-items-center">
+              <Media key={x.id} className="align-items-center">
                 <div>
                 <span className="avatar avatar-sm rounded-circle ">
                   <img
@@ -29,7 +30,7 @@ function UsersList({users}: Props) {
                 </div>
                 <Media className="ml-2 d-lg-block">
                   <span className="mb-0 text-sm font-weight-bold">
-                    {x.name}
+                    {x.name + ' ' + x.lastname}
                   </span>
                 </Media>
               </Media>

@@ -12,7 +12,7 @@ import {MyModal} from "../components/MyModal";
 import CommunityInviteLink from "../components/communities/CommunityInviteLink";
 
 export type CommunityInfo = {
-  "_id": number,
+  "_id": string,
   "name": string,
   "owner": number,
   "users": any[],
@@ -28,10 +28,6 @@ function Community() {
   const [inviteModalOpen, setInviteModalOpen] = useState<boolean>(false);
 
   const fetchCommunity = async () => {
-    if (!community_id) {
-      return;
-    }
-
     let _community: CommunityInfo | undefined = undefined;
     try {
       const response = await client.get(`/communities/${community_id}`, {
@@ -39,53 +35,8 @@ function Community() {
           'x-user-id': user._id
         }
       });
+      response.data._id = response.data.id //hack: ahora el back trae id... again...
       _community = response.data
-
-      //TODO: Sacar esto, es temporal mientras estan los users en back
-      if (_community) {
-        _community.users = [
-          {
-            user_id: 1,
-            name: 'Daniela Carrero'
-          },
-          {
-            user_id: 2,
-            name: 'Agustín Leguizamon Albaricoque'
-          },
-          {
-            user_id: 3,
-            name: 'Agustín Leguizamon'
-          },
-          {
-            user_id: 4,
-            name: 'Agustín Leguizamon'
-          },
-          {
-            user_id: 5,
-            name: 'Agustín Leguizamon'
-          },
-          {
-            user_id: 6,
-            name: 'Agustín Leguizamon'
-          },
-          {
-            user_id: 7,
-            name: 'Agustín Leguizamon'
-          },
-          {
-            user_id: 8,
-            name: 'Agustín Leguizamon'
-          },
-          {
-            user_id: 9,
-            name: 'Agustín Leguizamon'
-          },
-          {
-            user_id: 10,
-            name: 'Agustín Leguizamon'
-          }
-        ]
-      }
     } catch (error: any) {
       console.log(error.response || error.request || error.message);
       setErrorResponse({
@@ -138,6 +89,7 @@ function Community() {
                          body={<CommunityInviteLink community={community}/>}
                          isOpen={inviteModalOpen}
                          onAccept={toggleInvite}
+                         size="lg"
                 />
               </>
           }
