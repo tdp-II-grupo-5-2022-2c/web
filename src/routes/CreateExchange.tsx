@@ -186,8 +186,11 @@ const CreateExchange = () => {
       setShowModal(true)
     } catch (error: any) {
       if (error.response) {
-        if(error.response.data?.detail === "TODO: error comunidad mismo nombre"){
-          setErrorModal({header:"", body: "Error al crear intercambio"})
+        if(error.response.data?.detail === "Could not create Exchange. stickers_to_receive and stickers_to_give must not have sticker in common"){
+          setErrorModal({header:"Error al crear intercambio", body: "No puedes dar y recibir la misma figurita en un intercambio"})
+          setShowErrorModal(true)
+        } else if (error.response.data?.detail === "Could not create Exchange. user reached max amount of pending exchanges") {
+          setErrorModal({header:"Error al crear intercambio", body: "No puedes generar más de 3 intercambios a la vez"})
           setShowErrorModal(true)
         }
         console.log(error.response);

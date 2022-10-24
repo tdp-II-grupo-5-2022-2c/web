@@ -24,6 +24,7 @@ export const StickerStack = ({stickers, offset, isCreating = false}: Props) => {
               <Sticker player={stickers[0]}
                        style={globalStickerStyles.stickerSmall}
                        displayBadge={true}
+                       displayQuantity={false}
               />
             </div>
             {stickers.slice(1).map((sticker, index) =>
@@ -31,6 +32,7 @@ export const StickerStack = ({stickers, offset, isCreating = false}: Props) => {
                 <Sticker player={sticker}
                          style={globalStickerStyles.stickerSmall}
                          displayBadge={true}
+                         displayQuantity={false}
                 />
               </div>
             )}
