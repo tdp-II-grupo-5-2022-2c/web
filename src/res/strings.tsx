@@ -21,8 +21,9 @@ export const CreateExchangeStrings = {
 
 export const ExchangeStrings = {
   EXCHANGE_ACCEPT_OK: "Intercambio realizado con éxito",
-  EXCHANGE_ACCEPT_ERROR: "Hubo un error al aceptar intercambio",
-  EXCHANGE_REJECT_ERROR: "Hubo un error al rechazar intercambio",
+  EXCHANGE_HEADER: "Intercambio",
+  EXCHANGE_ACCEPT_ERROR: "Hubo un error al aceptar el intercambio",
+  EXCHANGE_REJECT_ERROR: "Hubo un error al rechazar el intercambio",
 }
 
 

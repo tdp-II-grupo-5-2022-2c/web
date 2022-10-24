@@ -4,11 +4,13 @@ import {StickerStack, StickerStack2} from "./stickers/StickerStack";
 import PlayersInfo from "./stickers/PlayersInfo";
 import {Button} from "reactstrap";
 import {debugStyle, globalButtonsStyle} from "../res/globalStyles";
+import {User} from "../context/UserContext";
 
 export type IExchange = {
   _id: string,
   sender_id: string,
-  stickers_to_give: ISticker[],
+  sender: User,
+  stickers_to_give: IStickerData[],
   stickers_to_receive: IStickerData[],
   blacklist_user_ids: string[],
   completed: boolean
@@ -17,8 +19,8 @@ export type IExchange = {
 type Props = {
   exchange: IExchange,
   isOwner?: boolean,
-  onAccept?: (id:string) => void,
-  onReject?: (id:string) => void
+  onAccept?: (id: string) => void,
+  onReject?: (id: string) => void
 }
 
 const Exchange = ({exchange, isOwner = true, onAccept, onReject}: Props) => {
@@ -44,7 +46,7 @@ const Exchange = ({exchange, isOwner = true, onAccept, onReject}: Props) => {
                 </Button>}
           </div>
           <div className="col-6">
-            <h1 className="text-white">Jessica Jones</h1>
+            <h1 className="text-white">{exchange.sender.name}</h1>
           </div>
           <div className="col-3">
             {!isOwner && onReject &&
@@ -55,7 +57,7 @@ const Exchange = ({exchange, isOwner = true, onAccept, onReject}: Props) => {
         </div>
         <div className="row">
           <div className="col">
-            <StickerStack stickers={exchange.stickers_to_give} offset={0.5}/>
+            <StickerStack2 stickers={exchange.stickers_to_give} offset={0.5}/>
             <PlayersInfo stickers={exchange.stickers_to_give}/>
           </div>
           <div className="col position-absolute">
