@@ -17,6 +17,7 @@ import PlayersInfo from "../components/stickers/PlayersInfo";
 import {MyModal2} from "../components/MyModal";
 import {useNavigate} from "react-router-dom";
 import {ROUTES} from "./RoutesNames";
+import client from "../services/config";
 
 const CreateExchange = () => {
   const user = useUser()
@@ -157,15 +158,31 @@ const CreateExchange = () => {
     })
   }))
 
+  const getStickersId = (stickers: ISticker[]) => {
+    const stickersIds: string[] = []
+    stickers.forEach(sticker => {
+      stickersIds.push(sticker.id)
+    })
+    return stickersIds
+  }
+
+  const getStickersDataId = (stickers: IStickerData[]) => {
+    const stickersIds: string[] = []
+    stickers.forEach(sticker => {
+      stickersIds.push(sticker._id)
+    })
+    return stickersIds
+  }
+
   const createExchange = async () => {
     const form = {
-      user: user._id,
-      stickers_to_give: [],
-      stickers_to_receive: []
+      sender_id: user._id,
+      stickers_to_give: getStickersId(stickersToGive),
+      stickers_to_receive: getStickersDataId(stickersToReceive)
     }
     try {
-      //const {data: createdExchange} = await client.post("/exchanges", form)
-      setModal({header:"TODO: falta pegarle al endpoint", body: CreateExchangeStrings.EXCHANGE_CREATED})
+      const {data: createdExchange} = await client.post("/exchanges", form)
+      setModal({header:"Crear intercambio", body: CreateExchangeStrings.EXCHANGE_CREATED})
       setShowModal(true)
     } catch (error: any) {
       if (error.response) {
