@@ -47,6 +47,8 @@ const CommunityExchanges = ({communityId}:Props) => {
     if (!success) {
       setModal({header: "", body: ExchangeStrings.EXCHANGE_REJECT_ERROR})
       setShowModal(true)
+    } else {
+      _fetchCommunityExchanges()
     }
   }
 
