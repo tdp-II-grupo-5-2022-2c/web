@@ -278,7 +278,7 @@ const CreateExchange = () => {
             <div className="col">
               <div ref={dropExchangeGive}>
                 <h1 className="text-white">Voy a dar</h1>
-                <StickerStack stickers={stickersToGive}/>
+                <StickerStack stickers={stickersToGive} isCreating={true}/>
                 <PlayersInfo stickers={stickersToGive}/>
                 {isGiving && <div className="text-center" style={globalButtonsStyle.alternative}>
                     <p className="text-white">{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
@@ -288,7 +288,7 @@ const CreateExchange = () => {
             <div className="col">
               <div ref={dropExchangeReceive}>
                 <h1 className="text-white">Voy a recibir</h1>
-                <StickerStack2 stickers={stickersToReceive}/>
+                <StickerStack2 stickers={stickersToReceive} isCreating={true}/>
                 <PlayersInfo stickers={stickersToReceive}/>
                 {!isGiving && <div className="text-center" style={globalButtonsStyle.alternative}>
                     <p className="text-white">{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>

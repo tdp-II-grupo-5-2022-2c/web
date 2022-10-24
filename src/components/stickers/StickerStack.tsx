@@ -4,14 +4,19 @@ import React from "react";
 
 type Props = {
   stickers: ISticker[],
-  offset?: number
+  offset?: number,
+  isCreating?: boolean,
 }
 
-export const StickerStack = ({stickers, offset}: Props) => {
+export const StickerStack = ({stickers, offset, isCreating = false}: Props) => {
   const OFFSET = offset || 1
 
-  return(
+  return (
     <div className="d-flex flex-row position-relative">
+      {isCreating && stickers.length >= 5 && <span style={{fontSize: 20}}
+                                     className="position-absolute badge top-0 start-100 rounded-pill bg-gradient-danger mx-2">
+              &nbsp;{stickers.length}/5&nbsp;
+          </span>}
       {stickers && stickers.length > 0 &&
         (
           <>
@@ -22,7 +27,7 @@ export const StickerStack = ({stickers, offset}: Props) => {
               />
             </div>
             {stickers.slice(1).map((sticker, index) =>
-              <div key={sticker.id} className="position-absolute" style={{left:`${(1+index) * OFFSET}rem`}}>
+              <div key={sticker.id} className="position-absolute" style={{left: `${(1 + index) * OFFSET}rem`}}>
                 <Sticker player={sticker}
                          style={globalStickerStyles.stickerSmall}
                          displayBadge={true}
@@ -33,20 +38,25 @@ export const StickerStack = ({stickers, offset}: Props) => {
         )
       }
     </div>
-    )
+  )
 
 }
 
 type Props2 = {
   stickers: IStickerData[],
   offset?: number
+  isCreating?: boolean,
 }
 
-export const StickerStack2 = ({stickers, offset}: Props2) => {
+export const StickerStack2 = ({stickers, offset, isCreating = false}: Props2) => {
   const OFFSET = offset || 1
 
-  return(
+  return (
     <div className="d-flex flex-row position-relative">
+      {isCreating && stickers.length >= 5 && <span style={{fontSize: 20}}
+            className="position-absolute badge top-0 start-100 rounded-pill bg-gradient-danger mx-2">
+              &nbsp;{stickers.length}/5&nbsp;
+          </span>}
       {stickers && stickers.length > 0 &&
         (
           <>
@@ -57,7 +67,7 @@ export const StickerStack2 = ({stickers, offset}: Props2) => {
               />
             </div>
             {stickers.slice(1).map((sticker, index) =>
-              <div key={sticker._id} className="position-absolute" style={{left:`${(1+index) * OFFSET}rem`}}>
+              <div key={sticker._id} className="position-absolute" style={{left: `${(1 + index) * OFFSET}rem`}}>
                 <Sticker player={sticker}
                          style={globalStickerStyles.stickerSmall}
                          displayBadge={true}
