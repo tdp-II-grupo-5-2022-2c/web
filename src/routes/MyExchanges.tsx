@@ -3,7 +3,6 @@ import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
 import client from "../services/config";
 import Exchange, {IExchange} from "../components/Exchange";
-import {ISticker, IStickerData} from "../components/Sticker";
 import {globalExchangesStyles} from "../res/globalStyles";
 import {getMockedExchanges} from "../data/exchangesData";
 
@@ -13,13 +12,14 @@ const MyExchanges = () => {
   const [userExchanges, setUserExchanges] = useState<IExchange[]>([]);
 
   useEffect(() => {
-    mockCommunitiesExchanges()
-    //fetchCommunitiesExchanges()
+    //mockCommunitiesExchanges()
+    fetchCommunitiesExchanges()
   }, [])
 
   const fetchCommunitiesExchanges = async () => {
     try {
-      const response = await client.get(`/users/${user._id}/exchanges`)
+      const response = await client.get(`/exchanges/?sender_id=${user._id}&completed=false`)
+      console.log(response.data)
       setUserExchanges(response.data)
     } catch (error: any) {
       if (error.response) {
