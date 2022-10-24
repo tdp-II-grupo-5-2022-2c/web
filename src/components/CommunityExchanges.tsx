@@ -5,8 +5,13 @@ import {getMockedExchanges} from "../data/exchangesData";
 import {MyModal2} from "./MyModal";
 import {ExchangeStrings} from "../res/strings";
 import client from "../services/config";
+import {fetchCommunityExchanges} from "../services/apicalls";
 
-const CommunityExchanges = () => {
+type Props = {
+  communityId: string
+}
+
+const CommunityExchanges = ({communityId}:Props) => {
   const user = useUser()
   const [communityExchanges, setCommunityExchanges] = useState<IExchange[]>([])
 
@@ -22,8 +27,8 @@ const CommunityExchanges = () => {
   }, [])
 
   const _fetchCommunityExchanges = async () => {
-    //const exchanges = await fetchCommunityExchanges(user._id, "633f70e6d6fa13f54ac9ac25")
-    setCommunityExchanges(getMockedExchanges())
+    const exchanges = await fetchCommunityExchanges(user._id, communityId)
+    setCommunityExchanges(exchanges)
   }
 
   const acceptExchange = async (exchangeId: string) => {

@@ -10,6 +10,7 @@ import { useErrorHandler } from "../context/ErrorHandler";
 import UsersList from "../components/communities/UsersList";
 import {MyModal} from "../components/MyModal";
 import CommunityInviteLink from "../components/communities/CommunityInviteLink";
+import CommunityExchanges from "../components/CommunityExchanges";
 
 export type CommunityInfo = {
   "_id": number,
@@ -119,9 +120,8 @@ function Community() {
                   <Col className="col-md-5 col-sm-12">
                     <h2><i className="ni ni-world-2 text-gray"></i> Intercambios</h2>
                     <div className="users-container">
-
+                      {community_id && <CommunityExchanges communityId={community_id}/>}
                     </div>
-                  {/*  Intercambios */}
                   </Col>
                   <Col className="col-md-5 col-sm-12 vh-100">
                     <h2><i className="ni ni-chat-round text-gray"></i> Chat</h2>

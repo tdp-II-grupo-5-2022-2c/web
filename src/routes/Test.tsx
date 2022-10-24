@@ -7,7 +7,7 @@ const Test = () => {
     <React.Fragment>
       <MyNavbar/>
       <h1>Test</h1>
-      <CommunityExchanges/>
+      <CommunityExchanges communityId={"asd"}/>
     </React.Fragment>
   )
 }
