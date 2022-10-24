@@ -76,7 +76,7 @@ const ModalForm = ({header, body, form, isOpen, handleChange, onAccept, onCancel
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={onAccept}>Crear comunidad</Button>
+          <Button color="primary" onClick={onAccept} disabled={!form.name || !form.password || form.name.length === 0 || form.password.length === 0}>Crear comunidad</Button>
           {onCancel && <Button color="secondary" onClick={onCancel}>Cancelar</Button>}
         </ModalFooter>
       </Modal>
