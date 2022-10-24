@@ -99,6 +99,12 @@ function JoinCommunity() {
         setError("Ya eres miembro de esta comunidad");
         return;
       }
+
+      if (error.response.data.detail.toString().includes("user can't be in more than 10 communities")) {
+        toggleModalError();
+        setError("No se puede pertenecer a mas de 10 comunidades");
+        return;
+      }
     }
   }
 

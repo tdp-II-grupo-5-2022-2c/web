@@ -45,6 +45,7 @@ const MyCommunities = () => {
   };
   const [showCreateCommunityResultModal, setShowCreateCommunityResultModal] = useState(false);
   const [createCommunityResultModal, setCreateCommunityResultModal] = useState(initialModalState);
+  const [createdCommunityId, setCreatedCommunityId] = useState<string>();
 
   const navigate = useNavigate();
   const [searchFilters, setSearchFilters] = useState<{name: string|undefined, owner: boolean|undefined}>({
@@ -97,18 +98,25 @@ const MyCommunities = () => {
     setShowCreateCommunityFormModal(false)
     const form = {
       name: createCommunityForm.name,
+      password: createCommunityForm.password,
       owner: user._id,
       users: []
     }
     try {
       const {data: createdCommunity} = await client.post("/communities", form)
+      console.log(createdCommunity);
+      setCreatedCommunityId(createdCommunity._id);
       setCreateCommunityResultModal({header: CommunityCreationStrings.COMMUNITY_CREATION_OK_HEAD, body: CommunityCreationStrings.COMMUNITY_CREATED})
       fetchCommunitiesAsMember()
       setShowCreateCommunityResultModal(true)
     } catch (error: any) {
       if (error.response) {
-        if(error.response.data?.detail === "TODO: error comunidad mismo nombre"){
+        if (error.response.data?.detail.includes("there is already a community with that name")){
           setCreateCommunityResultModal({header:CommunityCreationStrings.COMMUNITY_CREATION_ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_ALREADY_EXISTS})
+          setShowCreateCommunityResultModal(true)
+        }
+        if (error.response.data?.detail.includes("user can't be in more than 10 communities")) {
+          setCreateCommunityResultModal({header:CommunityCreationStrings.COMMUNITY_CREATION_ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_LIMIT})
           setShowCreateCommunityResultModal(true)
         }
         console.log(error.response);
@@ -131,6 +139,9 @@ const MyCommunities = () => {
 
   const closeShowPasteOk = () => {
     setShowCreateCommunityResultModal(false)
+    if (createdCommunityId) {
+      navigate(`/communities/${createdCommunityId}`);
+    }
   }
 
   const viewCommunity = (event: any) => {
@@ -178,30 +189,30 @@ const MyCommunities = () => {
         </Row>
         <Row>
           <Col lg={2} md={12}>
-            <Row>
-              <Col lg={12} md={6}>
-                <Button className="ml-0 mb-2" color="primary" block> Administrador </Button>
-              </Col>
-              <Col lg={12} md={6}>
-                <Button className="ml-0 mb-2" color="default" block> Todos </Button>
-              </Col>
-            </Row>
+            {/*<Row>*/}
+            {/*  <Col lg={12} md={6}>*/}
+            {/*    <Button className="ml-0 mb-2" color="primary" block> Administrador </Button>*/}
+            {/*  </Col>*/}
+            {/*  <Col lg={12} md={6}>*/}
+            {/*    <Button className="ml-0 mb-2" color="default" block> Todos </Button>*/}
+            {/*  </Col>*/}
+            {/*</Row>*/}
           </Col>
           <Col className="offset-lg-1" lg={6} md={12}>
-            <Row>
-              <Form className="navbar-search">
-                <FormGroup className="mb-0">
-                  <InputGroup className="input-group-alternative bg-white">
-                    <InputGroupText>
-                      <i className="fas fa-search"/>
-                    </InputGroupText>
-                    <Input placeholder="Buscar" type="text" id="name" {...register("name", {
-                      onChange: handleFilterChange()
-                    })} />
-                  </InputGroup>
-                </FormGroup>
-              </Form>
-            </Row>
+            {/*<Row>*/}
+            {/*  <Form className="navbar-search">*/}
+            {/*    <FormGroup className="mb-0">*/}
+            {/*      <InputGroup className="input-group-alternative bg-white">*/}
+            {/*        <InputGroupText>*/}
+            {/*          <i className="fas fa-search"/>*/}
+            {/*        </InputGroupText>*/}
+            {/*        <Input placeholder="Buscar" type="text" id="name" {...register("name", {*/}
+            {/*          onChange: handleFilterChange()*/}
+            {/*        })} />*/}
+            {/*      </InputGroup>*/}
+            {/*    </FormGroup>*/}
+            {/*  </Form>*/}
+            {/*</Row>*/}
             <ListGroup>
             {memberCommunities
                 .sort((a,b) => a.owner === user._id ? -1 : 0)
