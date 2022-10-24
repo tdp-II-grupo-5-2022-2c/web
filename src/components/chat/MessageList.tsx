@@ -9,7 +9,7 @@ type Props = {
   roomId: string | undefined
 }
 
-type MessageInfo = {
+export type MessageInfo = {
   id: string,
   user_id: number,
   displayName: string,

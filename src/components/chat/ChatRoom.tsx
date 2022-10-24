@@ -9,8 +9,6 @@ type Props = {
 }
 
 function ChatRoom({roomId}: Props) {
-  console.log("ID: " + roomId)
-
   return (
       <>
         <Card className="messages-container card-translucent container-fluid" fluid>
