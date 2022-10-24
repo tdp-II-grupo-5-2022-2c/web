@@ -1,12 +1,16 @@
 import React, {useEffect, useState} from "react";
 import Exchange, {IExchange} from "./Exchange";
 import {useUser} from "../context/UserContext";
-import {getMockedExchanges} from "../data/exchangesData";
 import {MyModal2} from "./MyModal";
 import {ExchangeStrings} from "../res/strings";
 import client from "../services/config";
+import {fetchCommunityExchanges} from "../services/apicalls";
 
-const CommunityExchanges = () => {
+type Props = {
+  communityId: string
+}
+
+const CommunityExchanges = ({communityId}:Props) => {
   const user = useUser()
   const [communityExchanges, setCommunityExchanges] = useState<IExchange[]>([])
 
@@ -22,28 +26,28 @@ const CommunityExchanges = () => {
   }, [])
 
   const _fetchCommunityExchanges = async () => {
-    //const exchanges = await fetchCommunityExchanges(user._id, "633f70e6d6fa13f54ac9ac25")
-    setCommunityExchanges(getMockedExchanges())
+    console.log("FETCHING COMMUNITY EXCHANGES")
+    const exchanges = await fetchCommunityExchanges(user._id, communityId)
+    console.log(exchanges)
+    setCommunityExchanges(exchanges)
   }
 
   const acceptExchange = async (exchangeId: string) => {
-    console.log("Exchange accepted! id " + exchangeId)
-    const success = await doRequest("accept")
+    const success = await doRequest("accept", exchangeId)
     if (success) {
-      setModal({header: "", body: ExchangeStrings.EXCHANGE_ACCEPT_OK})
+      setModal({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_ACCEPT_OK})
     } else {
-      setModal({header: "", body: ExchangeStrings.EXCHANGE_ACCEPT_ERROR})
+      setModal({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_ACCEPT_ERROR})
     }
     setShowModal(true)
   }
 
   const rejectExchange = async (exchangeId: string) => {
-    console.log("Exchange rejected! id " + exchangeId)
-    const success = await doRequest("accept")
+    const success = await doRequest("reject", exchangeId)
     if (!success) {
       setModal({header: "", body: ExchangeStrings.EXCHANGE_REJECT_ERROR})
+      setShowModal(true)
     }
-    setShowModal(true)
   }
 
   const closeModal = () => {
@@ -52,13 +56,13 @@ const CommunityExchanges = () => {
     _fetchCommunityExchanges()
   }
 
-  const doRequest = async (action: string): Promise<boolean> => {
+  const doRequest = async (action: string, exchangeId: string): Promise<boolean> => {
     const form = {
       action: action,
-      sender_id: user._id
+      receiver_id: user._id
     }
     try {
-      const {data: response} = await client.post("/exchanges", form)
+      const {data: response} = await client.post(`/exchanges/${exchangeId}`, form)
       return true
 
     } catch (error: any) {
@@ -83,8 +87,8 @@ const CommunityExchanges = () => {
       <div className="container">
         <div className="row">
           {communityExchanges.map((exchange, index) =>
-            <div className="col d-flex justify-content-center">
-              <div key={exchange._id}>
+            <div key={exchange._id} className="col d-flex justify-content-center">
+              <div>
                 <Exchange exchange={exchange} isOwner={false} onAccept={acceptExchange} onReject={rejectExchange}/>
               </div>
             </div>

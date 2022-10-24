@@ -4,7 +4,6 @@ import {useUser} from "../context/UserContext";
 import client from "../services/config";
 import Exchange, {IExchange} from "../components/Exchange";
 import {globalExchangesStyles} from "../res/globalStyles";
-import {getMockedExchanges} from "../data/exchangesData";
 
 
 const MyExchanges = () => {
@@ -12,7 +11,6 @@ const MyExchanges = () => {
   const [userExchanges, setUserExchanges] = useState<IExchange[]>([]);
 
   useEffect(() => {
-    //mockCommunitiesExchanges()
     fetchCommunitiesExchanges()
   }, [])
 
@@ -30,10 +28,6 @@ const MyExchanges = () => {
         console.log('Error', error.message);
       }
     }
-  }
-
-  const mockCommunitiesExchanges = () => {
-    setUserExchanges(getMockedExchanges())
   }
 
   return (
