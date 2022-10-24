@@ -28,16 +28,17 @@ export type IStickerData = {
 type Props = {
   player: ISticker | IStickerData,
   style?: object,
-  displayBadge?: boolean
+  displayBadge?: boolean,
+  displayQuantity?: boolean
 }
 
-const Sticker = ({player, style = {}, displayBadge = false}: Props) => {
+const Sticker = ({player, style = {}, displayBadge = false, displayQuantity = true}: Props) => {
 
   return (
     <Card
         style={{...globalStickerStyles.sticker, ...style}}
     >
-      {displayBadge && player.quantity !== undefined && player.quantity > 1 &&
+      {displayBadge && displayQuantity && player.quantity !== undefined && player.quantity > 1 &&
           <span style={{fontSize: 25 }} className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-gradient-gray">
             &nbsp;{player.quantity}&nbsp;
           </span>}
