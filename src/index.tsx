@@ -26,6 +26,7 @@ import Community from "./routes/Community";
 import CreateExchange from "./routes/CreateExchange";
 import {ErrorHandler} from "./context/ErrorHandler";
 import Test from "./routes/Test";
+import JoinCommunity from "./routes/JoinCommunity";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -85,6 +86,11 @@ root.render(
                   <DndProvider backend={HTML5Backend}>
                     <CreateExchange />
                   </DndProvider>
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.COMMUNITY_JOIN} element={
+                <ProtectedRoute>
+                  <JoinCommunity />
                 </ProtectedRoute>
               } />
               <Route path={ROUTES.TEST} element={

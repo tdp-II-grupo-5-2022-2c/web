@@ -2,14 +2,9 @@ import {Button, Card, CardBody, CardFooter, CardImgOverlay,} from "reactstrap";
 import {globalCommunityStyles} from "../../res/globalStyles";
 
 // TODO: se llama asi pq todavia no tiene usuarios
-export type NoUsersCommunity = {
-  "_id": number,
-  "name": string,
-  "owner": number,
-}
 
 type Props = {
-  community: NoUsersCommunity,
+  community: any,
   isOwner: boolean,
   onClick: (event: MouseEvent) => void,
 }

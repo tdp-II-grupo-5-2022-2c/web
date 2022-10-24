@@ -1,6 +1,6 @@
 import {CommunityInfo} from "../../routes/Community";
 import {API_URL} from "../../services/config";
-import {Col, FormGroup, Input, Row} from "reactstrap";
+import {Col, FormGroup, Input, Label, Row} from "reactstrap";
 
 
 type Props = {
@@ -8,22 +8,22 @@ type Props = {
 }
 
 const CommunityInviteLink = ({community} : Props) => {
-
-  return (
-      <>
-        <h3 className="text-center">Comparte este link para invitar miembros a</h3>
-        <h2 className="text-center text-orange">{community.name}</h2>
-        <Row>
-          <Col md="12">
-            <FormGroup>
-              <Input
-                  value={API_URL + "/communities/" + community._id + "/join"}
-              />
-            </FormGroup>
-          </Col>
-        </Row>
-      </>
-  )
+    return (
+        <>
+          <h2 className="text-center text-orange">{community.name}</h2>
+          <Row>
+            <Col className="text-center offset-1" md={10}>
+              <FormGroup>
+                <Label style={{fontSize:14}}>Copia este URL y compartelo con tus amigos para que se puedan unir a tu comunidad</Label>
+                <Input className="text-center"
+                    value={window.location.href + "/join"}
+                    disabled
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+        </>
+    )
 }
 
 export default CommunityInviteLink;

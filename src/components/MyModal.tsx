@@ -7,13 +7,14 @@ type Props = {
   isOpen: boolean;
   onAccept: () => void
   onCancel?: () => void
+  size?: string
 }
 
-export const MyModal = ({header, body, isOpen, onAccept, onCancel} : Props) => {
+export const MyModal = ({header, body, isOpen, onAccept, onCancel, size} : Props) => {
 
   return (
     <div>
-      <Modal isOpen={isOpen}>
+      <Modal isOpen={isOpen} size={size || "md"}>
         <div className="modal-header">
           <h1 className="modal-title fs-5">
             {header}
