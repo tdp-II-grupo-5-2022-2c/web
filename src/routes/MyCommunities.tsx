@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useRef, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
 import {
@@ -46,7 +46,6 @@ const MyCommunities = () => {
   const [showCreateCommunityResultModal, setShowCreateCommunityResultModal] = useState(false);
   const [createCommunityResultModal, setCreateCommunityResultModal] = useState(initialModalState);
 
-  const [modal, setModal] = useState(initialModalState)
   const navigate = useNavigate();
   const [searchFilters, setSearchFilters] = useState<{name: string|undefined, owner: boolean|undefined}>({
     name: undefined,
@@ -219,47 +218,6 @@ const MyCommunities = () => {
           </Col>
         </Row>
       </Container>
-
-      {/*  <div className="row">*/}
-      {/*    <div className="col-md-2">*/}
-      {/*      <div className="row"></div>*/}
-      {/*    </div>*/}
-      {/*    <div className="col-md-8">*/}
-      {/*      <div className="row">*/}
-      {/*        <h2>Comunidades de las que soy administrador</h2>*/}
-      {/*        {adminCommunities.map((community, index) =>*/}
-      {/*          <div key={community._id} className="col col-md-3">*/}
-      {/*            <CommunityCard community={community}*/}
-      {/*                           isOwner={user._id === community.owner}*/}
-      {/*                           onClick={viewCommunity}*/}
-      {/*            />*/}
-      {/*          </div>*/}
-      {/*        )}*/}
-      {/*        {adminCommunities.length === 0 &&*/}
-      {/*            <p>No eres administrador de ninguna comunidad, todavía</p>*/}
-      {/*        }*/}
-      {/*      </div>*/}
-      {/*      <div className="row">*/}
-      {/*        <h2>Comunidades de las que soy miembro</h2>*/}
-      {/*        {memberCommunities.map((community, index) =>*/}
-      {/*          <div key={community._id} className="col col-sm-3">*/}
-      {/*            <CommunityCard community={community}*/}
-      {/*                           isOwner={user._id === community.owner}*/}
-      {/*                           onClick={viewCommunity}*/}
-      {/*            />*/}
-      {/*          </div>*/}
-      {/*        )}*/}
-      {/*        {memberCommunities.length === 0 &&*/}
-      {/*            <p>Al parecer no perteneces a ninguna comunidad, todavía</p>*/}
-      {/*        }*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*    <div className="col-md-2">*/}
-      {/*      <Row>*/}
-      {/*        <Button onClick={onCreateCommunityClick}>Crear Comunidad</Button>*/}
-      {/*      </Row>*/}
-      {/*    </div>*/}
-      {/*</div>*/}
       <ModalForm header={"Crear comunidad"}
                  body={"Completa con el nombre de la comunidad y agrega una contraseña"}
                  isOpen={showCreateCommunityFormModal}
