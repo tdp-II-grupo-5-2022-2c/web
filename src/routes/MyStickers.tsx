@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useRef, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
-import Sticker, {ISticker, IStickerData} from "../components/Sticker";
+import Sticker, {ISticker} from "../components/Sticker";
 import {useDrop} from "react-dnd";
 import {Draggable, DraggableTypes} from "../components/Draggable";
 import DropBoard from "../components/DropBoard";
@@ -12,6 +12,7 @@ import {useUser} from "../context/UserContext";
 import {Button, CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
 import {ROUTES} from "./RoutesNames";
 import {MyStickersStrings} from "../res/strings";
+import MyToast, {IToast} from "../components/MyToast";
 
 export type Filters = {
   name?: string,
@@ -40,9 +41,17 @@ const MyStickers = () => {
     'Todos': 'ALL'
   }
 
+  const closeToast = () => {
+    setToast({...toast, isOpen:false})
+  }
+
+  const [toast, setToast] = useState<IToast>({header:"", body:"", isOpen:false, onClose:closeToast})
+
   useEffect(() => {
     fetchUserStickers()
   }, [])
+
+
 
   const fetchUserStickers = async () => {
     console.log(_searchFilters.current)
@@ -65,6 +74,10 @@ const MyStickers = () => {
   }
 
   const addStickerToAlbum = async (sticker: ISticker) => {
+    if(sticker.is_on_album){
+      setToast({...toast, header: "", body:MyStickersStrings.STICKERS_TOAST_PASTE_ERROR, isOpen:true})
+      return
+    }
     navigate("../my-album?country=" + sticker.country + "&position=" + sticker.number + "&stickerId=" + sticker.id)
   }
 
@@ -97,6 +110,19 @@ const MyStickers = () => {
     };
   }
 
+  const hasStickers = (stickers: ISticker[]) => {
+    return (stickers.findIndex(element => element.quantity > 0) >= 0)
+  }
+
+  const goToCreateExchange = () => {
+    navigate("../create-exchange")
+  }
+
+  function goToDailyPacket() {
+    navigate(`../${ROUTES.DAILYPACKET}`)
+  }
+
+
   const StickersList = ({stickers}: { stickers: ISticker[] }) => {
     return <React.Fragment>
       {stickers.map((player, index) =>
@@ -116,9 +142,6 @@ const MyStickers = () => {
     </React.Fragment>;
   }
 
-  const goToCreateExchange = () => {
-    navigate("../create-exchange")
-  }
 
   return (
     <React.Fragment>
@@ -161,11 +184,11 @@ const MyStickers = () => {
             </Row>
             <Row>
               <StickersList stickers={fetchedStickers}/>
-              {user.stickers.length === 0 && fetchedStickers.length === 0 &&
-                  <Col>
-                      <CardText>No tienes figuritas, abrí un nuevo paquete</CardText>
-                      <Button>
-                          <a className="nav-link" href={ROUTES.DAILYPACKET}>Abrir paquete</a>
+              {!hasStickers(fetchedStickers) &&
+                <Col>
+                      <p>No tienes figuritas, abrí un nuevo paquete</p>
+                      <Button color={"success"} onClick={goToDailyPacket}>
+                          Abrir paquete
                       </Button>
                   </Col>
               }
@@ -175,6 +198,8 @@ const MyStickers = () => {
             <div className="row" ref={dropAlbum}>
               <DropBoard title={MyStickersStrings.PASTE_TO_ALBUM_TITLE} body={MyStickersStrings.PASTE_TO_ALBUM_BODY}/>
             </div>
+            <MyToast toast={toast} className={"bg-danger"}/>
+
           </Col>
         </Row>
       </Container>
