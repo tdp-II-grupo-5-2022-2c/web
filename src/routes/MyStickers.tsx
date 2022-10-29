@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useRef, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
-import Sticker, {ISticker, IStickerData} from "../components/Sticker";
+import Sticker, {ISticker} from "../components/Sticker";
 import {useDrop} from "react-dnd";
 import {Draggable, DraggableTypes} from "../components/Draggable";
 import DropBoard from "../components/DropBoard";
@@ -110,6 +110,19 @@ const MyStickers = () => {
     };
   }
 
+  const hasStickers = (stickers: ISticker[]) => {
+    return (stickers.findIndex(element => element.quantity > 0) >= 0)
+  }
+
+  const goToCreateExchange = () => {
+    navigate("../create-exchange")
+  }
+
+  function goToDailyPacket() {
+    navigate(`../${ROUTES.DAILYPACKET}`)
+  }
+
+
   const StickersList = ({stickers}: { stickers: ISticker[] }) => {
     return <React.Fragment>
       {stickers.map((player, index) =>
@@ -129,9 +142,6 @@ const MyStickers = () => {
     </React.Fragment>;
   }
 
-  const goToCreateExchange = () => {
-    navigate("../create-exchange")
-  }
 
   return (
     <React.Fragment>
@@ -174,11 +184,11 @@ const MyStickers = () => {
             </Row>
             <Row>
               <StickersList stickers={fetchedStickers}/>
-              {user.stickers.length === 0 && fetchedStickers.length === 0 &&
-                  <Col>
-                      <CardText>No tienes figuritas, abrí un nuevo paquete</CardText>
-                      <Button>
-                          <a className="nav-link" href={ROUTES.DAILYPACKET}>Abrir paquete</a>
+              {!hasStickers(fetchedStickers) &&
+                <Col>
+                      <p>No tienes figuritas, abrí un nuevo paquete</p>
+                      <Button color={"success"} onClick={goToDailyPacket}>
+                          Abrir paquete
                       </Button>
                   </Col>
               }
