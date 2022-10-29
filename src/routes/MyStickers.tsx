@@ -12,6 +12,7 @@ import {useUser} from "../context/UserContext";
 import {Button, CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
 import {ROUTES} from "./RoutesNames";
 import {MyStickersStrings} from "../res/strings";
+import MyToast, {IToast} from "../components/MyToast";
 
 export type Filters = {
   name?: string,
@@ -40,9 +41,17 @@ const MyStickers = () => {
     'Todos': 'ALL'
   }
 
+  const closeToast = () => {
+    setToast({...toast, isOpen:false})
+  }
+
+  const [toast, setToast] = useState<IToast>({header:"", body:"", isOpen:false, onClose:closeToast})
+
   useEffect(() => {
     fetchUserStickers()
   }, [])
+
+
 
   const fetchUserStickers = async () => {
     console.log(_searchFilters.current)
@@ -65,6 +74,10 @@ const MyStickers = () => {
   }
 
   const addStickerToAlbum = async (sticker: ISticker) => {
+    if(sticker.is_on_album){
+      setToast({...toast, header: "", body:MyStickersStrings.STICKERS_TOAST_PASTE_ERROR, isOpen:true})
+      return
+    }
     navigate("../my-album?country=" + sticker.country + "&position=" + sticker.number + "&stickerId=" + sticker.id)
   }
 
@@ -175,6 +188,8 @@ const MyStickers = () => {
             <div className="row" ref={dropAlbum}>
               <DropBoard title={MyStickersStrings.PASTE_TO_ALBUM_TITLE} body={MyStickersStrings.PASTE_TO_ALBUM_BODY}/>
             </div>
+            <MyToast toast={toast} className={"bg-danger"}/>
+
           </Col>
         </Row>
       </Container>

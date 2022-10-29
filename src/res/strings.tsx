@@ -10,6 +10,7 @@ export const CommunityCreationStrings = {
 export const MyStickersStrings = {
   PASTE_TO_ALBUM_TITLE: "Pegar en album",
   PASTE_TO_ALBUM_BODY: "Arrastra hasta aqui la figurita que quieres pegar",
+  STICKERS_TOAST_PASTE_ERROR: "Esta figurita ya esta pegada"
 }
 
 export const CreateExchangeStrings = {
