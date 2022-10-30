@@ -18,7 +18,8 @@ import client from "../services/config";
 import {CommunityInfo} from "./Community";
 import {useErrorHandler} from "../context/ErrorHandler";
 import {useUser} from "../context/UserContext";
-import {MyModal} from "../components/MyModal";
+import Success from "../components/modals/Success";
+import Error from "../components/modals/Error";
 
 function JoinCommunity() {
   const { community_id } = useParams();
@@ -28,8 +29,7 @@ function JoinCommunity() {
 
   const [community, setCommunity] = useState<CommunityInfo>();
   const [password, setPassword] = useState<string>();
-  const [error, setError] = useState<string>();
-  const [success, setSuccess] = useState<string>();
+  const [error, setError] = useState<string>("");
   const [showModalError, setShowModalError] = useState<boolean>(false);
   const [showModalSuccess, setShowModalSuccess] = useState<boolean>(false);
 
@@ -78,7 +78,6 @@ function JoinCommunity() {
       console.log(response);
       if (response.status === 200) {
         setShowModalSuccess(true);
-        setSuccess(`Te has unido a la Comunidad ${community?.name}`)
       }
     } catch (error: any) {
       console.log(error.response || error.request || error.message);
@@ -110,7 +109,7 @@ function JoinCommunity() {
 
   const toggleModalError = () => {
     setShowModalError(!showModalError);
-    setError(undefined);
+    setError("");
   }
 
   const redirectToCommunity = () => {
@@ -162,26 +161,10 @@ function JoinCommunity() {
             </CardBody>
           </Card>
         </Col>
-        {/*TODO: pasar estos modales a componentes de Success y Error para reutilizar*/}
-        <MyModal header={"Error al unirse a comunidad"}
-                 body={
-                  <>
-                    <h1 className="text-center">
-                      <i className="ni ni-fat-remove text-danger ni-3x"></i>
-                    </h1>
-                    <h4 className="text-center">{error}</h4>
-                  </>}
-                 isOpen={showModalError}
-                 onAccept={toggleModalError}/>
-        <MyModal header={"¡Felicidades!"}
-                 body={
-                    <>
-                      <h1 className="text-center">
-                        <i className="ni ni-check-bold text-success ni-3x"></i>
-                      </h1>
-                      <h4 className="text-center">{success}</h4>
-                    </>
-                  }
+        <Error modal={{header:"Error al unirse a comunidad", body:error}}
+               isOpen={showModalError}
+               onAccept={toggleModalError}/>
+        <Success modal={{header:"¡Felicidades!", body:`Te has unido a la Comunidad ${community?.name}`}}
                  isOpen={showModalSuccess}
                  onAccept={redirectToCommunity}/>
       </React.Fragment>

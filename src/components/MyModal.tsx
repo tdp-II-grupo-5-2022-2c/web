@@ -34,29 +34,32 @@ export const MyModal = ({header, body, isOpen, onAccept, onCancel, size} : Props
   )
 }
 
-export type IMODAL = {
+export type IModal = {
   header: string,
   body: string
 }
 
 type Props2 = {
-  modal: IMODAL
+  header: string
+  children: JSX.Element,
   isOpen: boolean;
   onAccept: () => void
   onCancel?: () => void
 }
 
-export const MyModal2 = ({modal, isOpen, onAccept, onCancel} : Props2) => {
+export const MyModal2 = ({header, children, isOpen, onAccept, onCancel} : Props2) => {
 
   return (
     <div>
       <Modal isOpen={isOpen}>
         <div className="modal-header">
           <h1 className="modal-title fs-5">
-            {modal.header}
+            {header}
           </h1>
         </div>
-        <ModalBody>{modal.body}</ModalBody>
+        <ModalBody>
+          {children}
+        </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={onAccept}>
             OK!

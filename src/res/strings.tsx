@@ -3,12 +3,12 @@ export const ProfileStrings = {
 }
 
 export const CommunityCreationStrings = {
-  COMMUNITY_CREATION_OK_HEAD: "¡Comunidad Creada!",
-  COMMUNITY_CREATION_ERROR_HEAD: "Error al crear Comunidad",
-  COMMUNITY_BAD_FORM: "Verifique que los campos esten completos",
+  OK_HEADER: "¡Comunidad Creada!",
+  ERROR_HEAD: "Error al crear Comunidad",
+  BAD_FORM: "Verifique que los campos esten completos",
   COMMUNITY_ALREADY_EXISTS: "Esta Comunidad ya existe",
   COMMUNITY_LIMIT: "No se puede pertenecer a mas de 10 comunidades",
-  COMMUNITY_CREATED: "La comunidad se ha creado exitosamente",
+  CREATED: "La comunidad se ha creado exitosamente",
 }
 
 export const MyStickersStrings = {
@@ -22,7 +22,11 @@ export const CreateExchangeStrings = {
     EXCHANGE_RECEIVE_TITLE: "Figuritas a recibir",
     EXCHANGE_GIVE_HINT: "Arrastra hasta aqui para agregar una figurita",
     EXCHANGE_READY: "¡Todo listo, apreta Confirmar para publicar tu intercambio!",
-    EXCHANGE_CREATED: "Intercambio creado exitosamente"
+    OK_TITLE: "Crear intercambio",
+    EXCHANGE_CREATED: "Intercambio creado exitosamente",
+    ERROR_TITLE: "Error al crear intercambio",
+    ERROR_REPEATED: "No puedes dar y recibir la misma figurita en un intercambio",
+    ERROR_MAX_REACHED: "No puedes generar más de 3 intercambios a la vez"
 }
 
 export const ExchangeStrings = {

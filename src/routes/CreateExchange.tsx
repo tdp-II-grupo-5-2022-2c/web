@@ -14,10 +14,11 @@ import {CreateExchangeStrings} from "../res/strings";
 import {DraggableTypes} from "../components/Draggable";
 import {useForm} from "react-hook-form";
 import PlayersInfo from "../components/stickers/PlayersInfo";
-import {MyModal2} from "../components/MyModal";
 import {useNavigate} from "react-router-dom";
 import {ROUTES} from "./RoutesNames";
 import client from "../services/config";
+import Success from "../components/modals/Success";
+import Error from "../components/modals/Error";
 
 const CreateExchange = () => {
   const user = useUser()
@@ -195,15 +196,15 @@ const CreateExchange = () => {
     }
     try {
       const {data: createdExchange} = await client.post("/exchanges", form)
-      setModal({header:"Crear intercambio", body: CreateExchangeStrings.EXCHANGE_CREATED})
+      setModal({header:CreateExchangeStrings.OK_TITLE, body: CreateExchangeStrings.EXCHANGE_CREATED})
       setShowModal(true)
     } catch (error: any) {
       if (error.response) {
         if(error.response.data?.detail === "Could not create Exchange. stickers_to_receive and stickers_to_give must not have sticker in common"){
-          setErrorModal({header:"Error al crear intercambio", body: "No puedes dar y recibir la misma figurita en un intercambio"})
+          setErrorModal({header:CreateExchangeStrings.ERROR_TITLE, body: CreateExchangeStrings.ERROR_REPEATED})
           setShowErrorModal(true)
         } else if (error.response.data?.detail === "Could not create Exchange. user reached max amount of pending exchanges") {
-          setErrorModal({header:"Error al crear intercambio", body: "No puedes generar más de 3 intercambios a la vez"})
+          setErrorModal({header:CreateExchangeStrings.ERROR_TITLE, body: CreateExchangeStrings.ERROR_MAX_REACHED})
           setShowErrorModal(true)
         }
         console.log(error.response);
@@ -340,8 +341,8 @@ const CreateExchange = () => {
           </div>
         </div>
       </div>
-      <MyModal2 modal={modal} isOpen={showModal} onAccept={closeModal}/>
-      <MyModal2 modal={errorModal} isOpen={showErrorModal} onAccept={closeErrorModal}/>
+      <Success modal={modal} isOpen={showModal} onAccept={closeModal}/>
+      <Error modal={errorModal} isOpen={showErrorModal} onAccept={closeErrorModal}/>
     </React.Fragment>
 
   )

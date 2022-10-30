@@ -26,9 +26,7 @@ const CommunityExchanges = ({communityId}:Props) => {
   }, [])
 
   const _fetchCommunityExchanges = async () => {
-    console.log("FETCHING COMMUNITY EXCHANGES")
     const exchanges = await fetchCommunityExchanges(user._id, communityId)
-    console.log(exchanges)
     setCommunityExchanges(exchanges)
   }
 
@@ -83,7 +81,6 @@ const CommunityExchanges = ({communityId}:Props) => {
     return false
   }
 
-
   return (
     <React.Fragment>
       <div className="container">
@@ -97,7 +94,9 @@ const CommunityExchanges = ({communityId}:Props) => {
           )}
         </div>
       </div>
-      <MyModal2 modal={modal} isOpen={showModal} onAccept={closeModal}/>
+      <MyModal2 header={modal.header} isOpen={showModal} onAccept={closeModal}>
+        <>{modal.body}</>
+      </MyModal2>
     </React.Fragment>
   )
 }
