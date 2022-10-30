@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, CardImg, CardBody, Button, Col, Row, Container, Fade} from "reactstrap";
+import {Card, CardImg, CardBody, Button, Col, Row, Container} from "reactstrap";
 import '../assets/css/Packet.css';
 
 type Props = {

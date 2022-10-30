@@ -1,5 +1,4 @@
 import {CommunityInfo} from "../../routes/Community";
-import {API_URL} from "../../services/config";
 import {Col, FormGroup, Input, Label, Row} from "reactstrap";
 
 

@@ -1,4 +1,4 @@
-import {Card, Container} from "reactstrap";
+import {Card} from "reactstrap";
 import MessageInput from "./MessageInput";
 import "./styles.css"
 import MessageList from "./MessageList";

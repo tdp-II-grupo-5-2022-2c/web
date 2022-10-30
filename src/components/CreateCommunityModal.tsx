@@ -27,11 +27,9 @@ type Props = {
   onCancel?: () => void
 }
 
-// TODO: ver de volver esto un componente mas especifico de MyModal
-const ModalForm = ({header, body, form, isOpen, handleChange, onAccept, onCancel} : Props) => {
+const CreateCommunityModal = ({header, body, form, isOpen, handleChange, onAccept, onCancel} : Props) => {
 
   return (
-
       <Modal isOpen={isOpen}>
         <ModalHeader>
           <h1 className="modal-title fs-5" id="exampleModalLabel">
@@ -84,4 +82,4 @@ const ModalForm = ({header, body, form, isOpen, handleChange, onAccept, onCancel
   )
 }
 
-export default ModalForm;
+export default CreateCommunityModal;
