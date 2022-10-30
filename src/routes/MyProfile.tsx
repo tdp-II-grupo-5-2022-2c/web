@@ -48,7 +48,12 @@ const MyProfile = () => {
     }
     const dateOfBirth = new Date(user.date_of_birth)
     const today = new Date();
-    const years = today.getFullYear() - dateOfBirth.getFullYear()
+    let years = today.getFullYear() - dateOfBirth.getFullYear()
+    const months = today.getMonth() - dateOfBirth.getMonth()
+    const days = today.getDate() - dateOfBirth.getDate()
+    if(months < 0 || (months === 0 && days < 0)){
+      years = years - 1
+    }
     return years
   }
 
@@ -68,6 +73,18 @@ const MyProfile = () => {
 
   const hasMandatoryFields = () => {
     return form.name.length > 0 && form.lastname.length > 0;
+  }
+
+  function getMax() {
+    const date = new Date()
+    const maxUserYear = date.getFullYear() - 14
+    return `${maxUserYear}-01-01`;
+  }
+
+  function getMin() {
+    const date = new Date()
+    const minUserYear = date.getFullYear() - 100
+    return `${minUserYear}-01-01`;
   }
 
   return (
@@ -201,13 +218,14 @@ const MyProfile = () => {
                           <div className="form-group">
                             <label className="form-control-label">Fecha de nacimiento</label>
                             <input id="input-date_of_birth"
-                                   placeholder="13-07-1995"
-                                   type="date_of_birth"
+                                   type="date"
                                    name='date_of_birth'
                                    className="form-control-alternative form-control"
                                    value={form.date_of_birth}
                                    onChange={handleChange}
                                    disabled={!isEditing}
+                                   min={getMin()}
+                                   max={getMax()}
                             />
                           </div>
                         </div>
