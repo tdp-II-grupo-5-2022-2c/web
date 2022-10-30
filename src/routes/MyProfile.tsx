@@ -5,15 +5,17 @@ import {Button} from "reactstrap";
 import client from "../services/config";
 import {ROUTES} from "./RoutesNames";
 import {useNavigate} from "react-router-dom";
+import {ALBUM_PAGES} from "../data/albumData";
+import {ProfileStrings} from "../res/strings";
 
 const MyProfile = () => {
   const user = useUser();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const initialState = {
-    name: "",
+    name: user.name,
     country: "",
-    date_of_birth: "",
-    lastname: ""
+    date_of_birth: user.date_of_birth,
+    lastname: user.lastname
   };
   const [form, setForm] = useState(initialState)
   const navigate = useNavigate()
@@ -41,8 +43,13 @@ const MyProfile = () => {
   }
 
   const getYearsOld = () => {
-    // TODO:calculateYearsOld
-    return user.date_of_birth
+    if(user.date_of_birth.length === 0 ){
+      return ""
+    }
+    const dateOfBirth = new Date(user.date_of_birth)
+    const today = new Date();
+    const years = today.getFullYear() - dateOfBirth.getFullYear()
+    return years
   }
 
   const handleLogout = () => {
@@ -54,6 +61,14 @@ const MyProfile = () => {
     navigate(ROUTES.SIGNIN);
   };
 
+
+  const selectCountry = (country: string) => {
+    console.log(country)
+  }
+
+  const hasMandatoryFields = () => {
+    return form.name.length > 0 && form.lastname.length > 0;
+  }
 
   return (
     <React.Fragment>
@@ -67,22 +82,15 @@ const MyProfile = () => {
             backgroundPosition: "center|top"
           }}
         >
-
-          {/*style="min-height: 600px;
-             background-image:
-             url(&quot;/argon-dashboard-react/static/media/profile-cover.97899245.jpg&quot;);
-             background-size: cover;
-             background-position: center top;"*/}
-
-          <span className="mask bg-gradient-default opacity-8"></span>
+          <span className="mask bg-gradient-orange opacity-8"></span>
           <div className="d-flex align-items-center container-fluid">
             <div className="row">
               <div className="col-md-10 col-lg-7">
                 <h1 className="text-white display-2">Hola {user.mail}</h1>
                 <p className="text-white mt-0 mb-5">
                 En esta pantalla podrás ver el progreso de tu colección de figuritas</p>
-                {!isEditing && <Button className="btn btn-info" onClick={() => enableProfileEditing()}>Editar perfil</Button>}
-                {isEditing && <Button className="btn btn-info" onClick={() => acceptChanges()}>Aceptar</Button>}
+                {!isEditing && <Button className="btn btn-success" onClick={() => enableProfileEditing()}>Editar perfil</Button>}
+                {isEditing && <Button className="btn btn-success" disabled={!hasMandatoryFields()} onClick={() => acceptChanges()}>Aceptar</Button>}
                 {isEditing && <Button className="btn btn-primary" onClick={() => cancelChanges()}>Cancelar</Button>}
               </div>
             </div>
@@ -118,11 +126,11 @@ const MyProfile = () => {
                   </div>
                   <div className="text-center">
                     <h3>
-                      {user.name},
+                      {user.name} {user.lastname},
                       <span className="font-weight-light"> {getYearsOld()}</span>
                     </h3>
                     <div><i className="ni education_hat mr-2"></i>{/*TODO:country*/}</div>
-                    <Button onClick={handleLogout}>Cerrar Sesion</Button>
+                    <Button className="btn-danger" onClick={handleLogout}>Cerrar Sesion</Button>
                     <hr className="my-4"/>
                   </div>
                 </div>
@@ -138,18 +146,23 @@ const MyProfile = () => {
                   </div>
                 </div>
                 <div className="card-body">
-                  <form className=""><h6 className="heading-small text-muted mb-4">Información usuario</h6>
+                  <form>
+                    <h6 className="heading-small text-muted mb-4">Información usuario</h6>
                     <div className="pl-lg-4">
                       <div className="row">
                         <div className="col-lg-6">
                           <div className="form-group">
-                            <label className="form-control-label">Nombre</label>
+                            <div className="row">
+                              <label className="form-control-label">Nombre</label>
+                              {form.name.length === 0 && isEditing &&
+                                  <label className="form-control-label text-danger">{ProfileStrings.MANDATORY_FIELD}</label>}
+                            </div>
                             <input
                               id="input-username" placeholder="Nombre" type="name"
                               name='name'
                               className="form-control-alternative form-control"
                               onChange={handleChange}
-                              value={form.name || user.name}
+                              value={form.name}
                               disabled={!isEditing}
                             />
                           </div>
@@ -168,14 +181,18 @@ const MyProfile = () => {
                       <div className="row">
                         <div className="col-lg-6">
                           <div className="form-group">
+                            <div className="row">
                             <label className="form-control-label">Apellido</label>
+                              {form.lastname.length === 0 && isEditing &&
+                                  <label className="form-control-label text-danger">{ProfileStrings.MANDATORY_FIELD}</label>}
+                            </div>
                             <input
                               id="input-lastname" placeholder="Apellido"
                               type="lastname"
                               name='lastname'
                               className="form-control-alternative form-control"
                               onChange={handleChange}
-                              value={form.lastname || user.lastname}
+                              value={form.lastname}
                               disabled={!isEditing}
                             />
                           </div>
@@ -188,20 +205,15 @@ const MyProfile = () => {
                                    type="date_of_birth"
                                    name='date_of_birth'
                                    className="form-control-alternative form-control"
-                                   value={form.date_of_birth || user.date_of_birth}
+                                   value={form.date_of_birth}
                                    onChange={handleChange}
                                    disabled={!isEditing}
                             />
                           </div>
                         </div>
                       </div>
-
-                    </div>
-                    <hr className="my-4"/>
-                    <h6 className="heading-small text-muted mb-4">Información contacto</h6>
-                    <div className="pl-lg-4">
                       <div className="row">
-                        <div className="col-lg-4">
+                        <div className="col-lg-6">
                           <div className="form-group">
                             <label className="form-control-label">País</label>
                             <input id="input-country"
@@ -214,6 +226,20 @@ const MyProfile = () => {
                             />
                           </div>
                         </div>
+                      </div>
+
+                    </div>
+                    <hr className="my-4"/>
+                    <h6 className="heading-small text-muted mb-4">Paises favoritos</h6>
+                    <div className="pl-lg-4 text-center">
+                      <div className="row row-cols-lg-6 row-cols-md-6">
+                          {ALBUM_PAGES.map((country, index) =>
+                            <div key={country} className="col">
+                              <button className="btn-primary" name="fav-country" type="button" onClick={() => selectCountry(country)} disabled={!isEditing}>
+                                {country}
+                              </button>
+                            </div>
+                          )}
                       </div>
                     </div>
                   </form>
