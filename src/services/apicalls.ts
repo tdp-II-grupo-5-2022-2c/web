@@ -43,10 +43,17 @@ export const fetchCommunityExchanges = async (userId: number, communityId:string
   }
 }
 
-const fetchCommunities = async (ownerId?: number, memberId?: number) => {
+export const fetchCommunities = async (ownerId?: number, memberId?: number, name?: string) => {
+  const _params = {
+    owner: ownerId || undefined,
+    member: memberId || undefined,
+    name: name || undefined
+  }
+
+  let fetchedCommunities: any = []
   try {
-    const {data: communities} = await client.get(`/communities`)
-    return communities
+    const response = await client.get(`/communities`, {params: _params})
+    fetchedCommunities = response.data
   } catch (error: any) {
     if (error.response) {
       console.log(error.response);
@@ -56,7 +63,8 @@ const fetchCommunities = async (ownerId?: number, memberId?: number) => {
       console.log('Error', error.message);
     }
   }
-  return []
+
+  return fetchedCommunities
 }
 
 

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
 import {
@@ -6,23 +6,19 @@ import {
   Button,
   Col,
   Container,
-  Form,
-  FormGroup,
-  Input,
-  InputGroup,
-  InputGroupText,
   ListGroup,
   ListGroupItem,
   Row
 } from "reactstrap";
-import ModalForm, {CreateCommunityForm} from "../components/ModalForm";
+import CreateCommunityModal, {CreateCommunityForm} from "../components/CreateCommunityModal";
 import client from "../services/config";
 import {MyModal} from "../components/MyModal";
 import {CommunityCreationStrings} from "../res/strings";
 import {useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
+import {fetchCommunities} from "../services/apicalls";
 
-export type NoUsersCommunity = {
+export type ICommunity = {
   "_id": string,
   "name": string,
   "owner": number,
@@ -30,7 +26,6 @@ export type NoUsersCommunity = {
 
 const MyCommunities = () => {
   const user = useUser();
-  const {register} = useForm();
 
   const [showCreateCommunityFormModal, setShowCreateCommunityFormModal] = useState(false);
   const initialFormState: CreateCommunityForm = {
@@ -38,13 +33,13 @@ const MyCommunities = () => {
     password: "",
   };
   const [createCommunityForm, setCreateCommunityForm] = useState(initialFormState)
-  const [memberCommunities, setMemberCommunities] = useState<NoUsersCommunity[]>([])
+  const [fetchedCommunities, setCommunities] = useState<ICommunity[]>([])
   const initialModalState = {
     header: "",
     body: "",
   };
-  const [showCreateCommunityResultModal, setShowCreateCommunityResultModal] = useState(false);
-  const [createCommunityResultModal, setCreateCommunityResultModal] = useState(initialModalState);
+  const [showModal, setShowModal] = useState(false);
+  const [modal, setModal] = useState(initialModalState);
   const [createdCommunityId, setCreatedCommunityId] = useState<string>();
 
   const navigate = useNavigate();
@@ -54,36 +49,8 @@ const MyCommunities = () => {
   });
 
   useEffect(() => {
-    fetchCommunitiesAsMember()
+    fetchCommunities(undefined, user._id).then(response => setCommunities(response))
   }, [])
-
-  const fetchCommunities = async (ownerId?: number, memberId?: number, name?: string) => {
-    const _params = {
-      owner: ownerId || undefined,
-      member: memberId || undefined,
-      name: name || undefined
-    }
-
-    let fetchedCommunities: any = []
-    try {
-      const response = await client.get(`/communities`, {params: _params})
-      fetchedCommunities = response.data
-    } catch (error: any) {
-      if (error.response) {
-        console.log(error.response);
-      } else if (error.request) {
-        console.log(error.request);
-      } else {
-        console.log('Error', error.message);
-      }
-    }
-
-    return fetchedCommunities
-  }
-
-  const fetchCommunitiesAsMember = async () => {
-    setMemberCommunities(await fetchCommunities(undefined, user._id))
-  }
 
   const isFormValid = () => {
     return (createCommunityForm.name.length > 0 && createCommunityForm.password.length > 0)
@@ -91,8 +58,8 @@ const MyCommunities = () => {
 
   const createCommunity = async () => {
     if (!isFormValid()) {
-      setCreateCommunityResultModal({header: CommunityCreationStrings.COMMUNITY_CREATION_ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_BAD_FORM})
-      setShowCreateCommunityResultModal(true)
+      setModal({header: CommunityCreationStrings.COMMUNITY_CREATION_ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_BAD_FORM})
+      setShowModal(true)
       return
     }
     setShowCreateCommunityFormModal(false)
@@ -106,18 +73,18 @@ const MyCommunities = () => {
       const {data: createdCommunity} = await client.post("/communities", form)
       console.log(createdCommunity);
       setCreatedCommunityId(createdCommunity._id);
-      setCreateCommunityResultModal({header: CommunityCreationStrings.COMMUNITY_CREATION_OK_HEAD, body: CommunityCreationStrings.COMMUNITY_CREATED})
-      fetchCommunitiesAsMember()
-      setShowCreateCommunityResultModal(true)
+      setModal({header: CommunityCreationStrings.COMMUNITY_CREATION_OK_HEAD, body: CommunityCreationStrings.COMMUNITY_CREATED})
+      fetchCommunities()
+      setShowModal(true)
     } catch (error: any) {
       if (error.response) {
         if (error.response.data?.detail.includes("there is already a community with that name")){
-          setCreateCommunityResultModal({header:CommunityCreationStrings.COMMUNITY_CREATION_ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_ALREADY_EXISTS})
-          setShowCreateCommunityResultModal(true)
+          setModal({header:CommunityCreationStrings.COMMUNITY_CREATION_ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_ALREADY_EXISTS})
+          setShowModal(true)
         }
         if (error.response.data?.detail.includes("user can't be in more than 10 communities")) {
-          setCreateCommunityResultModal({header:CommunityCreationStrings.COMMUNITY_CREATION_ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_LIMIT})
-          setShowCreateCommunityResultModal(true)
+          setModal({header:CommunityCreationStrings.COMMUNITY_CREATION_ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_LIMIT})
+          setShowModal(true)
         }
         console.log(error.response);
       } else if (error.request) {
@@ -138,7 +105,7 @@ const MyCommunities = () => {
   }
 
   const closeShowPasteOk = () => {
-    setShowCreateCommunityResultModal(false)
+    setShowModal(false)
     if (createdCommunityId) {
       navigate(`/communities/${createdCommunityId}`);
     }
@@ -155,24 +122,9 @@ const MyCommunities = () => {
   const searchCommunities = async () => {
     console.log(searchFilters)
     if(searchFilters.owner === false || searchFilters.owner === undefined)
-      setMemberCommunities(await fetchCommunities(undefined, user._id, searchFilters.name));
+      setCommunities(await fetchCommunities(undefined, user._id, searchFilters.name));
     else
-      setMemberCommunities(await fetchCommunities(user._id, undefined, searchFilters.name))
-  }
-
-  const onChangeFilterHandler = ({target: {id, value}}: any) => {
-    // @ts-ignore
-    console.log("value: " + value)
-    let _searchFilters = searchFilters
-    _searchFilters.name = value
-    setSearchFilters(_searchFilters);
-    searchCommunities();
-  }
-
-  const handleFilterChange = () => {
-    return (e: ChangeEvent<HTMLInputElement>) => {
-      if (e.target.value.length >= 3 || e.target.value.length === 0) onChangeFilterHandler(e)
-    };
+      setCommunities(await fetchCommunities(user._id, undefined, searchFilters.name))
   }
 
   return (
@@ -214,14 +166,15 @@ const MyCommunities = () => {
             {/*  </Form>*/}
             {/*</Row>*/}
             <ListGroup>
-            {memberCommunities
+            {fetchedCommunities
                 .sort((a,b) => a.owner === user._id ? -1 : 0)
                 .map((community, index) =>
             <ListGroupItem className="justify-content-between" key={community._id} action onClick={viewCommunity} id={community._id} tag="button">
               <span id={community._id} className="mr-2">{community.name}</span>
-              {
-                user._id === community.owner &&
-                <Badge id={community._id} pill color="default">Administrador</Badge>
+              {user._id === community.owner &&
+                  <Badge id={community._id} pill color="default">
+                      Administrador
+                  </Badge>
               }
             </ListGroupItem>
             )}
@@ -229,18 +182,18 @@ const MyCommunities = () => {
           </Col>
         </Row>
       </Container>
-      <ModalForm header={"Crear comunidad"}
-                 body={"Completa con el nombre de la comunidad y agrega una contraseña"}
-                 isOpen={showCreateCommunityFormModal}
-                 onAccept={createCommunity}
-                 onCancel={() => {
+      <CreateCommunityModal header={"Crear comunidad"}
+                            body={"Completa con el nombre de la comunidad y agrega una contraseña"}
+                            isOpen={showCreateCommunityFormModal}
+                            onAccept={createCommunity}
+                            onCancel={() => {
                    setShowCreateCommunityFormModal(false)
                  }}
-                 form={createCommunityForm}
-                 handleChange={handleChange}
+                            form={createCommunityForm}
+                            handleChange={handleChange}
       />
-      <MyModal header={createCommunityResultModal.header} body={createCommunityResultModal.body}
-               isOpen={showCreateCommunityResultModal} onAccept={closeShowPasteOk}/>
+      <MyModal header={modal.header} body={modal.body}
+               isOpen={showModal} onAccept={closeShowPasteOk}/>
     </React.Fragment>
   );
 
