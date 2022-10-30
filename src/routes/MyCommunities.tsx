@@ -12,11 +12,11 @@ import {
 } from "reactstrap";
 import CreateCommunityModal, {CreateCommunityForm} from "../components/CreateCommunityModal";
 import client from "../services/config";
-import {MyModal} from "../components/MyModal";
 import {CommunityCreationStrings} from "../res/strings";
 import {useNavigate} from "react-router-dom";
-import {useForm} from "react-hook-form";
 import {fetchCommunities} from "../services/apicalls";
+import Success from "../components/modals/Success";
+import Error from "../components/modals/Error";
 
 export type ICommunity = {
   "_id": string,
@@ -38,15 +38,13 @@ const MyCommunities = () => {
     header: "",
     body: "",
   };
-  const [showModal, setShowModal] = useState(false);
-  const [modal, setModal] = useState(initialModalState);
+  const [showModalOk, setShowModalOk] = useState(false);
+  const [showModalError, setShowModalError] = useState(false);
+  const [modalOk, setModalOk] = useState(initialModalState);
+  const [modalError, setModalError] = useState(initialModalState);
   const [createdCommunityId, setCreatedCommunityId] = useState<string>();
 
   const navigate = useNavigate();
-  const [searchFilters, setSearchFilters] = useState<{name: string|undefined, owner: boolean|undefined}>({
-    name: undefined,
-    owner: undefined
-  });
 
   useEffect(() => {
     fetchCommunities(undefined, user._id).then(response => setCommunities(response))
@@ -58,8 +56,8 @@ const MyCommunities = () => {
 
   const createCommunity = async () => {
     if (!isFormValid()) {
-      setModal({header: CommunityCreationStrings.COMMUNITY_CREATION_ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_BAD_FORM})
-      setShowModal(true)
+      setModalError({header: CommunityCreationStrings.ERROR_HEAD, body: CommunityCreationStrings.BAD_FORM})
+      setShowModalError(true)
       return
     }
     setShowCreateCommunityFormModal(false)
@@ -73,18 +71,18 @@ const MyCommunities = () => {
       const {data: createdCommunity} = await client.post("/communities", form)
       console.log(createdCommunity);
       setCreatedCommunityId(createdCommunity._id);
-      setModal({header: CommunityCreationStrings.COMMUNITY_CREATION_OK_HEAD, body: CommunityCreationStrings.COMMUNITY_CREATED})
+      setModalOk({header: CommunityCreationStrings.OK_HEADER, body: CommunityCreationStrings.CREATED})
+      setShowModalOk(true)
       fetchCommunities()
-      setShowModal(true)
     } catch (error: any) {
       if (error.response) {
         if (error.response.data?.detail.includes("there is already a community with that name")){
-          setModal({header:CommunityCreationStrings.COMMUNITY_CREATION_ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_ALREADY_EXISTS})
-          setShowModal(true)
+          setModalError({header:CommunityCreationStrings.ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_ALREADY_EXISTS})
+          setShowModalError(true)
         }
         if (error.response.data?.detail.includes("user can't be in more than 10 communities")) {
-          setModal({header:CommunityCreationStrings.COMMUNITY_CREATION_ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_LIMIT})
-          setShowModal(true)
+          setModalError({header:CommunityCreationStrings.ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_LIMIT})
+          setShowModalError(true)
         }
         console.log(error.response);
       } else if (error.request) {
@@ -104,27 +102,21 @@ const MyCommunities = () => {
     setCreateCommunityForm({...createCommunityForm, [name]: value});
   }
 
-  const closeShowPasteOk = () => {
-    setShowModal(false)
+  const closeModalOk = () => {
+    setShowModalOk(false)
     if (createdCommunityId) {
       navigate(`/communities/${createdCommunityId}`);
     }
   }
 
-  const viewCommunity = (event: any) => {
-    // @ts-ignore
-    console.log("target")
-    console.log(event.target)
-    let communityId = event.target.id;
-    navigate(`/communities/${communityId}`)
+  const closeModalError = () => {
+    setShowModalError(false)
+    setModalError(initialModalState)
   }
 
-  const searchCommunities = async () => {
-    console.log(searchFilters)
-    if(searchFilters.owner === false || searchFilters.owner === undefined)
-      setCommunities(await fetchCommunities(undefined, user._id, searchFilters.name));
-    else
-      setCommunities(await fetchCommunities(user._id, undefined, searchFilters.name))
+  const viewCommunity = (event: any) => {
+    let communityId = event.target.id;
+    navigate(`/communities/${communityId}`)
   }
 
   return (
@@ -192,8 +184,8 @@ const MyCommunities = () => {
                             form={createCommunityForm}
                             handleChange={handleChange}
       />
-      <MyModal header={modal.header} body={modal.body}
-               isOpen={showModal} onAccept={closeShowPasteOk}/>
+      <Success modal={modalOk} isOpen={showModalOk} onAccept={closeModalOk}/>
+      <Error modal={modalError} isOpen={showModalError} onAccept={closeModalError}/>
     </React.Fragment>
   );
 
