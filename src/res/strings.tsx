@@ -1,3 +1,7 @@
+export const ProfileStrings = {
+  MANDATORY_FIELD: "*No puedes dejar este campo vacio"
+}
+
 export const CommunityCreationStrings = {
   COMMUNITY_CREATION_OK_HEAD: "¡Comunidad Creada!",
   COMMUNITY_CREATION_ERROR_HEAD: "Error al crear Comunidad",
