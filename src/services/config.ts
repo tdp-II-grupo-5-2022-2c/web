@@ -1,12 +1,13 @@
 import axios from "axios";
 
 const profiles = {
-  prod: "",
+  production: "https://album-qatar-back.herokuapp.com",
   staging: "https://album-qatar-back-stg.herokuapp.com",
-  local: "http://localhost:2000"
+  development: "http://localhost:2000"
 };
 
-export const API_URL = profiles.local;
+// @ts-ignore
+export const API_URL = process.env.REACT_APP_ENV ? profiles[process.env.REACT_APP_ENV] : profiles.development;
 
 const client = axios.create({
   baseURL: API_URL,
