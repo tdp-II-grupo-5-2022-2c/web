@@ -48,10 +48,12 @@ type Props2 = {
   stickers: IStickerData[],
   offset?: number
   isCreating?: boolean,
+  onClick?: (event: any) => void,
 }
 
-export const StickerStack2 = ({stickers, offset, isCreating = false}: Props2) => {
+export const StickerStack2 = ({stickers, offset, isCreating = false, onClick}: Props2) => {
   const OFFSET = offset || 1
+
 
   return (
     <div className="d-flex flex-row position-relative">
@@ -68,14 +70,16 @@ export const StickerStack2 = ({stickers, offset, isCreating = false}: Props2) =>
                        displayBadge={true}
               />
             </div>
-            {stickers.slice(1).map((sticker, index) =>
-              <div key={sticker._id} className="position-absolute" style={{left: `${(1 + index) * OFFSET}rem`}}>
-                <Sticker player={sticker}
-                         style={globalStickerStyles.stickerSmall}
-                         displayBadge={true}
-                />
-              </div>
-            )}
+            <div onClick={onClick}>
+              {stickers.slice(1).map((sticker, index) =>
+                <div key={sticker._id} className="position-absolute" style={{left: `${(1 + index) * OFFSET}rem`}}>
+                  <Sticker player={sticker}
+                           style={globalStickerStyles.stickerSmall}
+                           displayBadge={true}
+                  />
+                </div>
+              )}
+            </div>
           </>
         )
       }

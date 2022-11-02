@@ -21,9 +21,11 @@ type Props = {
   isOwner?: boolean,
   onAccept?: (id: string) => void,
   onReject?: (id: string) => void
+  onClickGive?: (e: any) => void
+  onClickReceive?: (e: any) => void
 }
 
-const Exchange = ({exchange, isOwner = true, onAccept, onReject}: Props) => {
+const Exchange = ({exchange, isOwner = true, onAccept, onReject, onClickGive, onClickReceive}: Props) => {
   const styles = {
     exchange: {
       width: "29rem",
@@ -57,7 +59,7 @@ const Exchange = ({exchange, isOwner = true, onAccept, onReject}: Props) => {
         </div>
         <div className="row">
           <div className="col">
-            <StickerStack2 stickers={exchange.stickers_to_give} offset={0.5}/>
+            <StickerStack2 stickers={exchange.stickers_to_give} offset={0.5} onClick={onClickGive}/>
             <PlayersInfo stickers={exchange.stickers_to_give}/>
           </div>
           <div className="col position-absolute">
@@ -65,7 +67,7 @@ const Exchange = ({exchange, isOwner = true, onAccept, onReject}: Props) => {
             <h1 className="text-green" style={styles.arrows}>{"<"}</h1>
           </div>
           <div className="col ml-2">
-            <StickerStack2 stickers={exchange.stickers_to_receive}/>
+            <StickerStack2 stickers={exchange.stickers_to_receive} offset={0.5} onClick={onClickReceive}/>
             <PlayersInfo stickers={exchange.stickers_to_receive}/>
           </div>
         </div>

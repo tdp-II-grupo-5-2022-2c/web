@@ -30,6 +30,30 @@ const MyExchanges = () => {
     }
   }
 
+  const swapLastToFirst = (oldExchanges: IExchange[], index: number) => {
+    const oldExchangesCpy = oldExchanges.slice()
+    // obtengo exchange del array
+    const exchange = oldExchangesCpy[index]
+    // obtengo stickers
+    const stickersToReceiveCpy = exchange.stickers_to_receive
+    // saco el ultimo
+    const last = stickersToReceiveCpy.pop()
+    if(last){
+      // lo pongo al principio
+      stickersToReceiveCpy.unshift(last)
+    }
+    // seteo los cambios en el exchange
+    exchange.stickers_to_receive = stickersToReceiveCpy
+    // seteo el exchange en el array de exchanges
+    oldExchanges[index] = exchange
+    return oldExchangesCpy
+  }
+
+  const swapReceive = (index: number) => {
+    console.log("swapReceive")
+    setUserExchanges(oldExchanges => swapLastToFirst(oldExchanges, index))
+  }
+
   return (
     <React.Fragment>
       <MyNavbar/>
@@ -42,7 +66,7 @@ const MyExchanges = () => {
           <div className="col-md-9 py-4 card">
             {userExchanges.map((exchange, index) =>
               <div key={exchange._id} className="col col-md-3">
-                <Exchange exchange={exchange}/>
+                <Exchange exchange={exchange} onClickReceive={() => swapReceive(index)}/>
               </div>
             )}
           </div>
