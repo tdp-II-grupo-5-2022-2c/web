@@ -22,6 +22,9 @@ export const globalExchangesStyles = {
   arrows:{
     fontSize: "50px"
   },
+  exchange:{
+    width: "28rem",
+  }
 }
 
 export const globalButtonsStyle = {

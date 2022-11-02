@@ -46,13 +46,14 @@ export const StickerStack = ({stickers, offset, isCreating = false}: Props) => {
 
 type Props2 = {
   stickers: IStickerData[],
+  step?: number
   offset?: number
   isCreating?: boolean,
   onClick?: (e: any) => void,
 }
 
-export const StickerStack2 = ({stickers, offset, isCreating = false, onClick}: Props2) => {
-  const OFFSET = offset || 1
+export const StickerStack2 = ({stickers, step, isCreating = false, onClick}: Props2) => {
+  const STEP = step || 1
 
   return (
     <div className="d-flex flex-row position-relative" onClick={onClick}>
@@ -62,7 +63,7 @@ export const StickerStack2 = ({stickers, offset, isCreating = false, onClick}: P
           </span>}
       {stickers && stickers.length > 0 &&
         (
-          <>
+          <React.Fragment >
             <div key={stickers[0]._id} className="position-relative">
               <Sticker player={stickers[0]}
                        style={globalStickerStyles.stickerSmall}
@@ -71,7 +72,7 @@ export const StickerStack2 = ({stickers, offset, isCreating = false, onClick}: P
             </div>
             <div>
               {stickers.slice(1).map((sticker, index) =>
-                <div key={sticker._id} className="position-absolute" style={{left: `${(1 + index) * OFFSET}rem`}}>
+                <div key={sticker._id} className="position-absolute" style={{left: `${(1 + index) * STEP}rem`}}>
                   <Sticker player={sticker}
                            style={globalStickerStyles.stickerSmall}
                            displayBadge={true}
@@ -79,7 +80,7 @@ export const StickerStack2 = ({stickers, offset, isCreating = false, onClick}: P
                 </div>
               )}
             </div>
-          </>
+          </React.Fragment>
         )
       }
     </div>

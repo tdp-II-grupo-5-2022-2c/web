@@ -107,7 +107,7 @@ const MyProfile = () => {
                 <p className="text-white mt-0 mb-5">
                 En esta pantalla podrás ver el progreso de tu colección de figuritas</p>
                 {!isEditing && <Button className="btn btn-success" onClick={() => enableProfileEditing()}>Editar perfil</Button>}
-                {isEditing && <Button className="btn btn-success" disabled={!hasMandatoryFields()} onClick={() => acceptChanges()}>Aceptar</Button>}
+                {isEditing && <Button className="btn btn-success" disabled={!hasMandatoryFields()} onClick={() => acceptChanges()}>Guardar</Button>}
                 {isEditing && <Button className="btn btn-primary" onClick={() => cancelChanges()}>Cancelar</Button>}
               </div>
             </div>

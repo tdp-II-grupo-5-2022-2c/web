@@ -1,9 +1,8 @@
-import {ISticker, IStickerData} from "./Sticker";
+import {IStickerData} from "./Sticker";
 import React from "react";
-import {StickerStack, StickerStack2} from "./stickers/StickerStack";
-import PlayersInfo from "./stickers/PlayersInfo";
+import {StickerStack2} from "./stickers/StickerStack";
 import {Button} from "reactstrap";
-import {debugStyle, globalButtonsStyle} from "../res/globalStyles";
+import {globalButtonsStyle} from "../res/globalStyles";
 import {User} from "../context/UserContext";
 
 export type IExchange = {
@@ -28,8 +27,7 @@ type Props = {
 const Exchange = ({exchange, isOwner = true, onAccept, onReject, onClickGive, onClickReceive}: Props) => {
   const styles = {
     exchange: {
-      width: "29rem",
-      height: "24rem",
+      width: "32rem",
       backgroundImage: `url("/images/bg_exchange.jpg")`
     },
     arrows: {
@@ -40,34 +38,25 @@ const Exchange = ({exchange, isOwner = true, onAccept, onReject, onClickGive, on
   return (
     <div className="card" style={styles.exchange}>
       <div className="card-body text-center">
-        <div className="row mb-1">
-          <div className="col-3">
+        <div className="d-flex flex-row justify-content-around mb-1">
             {!isOwner && onAccept &&
                 <Button style={globalButtonsStyle.alternative} onClick={() => onAccept(exchange._id)}>
                     <p className="text-white m-0">Aceptar</p>
                 </Button>}
-          </div>
-          <div className="col-6">
-            <h1 className="text-white">{exchange.sender.name}</h1>
-          </div>
-          <div className="col-3">
+            <h1 className="text-white">{exchange.sender.name} {exchange.sender.lastname}</h1>
             {!isOwner && onReject &&
                 <Button style={globalButtonsStyle.white} onClick={() => onReject(exchange._id)}>
                     <p className="text-qatar-secondary m-0">Rechazar</p>
                 </Button>}
-          </div>
         </div>
-        <div className="row">
-          <div className="col" >
-            <StickerStack2 stickers={exchange.stickers_to_give} offset={0.5} onClick={onClickGive}/>
+        <div className="d-flex flex-row align-items-center justify-content-between">
+          <StickerStack2 stickers={exchange.stickers_to_give} step={0.5} onClick={onClickGive}/>
+          <div className="d-flex flex-column">
+            <i className="ni ni-bold-right text-danger ni-3x"></i>
+            <hr/>
+            <i className="ni ni-bold-left text-success ni-3x"></i>
           </div>
-          <div className="col position-absolute">
-            <h1 className="text-red" style={styles.arrows}>{">"}</h1>
-            <h1 className="text-green" style={styles.arrows}>{"<"}</h1>
-          </div>
-          <div className="col ml-2">
-            <StickerStack2 stickers={exchange.stickers_to_receive} offset={0.5} onClick={onClickReceive}/>
-          </div>
+          <StickerStack2 stickers={exchange.stickers_to_receive} step={0.5} onClick={onClickReceive}/>
         </div>
       </div>
     </div>
