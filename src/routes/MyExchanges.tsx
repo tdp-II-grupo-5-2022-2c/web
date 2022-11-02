@@ -4,6 +4,7 @@ import {useUser} from "../context/UserContext";
 import client from "../services/config";
 import Exchange, {IExchange} from "../components/Exchange";
 import {globalExchangesStyles} from "../res/globalStyles";
+import {IStickerData} from "../components/Sticker";
 
 
 const MyExchanges = () => {
@@ -30,20 +31,29 @@ const MyExchanges = () => {
     }
   }
 
-  const swapLastToFirst = (oldExchanges: IExchange[], index: number) => {
+  const swapLastToFirst = (oldExchanges: IExchange[], index: number, isReceive: boolean) => {
     const oldExchangesCpy = oldExchanges.slice()
     // obtengo exchange del array
     const exchange = oldExchangesCpy[index]
     // obtengo stickers
-    const stickersToReceiveCpy = exchange.stickers_to_receive
+    let stickersCpy: IStickerData[] = []
+    if(isReceive){
+      stickersCpy = exchange.stickers_to_receive
+    } else {
+      stickersCpy = exchange.stickers_to_give
+    }
     // saco el ultimo
-    const last = stickersToReceiveCpy.pop()
+    const last = stickersCpy.pop()
     if(last){
       // lo pongo al principio
-      stickersToReceiveCpy.unshift(last)
+      stickersCpy.unshift(last)
     }
-    // seteo los cambios en el exchange
-    exchange.stickers_to_receive = stickersToReceiveCpy
+    if(isReceive){
+      // seteo los cambios en el exchange
+      exchange.stickers_to_receive = stickersCpy
+    } else {
+      exchange.stickers_to_give = stickersCpy
+    }
     // seteo el exchange en el array de exchanges
     oldExchanges[index] = exchange
     return oldExchangesCpy
@@ -51,7 +61,12 @@ const MyExchanges = () => {
 
   const swapReceive = (index: number) => {
     console.log("swapReceive")
-    setUserExchanges(oldExchanges => swapLastToFirst(oldExchanges, index))
+    setUserExchanges(oldExchanges => swapLastToFirst(oldExchanges, index, true))
+  }
+
+  const swapGive = (index: number) => {
+    console.log("swapGive")
+    setUserExchanges(oldExchanges => swapLastToFirst(oldExchanges, index, false))
   }
 
   return (
@@ -66,7 +81,7 @@ const MyExchanges = () => {
           <div className="col-md-9 py-4 card">
             {userExchanges.map((exchange, index) =>
               <div key={exchange._id} className="col col-md-3">
-                <Exchange exchange={exchange} onClickReceive={() => swapReceive(index)}/>
+                <Exchange exchange={exchange} onClickReceive={() => swapReceive(index)} onClickGive={() => swapGive(index)}/>
               </div>
             )}
           </div>

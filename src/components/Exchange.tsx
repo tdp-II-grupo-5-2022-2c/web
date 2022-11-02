@@ -58,9 +58,8 @@ const Exchange = ({exchange, isOwner = true, onAccept, onReject, onClickGive, on
           </div>
         </div>
         <div className="row">
-          <div className="col">
+          <div className="col" >
             <StickerStack2 stickers={exchange.stickers_to_give} offset={0.5} onClick={onClickGive}/>
-            <PlayersInfo stickers={exchange.stickers_to_give}/>
           </div>
           <div className="col position-absolute">
             <h1 className="text-red" style={styles.arrows}>{">"}</h1>
@@ -68,7 +67,6 @@ const Exchange = ({exchange, isOwner = true, onAccept, onReject, onClickGive, on
           </div>
           <div className="col ml-2">
             <StickerStack2 stickers={exchange.stickers_to_receive} offset={0.5} onClick={onClickReceive}/>
-            <PlayersInfo stickers={exchange.stickers_to_receive}/>
           </div>
         </div>
       </div>
