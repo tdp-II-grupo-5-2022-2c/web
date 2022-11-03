@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import Exchange, {IExchange} from "./Exchange";
 import {useUser} from "../context/UserContext";
-import {MyModal2} from "./MyModal";
 import {ExchangeStrings} from "../res/strings";
 import client from "../services/config";
 import {fetchCommunityExchanges} from "../services/apicalls";
 import Success from "./modals/Success";
 import Error from "./modals/Error";
+import {IStickerData} from "./Sticker";
 
 type Props = {
   communityId: string
@@ -92,15 +92,50 @@ const CommunityExchanges = ({communityId}:Props) => {
     return false
   }
 
+  const swapLastToFirst = (oldExchanges: IExchange[], index: number, isReceive: boolean) => {
+    const oldExchangesCpy = oldExchanges.slice()
+    // obtengo exchange del array
+    const exchange = oldExchangesCpy[index]
+    // obtengo stickers
+    let stickersCpy: IStickerData[] = []
+    if (isReceive) {
+      stickersCpy = exchange.stickers_to_receive
+    } else {
+      stickersCpy = exchange.stickers_to_give
+    }
+    // saco el ultimo
+    const last = stickersCpy.pop()
+    if (last) {
+      // lo pongo al principio
+      stickersCpy.unshift(last)
+    }
+    if (isReceive) {
+      // seteo los cambios en el exchange
+      exchange.stickers_to_receive = stickersCpy
+    } else {
+      exchange.stickers_to_give = stickersCpy
+    }
+    // seteo el exchange en el array de exchanges
+    oldExchanges[index] = exchange
+    return oldExchangesCpy
+  }
+
+  const swapReceive = (index: number) => {
+    setCommunityExchanges(oldExchanges => swapLastToFirst(oldExchanges, index, true))
+  }
+
+  const swapGive = (index: number) => {
+    setCommunityExchanges(oldExchanges => swapLastToFirst(oldExchanges, index, false))
+  }
+
   return (
     <React.Fragment>
       <div className="container">
         <div className="row">
           {communityExchanges.map((exchange, index) =>
-            <div key={exchange._id} className="col d-flex justify-content-center">
-              <div>
-                <Exchange exchange={exchange} isOwner={false} onAccept={acceptExchange} onReject={rejectExchange}/>
-              </div>
+            <div key={exchange._id} className="d-flex justify-content-center mb-1">
+                <Exchange exchange={exchange} isOwner={false} onAccept={acceptExchange} onReject={rejectExchange}
+                          onClickGive={() => swapGive(index)} onClickReceive={() => swapReceive(index)}/>
             </div>
           )}
         </div>

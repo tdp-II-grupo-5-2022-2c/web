@@ -58,10 +58,12 @@ const MyExchanges = () => {
   }
 
   const swapReceive = (index: number) => {
+    console.log("Swap receive")
     setUserExchanges(oldExchanges => swapLastToFirst(oldExchanges, index, true))
   }
 
   const swapGive = (index: number) => {
+    console.log("Swap give")
     setUserExchanges(oldExchanges => swapLastToFirst(oldExchanges, index, false))
   }
 
