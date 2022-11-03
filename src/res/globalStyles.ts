@@ -1,4 +1,4 @@
-import {qatarColors, stickerColors} from "./themes";
+import {qatarColors} from "./themes";
 
 export const globalStickerStyles = {
   sticker:{
@@ -8,22 +8,6 @@ export const globalStickerStyles = {
   stickerSmall: {
     width: "10rem",
     height: "12rem",
-  }
-}
-
-export const globalCommunityStyles = {
-  community:{
-    width: "16rem",
-    height: "20rem",
-  },
-}
-
-export const globalExchangesStyles = {
-  arrows:{
-    fontSize: "50px"
-  },
-  exchange:{
-    width: "28rem",
   }
 }
 

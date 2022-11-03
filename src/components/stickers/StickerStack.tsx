@@ -14,7 +14,7 @@ export const StickerStack = ({stickers, offset, isCreating = false}: Props) => {
   return (
     <div className="d-flex flex-row position-relative">
       {isCreating && stickers.length >= 5 && <span style={{fontSize: 20}}
-                                     className="position-absolute badge top-0 start-100 rounded-pill bg-gradient-danger mx-2">
+                                                   className="position-absolute badge top-0 start-100 rounded-pill bg-gradient-danger mx-2">
               &nbsp;{stickers.length}/5&nbsp;
           </span>}
       {stickers && stickers.length > 0 &&
@@ -55,15 +55,21 @@ type Props2 = {
 export const StickerStack2 = ({stickers, step, isCreating = false, onClick}: Props2) => {
   const STEP = step || 1
 
+  const styles = {
+    stack: {
+      width: "12rem"
+    }
+  }
+
   return (
-    <div className="d-flex flex-row position-relative" onClick={onClick}>
+    <div className="d-flex flex-row position-relative" onClick={onClick} style={styles.stack}>
       {isCreating && stickers.length >= 5 && <span style={{fontSize: 20}}
-            className="position-absolute badge top-0 start-100 rounded-pill bg-gradient-danger mx-2">
+                                                   className="position-absolute badge top-0 start-100 rounded-pill bg-gradient-danger mx-2">
               &nbsp;{stickers.length}/5&nbsp;
           </span>}
       {stickers && stickers.length > 0 &&
         (
-          <React.Fragment >
+          <React.Fragment>
             <div key={stickers[0]._id} className="position-relative">
               <Sticker player={stickers[0]}
                        style={globalStickerStyles.stickerSmall}
@@ -87,5 +93,3 @@ export const StickerStack2 = ({stickers, step, isCreating = false, onClick}: Pro
   )
 
 }
-
-

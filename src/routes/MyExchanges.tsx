@@ -3,9 +3,7 @@ import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
 import client from "../services/config";
 import Exchange, {IExchange} from "../components/Exchange";
-import {globalExchangesStyles} from "../res/globalStyles";
 import {IStickerData} from "../components/Sticker";
-
 
 const MyExchanges = () => {
   const user = useUser();
@@ -60,12 +58,10 @@ const MyExchanges = () => {
   }
 
   const swapReceive = (index: number) => {
-    console.log("swapReceive")
     setUserExchanges(oldExchanges => swapLastToFirst(oldExchanges, index, true))
   }
 
   const swapGive = (index: number) => {
-    console.log("swapGive")
     setUserExchanges(oldExchanges => swapLastToFirst(oldExchanges, index, false))
   }
 
@@ -73,27 +69,26 @@ const MyExchanges = () => {
     <React.Fragment>
       <MyNavbar/>
       <div className="container-fluid">
-        <h1>Mis Intercambios</h1>
         <div className="row">
-          <div className="card d-inline-flex">
-            <div className="card-body d-flex flex-row justify-content-around">
-              <h2 className="">Leyenda</h2>
-              <div className="d-flex flex-row align-items-center justify-content-start">
-                <i className="ni ni-bold-right text-success ni-3x"></i>
-                <p className="">Figuritas a dar</p>
-              </div>
-              <div className="d-flex flex-row align-items-center justify-content-start">
-                <i className="ni ni-bold-left text-danger ni-3x"></i>
-                <p className="">Figuritas a recibir</p>
+            <h1>Mis Intercambios</h1>
+            <div className="card col-md-auto">
+              <div className="card-body d-flex flex-row justify-content-around">
+                <div className="d-flex flex-row align-items-center justify-content-start">
+                  <i className="ni ni-bold-right text-danger ni-3x"></i>
+                  <p className="">Figuritas a dar</p>
+                </div>
+                <div className="d-flex flex-row align-items-center justify-content-start">
+                  <i className="ni ni-bold-left text-success ni-3x"></i>
+                  <p className="">Figuritas a recibir</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
         <div className="row">
           <div className="card">
             <div className="card-body row">
               {userExchanges.map((exchange, index) =>
-                <div key={exchange._id} className="col my-1">
+                <div key={exchange._id} className="col-4 my-1">
                   <Exchange exchange={exchange} onClickReceive={() => swapReceive(index)}
                             onClickGive={() => swapGive(index)}/>
                 </div>

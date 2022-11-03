@@ -25,29 +25,27 @@ type Props = {
 }
 
 const Exchange = ({exchange, isOwner = true, onAccept, onReject, onClickGive, onClickReceive}: Props) => {
+
   const styles = {
     exchange: {
       width: "32rem",
-      backgroundImage: `url("/images/bg_exchange.jpg")`
+      backgroundImage: `url("/images/bg_stickers.jpeg")`
     },
-    arrows: {
-      fontSize: "70px",
-    }
   }
 
   return (
     <div className="card" style={styles.exchange}>
-      <div className="card-body text-center">
+      <div className="card-body">
         <div className="d-flex flex-row justify-content-around mb-1">
-            {!isOwner && onAccept &&
-                <Button style={globalButtonsStyle.alternative} onClick={() => onAccept(exchange._id)}>
-                    <p className="text-white m-0">Aceptar</p>
-                </Button>}
-            <h1 className="text-white">{exchange.sender.name} {exchange.sender.lastname}</h1>
-            {!isOwner && onReject &&
-                <Button style={globalButtonsStyle.white} onClick={() => onReject(exchange._id)}>
-                    <p className="text-qatar-secondary m-0">Rechazar</p>
-                </Button>}
+          {!isOwner && onAccept &&
+              <Button style={globalButtonsStyle.alternative} onClick={() => onAccept(exchange._id)}>
+                  <p className="text-white m-0">Aceptar</p>
+              </Button>}
+          <h1 className="text-white">{exchange.sender.name} {exchange.sender.lastname}</h1>
+          {!isOwner && onReject &&
+              <Button style={globalButtonsStyle.white} onClick={() => onReject(exchange._id)}>
+                  <p className="text-qatar-secondary m-0">Rechazar</p>
+              </Button>}
         </div>
         <div className="d-flex flex-row align-items-center justify-content-between">
           <StickerStack2 stickers={exchange.stickers_to_give} step={0.5} onClick={onClickGive}/>

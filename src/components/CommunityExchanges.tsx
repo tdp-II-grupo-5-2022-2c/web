@@ -5,6 +5,8 @@ import {MyModal2} from "./MyModal";
 import {ExchangeStrings} from "../res/strings";
 import client from "../services/config";
 import {fetchCommunityExchanges} from "../services/apicalls";
+import Success from "./modals/Success";
+import Error from "./modals/Error";
 
 type Props = {
   communityId: string
@@ -19,7 +21,9 @@ const CommunityExchanges = ({communityId}:Props) => {
     body: "",
   };
   const [modal, setModal] = useState(initialModalState)
+  const [modalError, setModalError] = useState(initialModalState)
   const [showModal, setShowModal] = useState(false)
+  const [showModalError, setShowModalError] = useState(false)
 
   useEffect(() => {
     _fetchCommunityExchanges()
@@ -34,17 +38,18 @@ const CommunityExchanges = ({communityId}:Props) => {
     const success = await doRequest("accept", exchangeId)
     if (success) {
       setModal({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_ACCEPT_OK})
+      setShowModal(true)
     } else {
-      setModal({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_ACCEPT_ERROR})
+      setModalError({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_ACCEPT_ERROR})
+      setShowModalError(true)
     }
-    setShowModal(true)
   }
 
   const rejectExchange = async (exchangeId: string) => {
     const success = await doRequest("reject", exchangeId)
     if (!success) {
-      setModal({header: "", body: ExchangeStrings.EXCHANGE_REJECT_ERROR})
-      setShowModal(true)
+      setModalError({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_REJECT_ERROR})
+      setShowModalError(true)
     } else {
       _fetchCommunityExchanges()
     }
@@ -53,6 +58,12 @@ const CommunityExchanges = ({communityId}:Props) => {
   const closeModal = () => {
     // Fetcheo de nuevo para actualizar y que NO se vea mas el intercambio rechazado o aceptado
     setShowModal(false)
+    _fetchCommunityExchanges()
+  }
+
+  const closeModalError = () => {
+    // Fetcheo de nuevo para actualizar y que NO se vea mas el intercambio rechazado o aceptado
+    setShowModalError(false)
     _fetchCommunityExchanges()
   }
 
@@ -94,9 +105,8 @@ const CommunityExchanges = ({communityId}:Props) => {
           )}
         </div>
       </div>
-      <MyModal2 header={modal.header} isOpen={showModal} onAccept={closeModal}>
-        <>{modal.body}</>
-      </MyModal2>
+      <Success modal={modal} isOpen={showModal} onAccept={closeModal}/>
+      <Error modal={modalError} isOpen={showModalError} onAccept={closeModalError}/>
     </React.Fragment>
   )
 }

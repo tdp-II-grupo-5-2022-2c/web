@@ -134,7 +134,7 @@ const MyStickers = () => {
               </Draggable>
           </Col>
       )}
-      {stickers && stickers.length === 0 && user.stickers.length > 0 &&
+      {stickers && !hasStickers(stickers) && user.stickers.length > 0 &&
           <Col>
               <CardText>No se encontró ninguna figurita con este filtro</CardText>
           </Col>
@@ -184,7 +184,7 @@ const MyStickers = () => {
             </Row>
             <Row>
               <StickersList stickers={fetchedStickers}/>
-              {!hasStickers(fetchedStickers) &&
+              {!hasStickers(fetchedStickers) && !hasStickers(user.stickers) &&
                 <Col>
                       <p>No tienes figuritas, abrí un nuevo paquete</p>
                       <Button color={"success"} onClick={goToDailyPacket}>
