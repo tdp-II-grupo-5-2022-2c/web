@@ -31,7 +31,6 @@ const CreateExchange = () => {
   const [allStickers, setAllStickers] = useState<IStickerData[]>([])
 
   const [isGiving, setIsGiving] = useState(true);
-  const _isGiving = useRef(true);
   const [stickersToGive, setStickersToGive] = useState<ISticker[]>([])
   const [stickersToReceive, setStickersToReceive] = useState<IStickerData[]>([])
 
@@ -94,13 +93,11 @@ const CreateExchange = () => {
 
   const selectReceive = () => {
     setIsGiving(false)
-    _isGiving.current = false
     _fetchAllStickers()
   }
 
   const selectGive = () => {
     setIsGiving(true)
-    _isGiving.current = true
   }
 
   const clean = () => {
@@ -108,7 +105,6 @@ const CreateExchange = () => {
     setStickersToGive([])
     setStickersToReceive([])
     setIsGiving(true)
-    _isGiving.current = true
   }
 
   function contains(oldStickers: ISticker[], sticker: ISticker) {
@@ -128,23 +124,17 @@ const CreateExchange = () => {
   }
 
   const addStickerToExchangeGive = async (sticker: ISticker) => {
-    if(_isGiving.current){
       console.log("add sticker to give")
       setStickersToGive(oldStickersToGive => (
         contains(oldStickersToGive, sticker) < 0 ? [...oldStickersToGive, sticker]
-          : [...oldStickersToGive]
-      ));
-    }
-
+          : [...oldStickersToGive]))
   }
 
   const addStickerToExchangeReceive = async (sticker: IStickerData) => {
-    if(!_isGiving.current) {
+    console.log("add sticker to receive")
       setStickersToReceive(oldStickersToReceive => (
           contains2(oldStickersToReceive, sticker) < 0 ? [...oldStickersToReceive, sticker]
-          : [...oldStickersToReceive]
-      ));
-    }
+          : [...oldStickersToReceive]))
   }
 
   const [{isOverGive}, dropExchangeGive] = useDrop(() => ({
@@ -290,7 +280,7 @@ const CreateExchange = () => {
         <div className="card-body text-center">
           <div className="row">
             <div className="col">
-              <div ref={dropExchangeGive} className="card" style={{...styles.dropSize, ...globalButtonsStyle.alternative}}>
+              <div ref={isGiving ? dropExchangeGive : undefined} className="card" style={{...styles.dropSize, ...globalButtonsStyle.alternative}}>
                 <div className="card-body">
                   <div  className="d-flex flex-column align-items-center">
                     <h1 className="text-white">Voy a dar</h1>
@@ -304,7 +294,7 @@ const CreateExchange = () => {
               </div>
             </div>
             <div className="col">
-              <div ref={dropExchangeReceive} className="card" style={{...styles.dropSize, ...globalButtonsStyle.alternative}}>
+              <div ref={!isGiving ? dropExchangeReceive : undefined} className="card" style={{...styles.dropSize, ...globalButtonsStyle.alternative}}>
                 <div className="card-body">
                   <div  className="d-flex flex-column align-items-center">
                     <h1 className="text-white">Voy a recibir</h1>
