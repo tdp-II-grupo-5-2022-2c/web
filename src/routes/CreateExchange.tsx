@@ -258,8 +258,7 @@ const CreateExchange = () => {
         <div className="card-body">
         <div className="row">
           <h1 className="text-white">{isGiving ? PICKING_STATE_TITLE.give : PICKING_STATE_TITLE.receive}</h1>
-          {stickersToGive.length > 0 && stickersToReceive.length > 0 &&
-              <h1 className="text-green m-0">{CreateExchangeStrings.EXCHANGE_READY}</h1>}
+
 
         </div>
         {/*Buscador y botones*/}
@@ -288,6 +287,9 @@ const CreateExchange = () => {
     const styles = {
       exchangeCreation:{
         backgroundImage: `url("/images/bg_exchange.jpg")`
+      },
+      dropSize:{
+        height: '28rem'
       }
     }
 
@@ -296,27 +298,43 @@ const CreateExchange = () => {
         <div className="card-body text-center">
           <div className="row">
             <div className="col">
-              <div ref={dropExchangeGive}>
-                <h1 className="text-white">Voy a dar</h1>
-                <StickerStack stickers={stickersToGive} isCreating={true}/>
-                <PlayersInfo stickers={stickersToGive}/>
-                {isGiving && <div className="text-center" style={globalButtonsStyle.alternative}>
-                    <p className="text-white">{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
-                </div>}
+              <div ref={dropExchangeGive} className="card" style={{...styles.dropSize, ...globalButtonsStyle.alternative}}>
+                <div className="card-body">
+                  <div  className="d-flex flex-column align-items-center">
+                    <h1 className="text-white">Voy a dar</h1>
+                    {isGiving && <div className="text-center" style={globalButtonsStyle.alternative}>
+                        <p className="text-white">{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
+                    </div>}
+                    <StickerStack stickers={stickersToGive} isCreating={true}/>
+                    <PlayersInfo stickers={stickersToGive}/>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="col">
-              <div ref={dropExchangeReceive}>
-                <h1 className="text-white">Voy a recibir</h1>
-                <StickerStack2 stickers={stickersToReceive} isCreating={true}/>
-                <PlayersInfo stickers={stickersToReceive}/>
-                {!isGiving && <div className="text-center" style={globalButtonsStyle.alternative}>
-                    <p className="text-white">{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
-                </div>}
+              <div ref={dropExchangeReceive} className="card" style={{...styles.dropSize, ...globalButtonsStyle.alternative}}>
+                <div className="card-body">
+                  <div  className="d-flex flex-column align-items-center">
+                    <h1 className="text-white">Voy a recibir</h1>
+                    {!isGiving && <div className="text-center">
+                        <p className="text-white">{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
+                    </div>}
+                    <StickerStack2 stickers={stickersToReceive} isCreating={true}/>
+                    <PlayersInfo stickers={stickersToReceive}/>
+                  </div>
+                </div>
               </div>
-
             </div>
+
           </div>
+          <div className="row justify-content-md-center">
+            {stickersToGive.length > 0 && stickersToReceive.length > 0 &&
+                <h1 className="text-green m-0">{CreateExchangeStrings.EXCHANGE_READY}</h1>}
+            {stickersToGive.length > 0 && stickersToReceive.length > 0 && <Button className="btn-success w-50" onClick={createExchange}>
+                Confirmar
+            </Button>}
+            </div>
+
         </div>
       </div>
     )
@@ -325,9 +343,9 @@ const CreateExchange = () => {
   return (
     <React.Fragment>
       <MyNavbar/>
-      <h1>Creando Intercambio</h1>
-      <div className="container">
+      <div className="container-fluid">
         <div className="row">
+          <h1>Creando Intercambio</h1>
           {/*Selector de figuritas*/}
           <div className="col">
             <StickersPicker/>
@@ -335,9 +353,6 @@ const CreateExchange = () => {
           {/*Intercambio*/}
           <div className="col">
             <MyExchangeCreator/>
-            {stickersToGive.length > 0 && stickersToReceive.length > 0 && <Button style={globalButtonsStyle.alternative} block onClick={createExchange}>
-              <p className="text-white m-0">Confirmar</p>
-            </Button>}
           </div>
         </div>
       </div>
