@@ -3,8 +3,7 @@ import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
 import client from "../services/config";
 import Exchange, {IExchange} from "../components/Exchange";
-import {globalExchangesStyles} from "../res/globalStyles";
-
+import {IStickerData} from "../components/Sticker";
 
 const MyExchanges = () => {
   const user = useUser();
@@ -30,41 +29,77 @@ const MyExchanges = () => {
     }
   }
 
+  // TODO: codigo repetido
+  const swapLastToFirst = (oldExchanges: IExchange[], index: number, isReceive: boolean) => {
+    const oldExchangesCpy = oldExchanges.slice()
+    // obtengo exchange del array
+    const exchange = oldExchangesCpy[index]
+    // obtengo stickers
+    let stickersCpy: IStickerData[] = []
+    if (isReceive) {
+      stickersCpy = exchange.stickers_to_receive
+    } else {
+      stickersCpy = exchange.stickers_to_give
+    }
+    // saco el ultimo
+    const last = stickersCpy.pop()
+    if (last) {
+      // lo pongo al principio
+      stickersCpy.unshift(last)
+    }
+    if (isReceive) {
+      // seteo los cambios en el exchange
+      exchange.stickers_to_receive = stickersCpy
+    } else {
+      exchange.stickers_to_give = stickersCpy
+    }
+    // seteo el exchange en el array de exchanges
+    oldExchangesCpy[index] = exchange
+    return oldExchangesCpy
+  }
+
+  const swapReceive = (index: number) => {
+    console.log("Swap receive")
+    setUserExchanges(oldExchanges => swapLastToFirst(oldExchanges, index, true))
+  }
+
+  const swapGive = (index: number) => {
+    console.log("Swap give")
+    setUserExchanges(oldExchanges => swapLastToFirst(oldExchanges, index, false))
+  }
+
   return (
     <React.Fragment>
       <MyNavbar/>
-      <div className="row">
-        <h1>Mis Intercambios</h1>
-      </div>
-
-      <div className="container">
+      <div className="container-fluid">
         <div className="row">
-          <div className="col-md-9 py-4 card">
-            {userExchanges.map((exchange, index) =>
-              <div key={exchange._id} className="col col-md-3">
-                <Exchange exchange={exchange}/>
-              </div>
-            )}
-          </div>
-          <div className="col-md-3 card py-4">
-            <p>Leyenda</p>
-            <div className="row d-flex align-items-center">
-              <div className="col-3 d-flex align-content-start">
-                <p className="text-red" style={globalExchangesStyles.arrows}>{"->"}</p>
-              </div>
-              <div className="col-9 d-flex align-content-start">
-                <p>{"Figuritas a dar"}</p>
-              </div>
-            </div>
-            <div className="row d-flex align-items-center">
-              <div className="col-3 d-flex align-content-start">
-                <p className="text-green" style={globalExchangesStyles.arrows}>{"<-"}</p>
-              </div>
-              <div className="col-9 d-flex align-content-start">
-                {"Figuritas a recibir"}
+            <h1>Mis Intercambios</h1>
+            <div className="card col-md-auto">
+              <div className="card-body d-flex flex-row justify-content-around">
+                <div className="d-flex flex-row align-items-center justify-content-start">
+                  <i className="ni ni-bold-right text-danger ni-3x"></i>
+                  <p className="">Figuritas a dar</p>
+                </div>
+                <div className="d-flex flex-row align-items-center justify-content-start">
+                  <i className="ni ni-bold-left text-success ni-3x"></i>
+                  <p className="">Figuritas a recibir</p>
+                </div>
               </div>
             </div>
           </div>
+        <div className="row">
+          <div className="card">
+            <div className="card-body row">
+              {userExchanges.map((exchange, index) =>
+                <div key={exchange._id} className="col-4 my-1">
+                  <Exchange exchange={exchange} onClickReceive={() => swapReceive(index)}
+                            onClickGive={() => swapGive(index)}/>
+                </div>
+              )}
+            </div>
+
+          </div>
+
         </div>
       </div>
     </React.Fragment>
