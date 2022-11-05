@@ -29,6 +29,7 @@ const MyExchanges = () => {
     }
   }
 
+  // TODO: codigo repetido
   const swapLastToFirst = (oldExchanges: IExchange[], index: number, isReceive: boolean) => {
     const oldExchangesCpy = oldExchanges.slice()
     // obtengo exchange del array
@@ -53,7 +54,7 @@ const MyExchanges = () => {
       exchange.stickers_to_give = stickersCpy
     }
     // seteo el exchange en el array de exchanges
-    oldExchanges[index] = exchange
+    oldExchangesCpy[index] = exchange
     return oldExchangesCpy
   }
 

@@ -42,7 +42,6 @@ const Exchange = ({exchange, isOwner = true, onAccept, onReject, onClickGive, on
         <div className="d-flex flex-row align-items-center justify-content-between mb-1">
           <div className="d-flex flex-column align-items-center">
             <StickerStack2 stickers={exchange.stickers_to_give} step={0.5} onClick={onClickGive}/>
-
           </div>
           <div className="d-flex flex-column">
             <i className="ni ni-bold-right text-danger ni-3x"></i>
@@ -53,14 +52,14 @@ const Exchange = ({exchange, isOwner = true, onAccept, onReject, onClickGive, on
             <StickerStack2 stickers={exchange.stickers_to_receive} step={0.5} onClick={onClickReceive}/>
           </div>
         </div>
-        <div className="d-flex flex-column">
+        <div className="row justify-content-md-evenly">
           {!isOwner && onAccept &&
-              <Button style={globalButtonsStyle.alternative} onClick={() => onAccept(exchange._id)} className="mb-1">
+              <Button style={globalButtonsStyle.alternative} onClick={() => onAccept(exchange._id)} className="col-md-auto">
                   <p className="text-white m-0">Aceptar</p>
               </Button>
           }
           {!isOwner && onReject &&
-              <Button style={globalButtonsStyle.white} onClick={() => onReject(exchange._id)}>
+              <Button style={globalButtonsStyle.white} onClick={() => onReject(exchange._id)} className="col-md-auto">
                   <p className="text-qatar-secondary m-0">Rechazar</p>
               </Button>
           }

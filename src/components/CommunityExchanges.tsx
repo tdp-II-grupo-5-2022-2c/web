@@ -116,7 +116,7 @@ const CommunityExchanges = ({communityId}:Props) => {
       exchange.stickers_to_give = stickersCpy
     }
     // seteo el exchange en el array de exchanges
-    oldExchanges[index] = exchange
+    oldExchangesCpy[index] = exchange
     return oldExchangesCpy
   }
 
