@@ -35,8 +35,6 @@ const CreateExchange = () => {
   const [stickersToGive, setStickersToGive] = useState<ISticker[]>([])
   const [stickersToReceive, setStickersToReceive] = useState<IStickerData[]>([])
 
-  const [isReadyToCreate, setIsReadyToCreate] = useState(false)
-
   const initialModalState = {
     header: "",
     body: "",
@@ -71,12 +69,6 @@ const CreateExchange = () => {
       }
     }
   }, [stickersToGive.length])
-
-  useEffect(() => {
-    if(stickersToGive.length > 0 && stickersToReceive.length > 0){
-      setIsReadyToCreate(true)
-    }
-  }, [stickersToGive.length, stickersToReceive.length])
 
   const _fetchUserStickers = async () => {
     const stickers = await fetchUserStickers(user._id, _searchFilters.current)
@@ -148,7 +140,6 @@ const CreateExchange = () => {
 
   const addStickerToExchangeReceive = async (sticker: IStickerData) => {
     if(!_isGiving.current) {
-      console.log("add sticker to receive")
       setStickersToReceive(oldStickersToReceive => (
           contains2(oldStickersToReceive, sticker) < 0 ? [...oldStickersToReceive, sticker]
           : [...oldStickersToReceive]
@@ -239,7 +230,7 @@ const CreateExchange = () => {
     const SearchBar = () => {
       return (
         <Form className="navbar-search">
-          <FormGroup className="mb-0">
+          <FormGroup>
             <InputGroup className="input-group-alternative">
               <InputGroupText>
                 <i className="fas fa-search"/>
@@ -254,31 +245,32 @@ const CreateExchange = () => {
     }
 
     return (
-      <div className="card p-1" style={isGiving ? styles.stickersPickers : styles.stickersPickersReceive}>
+      <div className="card" style={isGiving ? styles.stickersPickers : styles.stickersPickersReceive}>
         <div className="card-body">
         <div className="row">
           <h1 className="text-white">{isGiving ? PICKING_STATE_TITLE.give : PICKING_STATE_TITLE.receive}</h1>
-
-
         </div>
         {/*Buscador y botones*/}
         <div className="row">
-          <div className="d-flex flex-row">
-            <SearchBar/>
-            {isGiving ? <Button onClick={selectReceive}>A recibir</Button> :
-              <Button onClick={selectGive}>A dar</Button>
-            }
-            <Button onClick={clean}>Limpiar</Button>
+          <div className="col">
+            <SearchBar />
+          </div>
+          <div className="col">
+            <Button onClick={isGiving ? selectReceive : selectGive}
+                    style={globalButtonsStyle.alternative} className="text-white">
+              {isGiving ? "A recibir" : "A dar" }</Button>
+            <Button onClick={clean} className="btn-secondary">Limpiar</Button>
           </div>
         </div>
-        <div className="row row-cols-3">
+        <div className="row row-cols-md-3 row-cols-lg-5">
           {/*Listado de stickers*/}
           {isGiving ?
             <Stickers stickers={fetchedStickers} style={globalStickerStyles.stickerSmall}/>
             : <AllStickers stickers={allStickers} style={globalStickerStyles.stickerSmall}/>
           }
         </div>
-      </div></div>
+        </div>
+      </div>
     )
   }
 

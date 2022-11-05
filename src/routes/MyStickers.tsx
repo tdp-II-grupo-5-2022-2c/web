@@ -51,8 +51,6 @@ const MyStickers = () => {
     fetchUserStickers()
   }, [])
 
-
-
   const fetchUserStickers = async () => {
     console.log(_searchFilters.current)
     try {
