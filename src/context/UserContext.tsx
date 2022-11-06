@@ -15,7 +15,9 @@ export interface User {
   date_of_birth: string;
   name: string;
   lastname: string;
-  stickers: ISticker[]
+  stickers: ISticker[],
+  favorite_countries: string[],
+  country: string
 }
 
 interface UserActions {
