@@ -3,7 +3,7 @@ import MyNavbar from "../components/MyNavbar";
 import {useUser} from "../context/UserContext";
 import client from "../services/config";
 import Exchange, {IExchange} from "../components/Exchange";
-import {IStickerData} from "../components/Sticker";
+import {IStickerData} from "../components/stickers/Sticker";
 
 const MyExchanges = () => {
   const user = useUser();

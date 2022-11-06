@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import StickerPlaceHolder from "../components/StickerPlaceHolder";
-import Sticker, {ISticker} from "./Sticker";
+import Sticker, {ISticker} from "./stickers/Sticker";
 import {Col, Container, Row} from "reactstrap";
 import {getAlbumPage} from "../data/albumData";
 

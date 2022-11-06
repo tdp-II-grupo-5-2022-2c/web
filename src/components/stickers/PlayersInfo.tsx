@@ -1,4 +1,4 @@
-import {ISticker, IStickerData} from "../Sticker";
+import {ISticker, IStickerData} from "./Sticker";
 import React from "react";
 
 const PlayersInfo = ({stickers}: {stickers: ISticker[] | IStickerData[]}) => {

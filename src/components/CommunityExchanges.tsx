@@ -6,7 +6,7 @@ import client from "../services/config";
 import {fetchCommunityExchanges} from "../services/apicalls";
 import Success from "./modals/Success";
 import Error from "./modals/Error";
-import {IStickerData} from "./Sticker";
+import {IStickerData} from "./stickers/Sticker";
 
 type Props = {
   communityId: string

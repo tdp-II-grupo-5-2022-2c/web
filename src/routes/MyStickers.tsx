@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useRef, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
-import Sticker, {ISticker} from "../components/Sticker";
+import Sticker, {ISticker} from "../components/stickers/Sticker";
 import {useDrop} from "react-dnd";
 import {Draggable, DraggableTypes} from "../components/Draggable";
 import DropBoard from "../components/DropBoard";

@@ -1,5 +1,5 @@
 import {useDrag} from "react-dnd";
-import {ISticker, IStickerData} from "./Sticker";
+import {ISticker, IStickerData} from "./stickers/Sticker";
 
 export const DraggableTypes = {
   STICKER: "sticker"

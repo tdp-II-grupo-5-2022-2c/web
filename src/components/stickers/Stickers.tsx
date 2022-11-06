@@ -1,4 +1,4 @@
-import Sticker, {ISticker, IStickerData} from "../Sticker";
+import Sticker, {ISticker, IStickerData} from "./Sticker";
 import React from "react";
 import {CardText} from "reactstrap";
 import {Draggable, DraggableTypes} from "../Draggable";
