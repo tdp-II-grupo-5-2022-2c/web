@@ -132,7 +132,7 @@ const MyStickers = () => {
               </Draggable>
           </Col>
       )}
-      {stickers && !hasStickers(stickers) && user.stickers.length > 0 &&
+      {stickers && !hasStickers(stickers) && hasStickers(user.stickers) &&
           <Col>
               <CardText>No se encontró ninguna figurita con este filtro</CardText>
           </Col>
