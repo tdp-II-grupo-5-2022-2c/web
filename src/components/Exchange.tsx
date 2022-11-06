@@ -1,4 +1,4 @@
-import {IStickerData} from "./Sticker";
+import {IStickerData} from "./stickers/Sticker";
 import React from "react";
 import {StickerStack2} from "./stickers/StickerStack";
 import {Button} from "reactstrap";

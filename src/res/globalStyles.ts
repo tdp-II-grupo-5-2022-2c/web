@@ -8,6 +8,19 @@ export const globalStickerStyles = {
   stickerSmall: {
     width: "10rem",
     height: "12rem",
+  },
+  stickerMedium: {
+    width: "12rem",
+    height: "15rem",
+  }
+}
+
+export const globalPacketStyles = {
+  packet: {
+    width: "18rem"
+  },
+  packetSmall: {
+    width: "14rem"
   }
 }
 

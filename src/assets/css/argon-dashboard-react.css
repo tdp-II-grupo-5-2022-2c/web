@@ -67,6 +67,9 @@ html {
   --color-gray: hsl(210, 3%, 25%);
   --color-blue: hsl(208, 100%, 50%);
   --border-radius: 5px;
+  overflow: auto;
+  height: 100%;
+  min-height: 100%;
 }
 
 article,
@@ -91,6 +94,8 @@ body {
   color: #525f7f;
   text-align: left;
   background-color: #f8f9fe;
+  height: 100%;
+  min-height: 100%;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -15180,6 +15185,15 @@ button.section-darker:focus {
   height: 100vh !important;
 }
 
+.h-90vh {
+  height: 90vh !important;
+  min-height: 90vh !important;
+}
+
+.h-10vh {
+  height: 10vh !important;
+}
+
 .row.row-grid > [class*="col-"] + [class*="col-"] {
   margin-top: 3rem;
 }
@@ -15454,6 +15468,10 @@ a.text-yellow:focus {
 
 .text-green {
   color: #2dce89 !important;
+}
+
+.text-qatar {
+  color: #8c0615 !important;
 }
 
 a.text-green:hover,
@@ -16170,6 +16188,45 @@ a.btn-icon-only {
 
 .card-translucent {
   background-color: rgba(18, 91, 152, 0.08);
+}
+
+.card-sticker--shadow:hover {
+  cursor: pointer;
+}
+
+.card-sticker--shadow:hover img {
+  filter: blur(4px) brightness(0.5);
+}
+
+.card-text-sticker--shadow:hover .text-not-in-album {
+  opacity: 1;
+}
+
+.card-text-sticker--shadow .text-not-in-album {
+  color: white;
+  font-size: 20;
+  opacity: 0;
+}
+
+.card-packet-album-image {
+  position: relative;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+.card-packet-album-image img {
+  position: sticky;
+  transition: all 0.15s ease;
+  transform: translate(0, 40%);
+  max-width: 18rem;
+  max-height: 24rem;
+}
+.card-packet-album-image img:hover {
+  transform: translate(0, 10%);
+  cursor: pointer;
+}
+
+.card-packet-album-image-drop img {
+  transform: translate(0, -2%);
 }
 
 .card-profile-image {

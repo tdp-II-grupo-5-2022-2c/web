@@ -3,7 +3,7 @@ import {Stickers, AllStickers} from "../components/stickers/Stickers";
 import {fetchAllStickers, fetchUserStickers} from "../services/apicalls";
 import {Filters} from "./MyStickers";
 import {useUser} from "../context/UserContext";
-import {ISticker, IStickerData} from "../components/Sticker";
+import {ISticker, IStickerData} from "../components/stickers/Sticker";
 import MyNavbar from "../components/MyNavbar";
 import {useDrop} from "react-dnd";
 import {globalButtonsStyle, globalStickerStyles} from "../res/globalStyles";
