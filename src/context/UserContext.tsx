@@ -17,7 +17,8 @@ export interface User {
   lastname: string;
   stickers: ISticker[],
   favorite_countries: string[],
-  country: string
+  country: string,
+  is_profile_complete: boolean
 }
 
 interface UserActions {
