@@ -11,10 +11,19 @@ type Props = {
 export const StickerStack = ({stickers, offset, isCreating = false}: Props) => {
   const OFFSET = offset || 1
 
+  const styles = {
+    stack: {
+      width: "12rem",
+      right: '1rem'
+    }
+  }
+
   return (
-    <div className="d-flex flex-row position-relative">
-      {isCreating && stickers.length >= 5 && <span style={{fontSize: 20}}
-                                                   className="position-absolute badge top-0 start-100 rounded-pill bg-gradient-danger mx-2">
+    <div className="d-flex flex-row position-relative" style={styles.stack}>
+      {isCreating &&
+        stickers.length >= 5 &&
+          <span style={{fontSize: 20}}
+                className="position-absolute badge top-0 start-100 rounded-pill bg-gradient-danger mx-4">
               &nbsp;{stickers.length}/5&nbsp;
           </span>}
       {stickers && stickers.length > 0 &&
@@ -57,14 +66,17 @@ export const StickerStack2 = ({stickers, step, isCreating = false, onClick}: Pro
 
   const styles = {
     stack: {
-      width: "12rem"
+      width: "12rem",
+      right: '1rem'
     }
   }
 
   return (
     <div className="d-flex flex-row position-relative" onClick={onClick} style={styles.stack}>
-      {isCreating && stickers.length >= 5 && <span style={{fontSize: 20}}
-                                                   className="position-absolute badge top-0 start-100 rounded-pill bg-gradient-danger mx-2">
+      {isCreating &&
+        stickers.length >= 5 &&
+          <span style={{fontSize: 20}}
+                className="position-absolute badge top-0 start-100 rounded-pill bg-gradient-danger mx-4">
               &nbsp;{stickers.length}/5&nbsp;
           </span>}
       {stickers && stickers.length > 0 &&
