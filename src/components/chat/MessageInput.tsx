@@ -47,21 +47,8 @@ function MessageInput({roomId}: Props) {
     })
 
     console.log("user last messages: " + JSON.stringify(lastMessages));
-    if (lastMessages.length < 5)
+    if (lastMessages.length < MAX_PERIOD_MESSAGES_USER)
       return false;
-
-    // lastMessages.reduce<any>((lastMessage, msg) => {
-    //   if (lastMessage == undefined) 
-    //     return msg
-    //   if (msg == undefined)
-    //     return lastMessage
-
-    //   if (lastMessage.timestamp.seconds > msg.timestamp.seconds) {
-    //     return lastMessage
-    //   }
-
-    //   return msg
-    // }, undefined)
 
     for (let i = 0; i < lastMessages.length; i++) {
       console.log("messages: " + JSON.stringify(lastMessages.at(i)));
