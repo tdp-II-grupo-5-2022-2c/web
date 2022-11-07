@@ -20,6 +20,7 @@ import {useErrorHandler} from "../context/ErrorHandler";
 import {useUser} from "../context/UserContext";
 import Success from "../components/modals/Success";
 import Error from "../components/modals/Error";
+import {CommunityJoinStrings} from "../res/strings";
 
 function JoinCommunity() {
   const { community_id } = useParams();
@@ -103,6 +104,12 @@ function JoinCommunity() {
         toggleModalError();
         setError("No se puede pertenecer a mas de 10 comunidades");
         return;
+      }
+
+      if (error.response.data.detail.includes("has not complete his profile")) {
+        toggleModalError()
+        setError(CommunityJoinStrings.PROFILE_NOT_COMPLETED)
+        return
       }
     }
   }

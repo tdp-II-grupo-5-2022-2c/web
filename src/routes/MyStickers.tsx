@@ -11,8 +11,9 @@ import {MyModal} from "../components/MyModal";
 import {useUser} from "../context/UserContext";
 import {Button, CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
 import {ROUTES} from "./RoutesNames";
-import {MyStickersStrings} from "../res/strings";
+import {CreateExchangeStrings, MyStickersStrings} from "../res/strings";
 import MyToast, {IToast} from "../components/MyToast";
+import Error from "../components/modals/Error";
 
 export type Filters = {
   name?: string,
@@ -25,6 +26,12 @@ const MyStickers = () => {
   const {register} = useForm();
 
   const [showPasteOk, setShowPasteOk] = useState(false);
+  const initialModalState = {
+    header: "",
+    body: "",
+  };
+  const [errorModal, setErrorModal] = useState(initialModalState)
+  const [showErrorModal, setShowErrorModal] = useState(false)
 
   const [fetchedStickers, setFetchedStickers] = useState<ISticker[]>([])
   const initialFilterState: Filters = {
@@ -32,6 +39,7 @@ const MyStickers = () => {
     country: undefined
   }
   const _searchFilters = useRef<Filters>(initialFilterState);
+
 
   const countriesToFilter = {
     'Argentina': 'ARG',
@@ -113,13 +121,18 @@ const MyStickers = () => {
   }
 
   const goToCreateExchange = () => {
+    if(!user.is_profile_complete){
+      setErrorModal({header: CreateExchangeStrings.ERROR_PROFILE_NOT_COMPLETED_TITLE,
+        body: CreateExchangeStrings.ERROR_PROFILE_NOT_COMPLETED})
+      setShowErrorModal(true)
+      return
+    }
     navigate("../create-exchange")
   }
 
   function goToDailyPacket() {
     navigate(`../${ROUTES.DAILYPACKET}`)
   }
-
 
   const StickersList = ({stickers}: { stickers: ISticker[] }) => {
     return <React.Fragment>
@@ -197,12 +210,12 @@ const MyStickers = () => {
               <DropBoard title={MyStickersStrings.PASTE_TO_ALBUM_TITLE} body={MyStickersStrings.PASTE_TO_ALBUM_BODY}/>
             </div>
             <MyToast toast={toast} className={"bg-danger"}/>
-
           </Col>
         </Row>
       </Container>
       <MyModal header={"Figurita Pegada!"} body={"Ya no deberias ver mas tu figurita si era una sola"}
                isOpen={showPasteOk} onAccept={closeShowPasteOk}/>
+      <Error modal={errorModal} isOpen={showErrorModal} onAccept={() => setShowErrorModal(false)}/>
     </React.Fragment>
   );
 

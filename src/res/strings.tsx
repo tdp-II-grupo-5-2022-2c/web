@@ -9,6 +9,11 @@ export const CommunityCreationStrings = {
   COMMUNITY_ALREADY_EXISTS: "Esta Comunidad ya existe",
   COMMUNITY_LIMIT: "No se puede pertenecer a mas de 10 comunidades",
   CREATED: "La comunidad se ha creado exitosamente",
+  PROFILE_NOT_COMPLETED: "Debes completar tu perfil para poder crear una comunidad",
+}
+
+export const CommunityJoinStrings = {
+  PROFILE_NOT_COMPLETED: "Debes completar tu perfil para poder unirte a una comunidad",
 }
 
 export const MyStickersStrings = {
@@ -26,7 +31,9 @@ export const CreateExchangeStrings = {
     EXCHANGE_CREATED: "Intercambio creado exitosamente",
     ERROR_TITLE: "Error al crear intercambio",
     ERROR_REPEATED: "No puedes dar y recibir la misma figurita en un intercambio",
-    ERROR_MAX_REACHED: "No puedes generar más de 3 intercambios a la vez"
+    ERROR_MAX_REACHED: "No puedes generar más de 3 intercambios a la vez",
+    ERROR_PROFILE_NOT_COMPLETED_TITLE: "Perfil Incompleto",
+    ERROR_PROFILE_NOT_COMPLETED: "Debes completar tu perfil para poder crear un intercambio"
 }
 
 export const ExchangeStrings = {
@@ -34,6 +41,8 @@ export const ExchangeStrings = {
   EXCHANGE_HEADER: "Intercambio",
   EXCHANGE_ACCEPT_ERROR: "Hubo un error al aceptar el intercambio",
   EXCHANGE_REJECT_ERROR: "Hubo un error al rechazar el intercambio",
+  ERROR_ACCEPT_REJECT_PROFILE_NOT_COMPLETED: "Debes completar tu perfil para poder aceptar o rechazar un intercambio",
+  PROFILE_NOT_COMPLETED_TITLE: "Perfil Incompleto",
 }
 
 
