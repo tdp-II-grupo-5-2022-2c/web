@@ -15,7 +15,7 @@ const MyExchanges = () => {
 
   const fetchCommunitiesExchanges = async () => {
     try {
-      const response = await client.get(`/exchanges/?sender_id=${user._id}&completed=false`)
+      const response = await client.get(`/exchanges?sender_id=${user._id}&completed=false`)
       console.log(response.data)
       setUserExchanges(response.data)
     } catch (error: any) {
