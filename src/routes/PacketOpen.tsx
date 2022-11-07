@@ -55,11 +55,14 @@ function PacketOpen() {
     } catch (error : any){
       // TODO: meter toda la logica de manejo de error en un servicio global o algo asi
       if (error.response) {
-        if(error.response.data?.detail === "Could not return daily package. Exception: [OPEN_PACKAGE] error: No stickers at the moment to create a package"){
-          setErrorMessage(PACKET_OPENING_ERROR_MESSAGES.SERVER_ERROR)
+        if(error.response.data?.detail.includes("No stickers at the moment to create a package")){
+          setErrorMessage(PACKET_OPENING_ERROR_MESSAGES.NOT_ENOUGH_STICKERS)
         }
         if(error.response.data?.detail.includes("doesn't have any packages to open")) {
           setErrorMessage(PACKET_OPENING_ERROR_MESSAGES.USER_DOESNT_HAVE_PACKETS)
+        }
+        if(errorMessage === undefined || errorMessage.length === 0) {
+          setErrorMessage(PACKET_OPENING_ERROR_MESSAGES.SERVER_ERROR)
         }
       } else if (error.request) {
         console.log(error.request);
