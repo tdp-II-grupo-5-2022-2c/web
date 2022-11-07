@@ -16,7 +16,8 @@ import {IToast} from "../components/MyToast";
 
 const PACKET_OPENING_ERROR_MESSAGES = {
   NOT_ENOUGH_STICKERS: "En este momento no tenemos paquetes disponibles",
-  SERVER_ERROR: "Ha ocurrido un error al intentar abrir el paquete"
+  SERVER_ERROR: "Ha ocurrido un error al intentar abrir el paquete",
+  USER_DOESNT_HAVE_PACKETS: "No tienes paquetes para abrir."
 }
 
 //TODO: VALIDAR QUE EL USUARIO TIENE PAQUETES PARA ABRIR
@@ -41,6 +42,9 @@ function PacketOpen() {
     const requestBody = {
       user_id: user._id
     }
+    if (user.package_counter === 0) {
+      return;
+    }
     setLoading(true);
     try{
       const {data: openedPacketStickers}  = await client.post(`/stickers/package`, requestBody);
@@ -51,7 +55,13 @@ function PacketOpen() {
     } catch (error : any){
       // TODO: meter toda la logica de manejo de error en un servicio global o algo asi
       if (error.response) {
-        if(error.response.data?.detail === "Could not return daily package. Exception: [OPEN_PACKAGE] error: No stickers at the moment to create a package"){
+        if(error.response.data?.detail.includes("No stickers at the moment to create a package")){
+          setErrorMessage(PACKET_OPENING_ERROR_MESSAGES.NOT_ENOUGH_STICKERS)
+        }
+        if(error.response.data?.detail.includes("doesn't have any packages to open")) {
+          setErrorMessage(PACKET_OPENING_ERROR_MESSAGES.USER_DOESNT_HAVE_PACKETS)
+        }
+        if(errorMessage === undefined || errorMessage.length === 0) {
           setErrorMessage(PACKET_OPENING_ERROR_MESSAGES.SERVER_ERROR)
         }
       } else if (error.request) {
@@ -118,6 +128,7 @@ function PacketOpen() {
               <Row className="h-25">
                 <h1 className="mt-4 text-center text-white align-self-center" style={{fontSize: 30}}>RECIBISTE</h1>
               </Row>
+              {/* Los stickers del paquete abierto */}
               <Row className="justify-content-center m-0 p-0 align-items-center">
                 <Col className="col-10 justify-content-center d-flex">
                   <Row className="justify-content-center">
@@ -184,14 +195,13 @@ function PacketOpen() {
           {!opened &&
               <>
                 <Row className="h-25">
-                  <h1 className="mt-4 text-center text-white align-self-center" style={{fontSize: 30, cursor: "default"}}>NUEVO PAQUETE</h1>
+                  <h1 className="mt-4 text-center text-white align-self-center" style={{fontSize: 30, cursor: "default"}}>ABRIR PAQUETE</h1>
                 </Row>
                 <Row className="h-90vh m-0 p-0" >
                   <Col className="justify-content-center" >
-                    {/*TODO: user deberia tener un atributo con la cantidad de paquetes a abrir*/}
                     <Packet
                         onOpenPacket={openPacket}
-                        unopenedPacketsQty={1}
+                        unopenedPacketsQty={user.package_counter}
                         style={{maxWidth: "80%", cursor: "pointer"}}
                         loading={loading}
                     />

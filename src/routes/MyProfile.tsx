@@ -7,16 +7,18 @@ import {ROUTES} from "./RoutesNames";
 import {useNavigate} from "react-router-dom";
 import {ALBUM_PAGES} from "../data/albumData";
 import {ProfileStrings} from "../res/strings";
+import Success from "../components/modals/Success";
 
 const MyProfile = () => {
   const user = useUser();
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [showSuccessCompleteProfile, setShowSuccessCompleteProfile] = useState<boolean>(false);
   const initialState = {
     name: user.name,
     country: user.country,
     date_of_birth: user.date_of_birth,
     lastname: user.lastname,
-    favorite_countries: user.favorite_countries
+    favorite_countries: user.favorite_countries || []
   };
   const [form, setForm] = useState(initialState)
   const navigate = useNavigate()
@@ -28,8 +30,13 @@ const MyProfile = () => {
   const acceptChanges = async () => {
     setIsEditing(false)
     console.log(form)
+    let isProfileComplete = user.is_profile_complete;
     // Actualizo en el back
+    console.log("Is profile complete? " + isProfileComplete);
     const { data: updatedUser } = await client.put(`/users/${user._id}`, form);
+    if (!isProfileComplete && updatedUser.is_profile_complete) {
+      toggleShowSuccessCompleteProfile();
+    }
     // Actualizo en el front
     await user.restore(user.mail)
   }
@@ -99,6 +106,10 @@ const MyProfile = () => {
 
   function isSelected(country: string) {
     return form.favorite_countries.findIndex(element => element === country) >= 0;
+  }
+
+  function toggleShowSuccessCompleteProfile() {
+    setShowSuccessCompleteProfile(!showSuccessCompleteProfile)
   }
 
   return (
@@ -278,7 +289,7 @@ const MyProfile = () => {
             </div>
           </div>
         </div>
-
+        <Success modal={{header: "¡Felicidades!", body: "¡Gracias por completar tu perfil! Te hemos dado 3 paquetes de regalo."}} isOpen={showSuccessCompleteProfile} onAccept={toggleShowSuccessCompleteProfile}/>
       </div>
     </React.Fragment>
 

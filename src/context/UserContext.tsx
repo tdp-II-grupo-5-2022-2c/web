@@ -22,6 +22,7 @@ export interface User {
   total_stickers_collected: number
   album_completion_pct: number
   exchanges_amount: number
+  package_counter: number
 }
 
 interface UserActions {

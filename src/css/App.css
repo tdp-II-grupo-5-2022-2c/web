@@ -27,3 +27,19 @@
   font-weight: bold;
 }
 
+.bg-qatar-img {
+  background: repeat url("../assets/img/qatar-bg-1.png"), linear-gradient(87deg, #600606 0, #884a28 100%) fixed !important;
+  background-size: 30%, auto !important;
+  background-position-x: center !important;
+  background-position-y: 50% !important;
+  background-attachment: fixed !important;
+}
+
+.bg-football {
+  background-image: url('../assets/img/orange-ball.png');
+}
+
+.sticker-zoom-animate {
+  transition: all 0.3s ease 0s;
+  transform: scale(0.8);
+}

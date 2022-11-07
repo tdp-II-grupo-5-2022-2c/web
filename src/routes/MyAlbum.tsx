@@ -6,18 +6,22 @@ import {ISticker} from "../components/stickers/Sticker";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import client from "../services/config";
 import {useUser} from "../context/UserContext";
-import {Container, Row, Col, Spinner} from "reactstrap";
+import {Container, Row, Col, Spinner, Button, Fade} from "reactstrap";
+import {ArrowLeftIcon} from "@primer/octicons-react";
 
 const MyAlbum = () => {
   const NUM_PLAYERS = 11;
+  const DESKTOP_SIZE = 1230;
   const user = useUser();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [selectedCountry, setSelectedCountry] = useState(DEFAULT_COUNTRY_PAGE);
   const [pasteId, setPasteId] = useState<string | undefined>(undefined);
   const [position, setPosition] = useState<number | undefined>(undefined);
+  const [pastedIdAnimation, setPastedIdAnimation] = useState<string | undefined>(undefined);
   const [albumStickers, setAlbumStickers] = useState([] as any[]);
 
+  const [isDesktop, setDesktop] = useState<boolean>(window.innerWidth >= DESKTOP_SIZE);
   const [isLoading, setLoading] = useState(true); //TODO Agregar loader del album
   const [isPasting, setIsPasting] = useState(false);
 
@@ -27,7 +31,6 @@ const MyAlbum = () => {
     const position = searchParams.get("position") || undefined;
     const stickerIdToBePasted = searchParams.get("stickerId") || undefined;
 
-    console.log("country: " + country);
     if (country) {
       setSelectedCountry(country);
     }
@@ -36,8 +39,9 @@ const MyAlbum = () => {
     findPastedStickers(country)
   }, [selectedCountry, searchParams])
 
-  const findPastedStickers = async (country?: string) => {
+  const findPastedStickers = async (country?: string, withLoading?:false) => {
     setLoading(true);
+
     client.get(`/users/${user._id}/stickers?country=${country || DEFAULT_COUNTRY_PAGE}&is_on_album=true`).then((response: any) => {
       let pastedStickers = (response.status === 200 && response.data) ? response.data : [];
       processPageData(pastedStickers);
@@ -73,7 +77,7 @@ const MyAlbum = () => {
     let _currentPosition = ALBUM_PAGES.findIndex((element) => element === selectedCountry);
     let _selectedCountry = DEFAULT_COUNTRY_PAGE;
     if (_currentPosition >= 0) {
-      _selectedCountry = ALBUM_PAGES.at(_currentPosition + 1) || DEFAULT_COUNTRY_PAGE
+      _selectedCountry = ALBUM_PAGES.at(_currentPosition + 1) || ALBUM_PAGES.at(0) || DEFAULT_COUNTRY_PAGE;
     }
     navigateTo(_selectedCountry);
   }
@@ -91,45 +95,87 @@ const MyAlbum = () => {
     navigate("/my-album?country=" + country, {replace: true});
   }
 
-  const onPaste = async (pasteId?: string) => {
+  const onPaste = async (stickerId?: string) => {
     if (!pasteId) {
       return;
     }
 
     const {data: response} = await client.patch(
-      `/users/${user._id}/stickers/${pasteId}/paste`
+      `/users/${user._id}/stickers/${stickerId}/paste`
     );
 
-    console.log("API REQUEST TO PASTE " + pasteId)
+    console.log("API REQUEST TO PASTE " + stickerId)
     console.log("Response")
     console.log(response)
 
     setIsPasting(false);
     setPasteId(undefined);
     setPosition(undefined);
+    setPastedIdAnimation(stickerId)
     await findPastedStickers(selectedCountry);
   }
+
+  const updateMedia = () => {
+    setDesktop(window.innerWidth >= DESKTOP_SIZE)
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  })
 
   return (
     <React.Fragment>
       <MyNavbar/>
-      <Container className="text-center">
-        <Row className="h-100 justify-content-center align-items-center">
+      <Container className={"bg-gradient-orange m-0 p-0" + (isDesktop ? " overflow-hidden h-90vh" : "")} fluid>
+        <Row className="mt-4">
+          <h1 className="mt-4 ml-9 text-start text-white align-self-center" style={{fontSize: 30, cursor: "default"}}>
+            {/*<Button size="lg" className="btn-icon badge-circle badge-lg" outline><ArrowLeftIcon className="text-white" size={40} /></Button>*/}
+            MI ALBUM
+          </h1>
+        </Row>
+        <Row className="h-75vh overflow-auto justify-content-center align-items-center">
           {isLoading &&
               <Col className="justify-content-center col-4 align-self-center">
-                <Spinner className="text-gray" type="grow" style={{height: '3rem', width: '3rem'}}></Spinner>
+                <Row>
+                  <Spinner className="text-white-50 img-center d-flex" type="grow" style={{height: '3rem', width: '3rem'}}></Spinner>
+                </Row>
+                <Row className="mt-5">
+                  <h1 className="text-white-50 text-center">Cargando Album...</h1>
+                </Row>
               </Col>
           }
           {!isLoading &&
-              <Col>
-                  <AlbumPage albumStickers={albumStickers}
-                             country={selectedCountry}
-                             position={position}
-                             pasteId={pasteId}
-                             onPaste={() => onPaste(pasteId)}/>
-                <button className={"btn btn-primary btn-sm m-2"} onClick={previousPage}>Anterior</button>
-                <button className={"btn btn-primary btn-sm m-2"} onClick={nextPage}>Siguiente</button>
-              </Col>
+              <>
+                <Col className="col-1 justify-content-end d-flex">
+                  <span><i className="ni ni-bold-left text-white text-center"
+                           onClick={previousPage}
+                           style={{
+                             fontSize: 70,
+                             cursor: "pointer"
+                  }}></i></span>
+                </Col>
+                <Col className="col-10">
+                  <Fade className="justify-content-center d-flex" appear={isLoading} timeout={2000}>
+                    <AlbumPage albumStickers={albumStickers}
+                               country={selectedCountry}
+                               position={position}
+                               pasteId={pasteId}
+                               onPaste={() => onPaste(pasteId)}
+                               pasteIdAnimation={pastedIdAnimation}
+                    />
+                  </Fade>
+                </Col>
+                <Col className="col-1 justify-content-start d-flex">
+                  <span><i className="ni ni-bold-right text-white text-center"
+                           style={{
+                             fontSize: 70,
+                             cursor: "pointer"
+                           }}
+                           onClick={nextPage}
+                  ></i></span>
+                </Col>
+              </>
           }
         </Row>
       </Container>

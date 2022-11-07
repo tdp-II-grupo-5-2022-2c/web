@@ -6923,6 +6923,10 @@ button.bg-darker:focus {
   border-left: 1px solid #e9ecef !important;
 }
 
+.border-left-3 {
+  border-left-width: 3px !important;
+}
+
 .border-0 {
   border: 0 !important;
 }
@@ -14373,6 +14377,10 @@ button.bg-lighter:focus {
   background: linear-gradient(87deg, #8965e0 0, #bc65e0 100%) !important;
 }
 
+.bg-gradient-qatar {
+  background: linear-gradient(87deg, #600606 0, #884a28 100%) !important;
+}
+
 .bg-gradient-pink {
   background: linear-gradient(87deg, #f3a4b5 0, #f3b4a4 100%) !important;
 }
@@ -15188,6 +15196,14 @@ button.section-darker:focus {
 .h-90vh {
   height: 90vh !important;
   min-height: 90vh !important;
+}
+
+.h-65vh {
+  height: 65vh !important;
+}
+
+.h-75vh {
+  height: 75vh !important;
 }
 
 .h-10vh {

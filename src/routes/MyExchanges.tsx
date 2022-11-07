@@ -15,7 +15,7 @@ const MyExchanges = () => {
 
   const fetchCommunitiesExchanges = async () => {
     try {
-      const response = await client.get(`/exchanges/?sender_id=${user._id}&completed=false`)
+      const response = await client.get(`/exchanges?sender_id=${user._id}&completed=false`)
       console.log(response.data)
       setUserExchanges(response.data)
     } catch (error: any) {
@@ -71,9 +71,9 @@ const MyExchanges = () => {
   return (
     <React.Fragment>
       <MyNavbar/>
-      <div className="container-fluid">
+      <div className="container-fluid bg-gradient-orange h-90vh">
         <div className="row">
-            <h1>Mis Intercambios</h1>
+            <h1 className="text-center text-white mt-5">MIS INTERCAMBIOS</h1>
             <div className="card col-md-auto">
               <div className="card-body d-flex flex-row justify-content-around">
                 <div className="d-flex flex-row align-items-center justify-content-start">
