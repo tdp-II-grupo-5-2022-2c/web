@@ -84,6 +84,10 @@ const MyCommunities = () => {
           setModalError({header:CommunityCreationStrings.ERROR_HEAD, body: CommunityCreationStrings.COMMUNITY_LIMIT})
           setShowModalError(true)
         }
+        if (error.response.data?.detail.includes("has not complete his profile")) {
+          setModalError({header:CommunityCreationStrings.ERROR_HEAD, body: CommunityCreationStrings.PROFILE_NOT_COMPLETED})
+          setShowModalError(true)
+        }
         console.log(error.response);
       } else if (error.request) {
         console.log(error.request);

@@ -40,16 +40,16 @@ const CommunityExchanges = ({communityId}:Props) => {
       setModal({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_ACCEPT_OK})
       setShowModal(true)
     } else {
-      setModalError({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_ACCEPT_ERROR})
-      setShowModalError(true)
+      //setModalError({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_ACCEPT_ERROR})
+      //setShowModalError(true)
     }
   }
 
   const rejectExchange = async (exchangeId: string) => {
     const success = await doRequest("reject", exchangeId)
     if (!success) {
-      setModalError({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_REJECT_ERROR})
-      setShowModalError(true)
+      //setModalError({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_REJECT_ERROR})
+      //setShowModalError(true)
     } else {
       _fetchCommunityExchanges()
     }
@@ -78,8 +78,17 @@ const CommunityExchanges = ({communityId}:Props) => {
 
     } catch (error: any) {
       if (error.response) {
-        if (error.response.data?.detail === "TODO: detalle error back") {
-
+        // TODO: agregar error para el caso de que el intercambio ya no exista (para cubrir el caso comun de que le acepto alguien antes)
+        if (error.response.data?.detail.includes("has not complete his profile")) {
+          setModalError({header:ExchangeStrings.PROFILE_NOT_COMPLETED_TITLE, body: ExchangeStrings.ERROR_ACCEPT_REJECT_PROFILE_NOT_COMPLETED})
+          setShowModalError(true)
+        } else {
+          if(action === "accept"){
+            setModalError({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_ACCEPT_ERROR})
+          } else {
+            setModalError({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_REJECT_ERROR})
+          }
+          setShowModalError(true)
         }
         console.log(error.response);
       } else if (error.request) {

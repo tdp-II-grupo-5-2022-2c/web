@@ -13,9 +13,10 @@ const MyProfile = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const initialState = {
     name: user.name,
-    country: "",
+    country: user.country,
     date_of_birth: user.date_of_birth,
-    lastname: user.lastname
+    lastname: user.lastname,
+    favorite_countries: user.favorite_countries
   };
   const [form, setForm] = useState(initialState)
   const navigate = useNavigate()
@@ -66,9 +67,18 @@ const MyProfile = () => {
     navigate(ROUTES.SIGNIN);
   };
 
+  function addOrRemove(oldFavorites: string[], country: string) {
+    const index = oldFavorites.findIndex(element => element === country)
+    if(index >= 0){
+      return oldFavorites.filter(element => element !== country);
+    }
+    return [...oldFavorites, country];
+  }
 
   const selectCountry = (country: string) => {
     console.log(country)
+    setForm(prevState => ({...prevState, "favorite_countries": addOrRemove(prevState.favorite_countries, country)}));
+    //setFavoriteCountries(oldFavorites => addIfNotPresent(oldFavorites, country))
   }
 
   const hasMandatoryFields = () => {
@@ -85,6 +95,10 @@ const MyProfile = () => {
     const date = new Date()
     const minUserYear = date.getFullYear() - 100
     return `${minUserYear}-01-01`;
+  }
+
+  function isSelected(country: string) {
+    return form.favorite_countries.findIndex(element => element === country) >= 0;
   }
 
   return (
@@ -241,6 +255,7 @@ const MyProfile = () => {
                                    className="form-control-alternative form-control"
                                    onChange={handleChange}
                                    disabled={!isEditing}
+                                   value={form.country}
                             />
                           </div>
                         </div>
@@ -253,9 +268,10 @@ const MyProfile = () => {
                       <div className="row row-cols-lg-6 row-cols-md-6">
                           {ALBUM_PAGES.map((country, index) =>
                             <div key={country} className="col">
-                              <button className="btn-primary" name="fav-country" type="button" onClick={() => selectCountry(country)} disabled={!isEditing}>
+                              <Button className={isSelected(country) ? "btn btn-success" : "btn btn-primary"} name="fav-country" type="button" onClick={() => selectCountry(country)}
+                                      disabled={!isEditing}>
                                 {country}
-                              </button>
+                              </Button>
                             </div>
                           )}
                       </div>
