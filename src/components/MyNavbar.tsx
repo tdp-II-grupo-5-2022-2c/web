@@ -30,13 +30,13 @@ const MyNavbar = (args: any) => {
             />
           </a>
           <div className="collapse navbar-collapse d-flex overflow-hidden">
-              <a className="nav-link text-white" href={ROUTES.HOME}>Home</a>
-              <a className="nav-link text-white" href={ROUTES.MYSTICKERS}>Mis figus</a>
-              <a className="nav-link text-white" href={ROUTES.DAILYPACKET}>Paquete diario</a>
-              <a className="nav-link text-white" href={ROUTES.MYPROFILE}>Mi perfil</a>
-              <a className="nav-link text-white" href={ROUTES.MYALBUM}>Mi album</a>
-              <a className="nav-link text-white" href={ROUTES.MYCOMMUNITIES}>Mis comunidades</a>
-              <a className="nav-link text-white" href={ROUTES.MY_EXCHANGES}>Mis intercambios</a>
+              <a className="nav-link text-white" href={ROUTES.HOME}>Inicio</a>
+              <a className="nav-link text-white" href={ROUTES.MYSTICKERS}>Mis Figuritas</a>
+              <a className="nav-link text-white" href={ROUTES.DAILYPACKET}>Abrir Paquete</a>
+              <a className="nav-link text-white" href={ROUTES.MYPROFILE}>Mi Perfil</a>
+              <a className="nav-link text-white" href={ROUTES.MYALBUM}>Mi Album</a>
+              <a className="nav-link text-white" href={ROUTES.MYCOMMUNITIES}>Mis Comunidades</a>
+              <a className="nav-link text-white" href={ROUTES.MY_EXCHANGES}>Mis Intercambios</a>
           </div>
         </div>
       </nav>
