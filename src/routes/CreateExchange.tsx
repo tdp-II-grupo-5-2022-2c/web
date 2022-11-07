@@ -184,6 +184,9 @@ const CreateExchange = () => {
         } else if (error.response.data?.detail === "Could not create Exchange. user reached max amount of pending exchanges") {
           setErrorModal({header: CreateExchangeStrings.ERROR_TITLE, body: CreateExchangeStrings.ERROR_MAX_REACHED})
           setShowErrorModal(true)
+        } else if (error.response.data?.detail.includes("has not complete his profile")) {
+          setErrorModal({header:CreateExchangeStrings.ERROR_TITLE, body: CreateExchangeStrings.ERROR_PROFILE_NOT_COMPLETED})
+          setShowErrorModal(true)
         }
         console.log(error.response);
       } else if (error.request) {
