@@ -17,7 +17,7 @@ function MessageInput({roomId}: Props) {
 
   const MAX_LENGTH = 50;
   const MAX_PERIOD_MESSAGES_USER = 5;
-  const MAX_PERIOD = 60; //2 minutos (segundos)
+  const MAX_PERIOD = 60; //1 minuto (segundos)
 
   const handleChange = (event: any) => {
     if (event.target.value.length <= MAX_LENGTH) {
