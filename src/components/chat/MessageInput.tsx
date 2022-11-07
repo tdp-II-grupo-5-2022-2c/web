@@ -53,7 +53,7 @@ function MessageInput({roomId}: Props) {
       // @ts-ignore
       let messageAge = getCurrentTimestamp().seconds - lastMessages.at(i)?.timestamp.seconds;
       console.log("Message: " + lastMessages.at(i)?.text +  " Message age: " + messageAge);
-      if (messageAge > MAX_PERIOD) {
+      if (messageAge < MAX_PERIOD) {
         return false;
       }
     }
