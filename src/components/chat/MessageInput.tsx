@@ -39,21 +39,25 @@ function MessageInput({roomId}: Props) {
   const userLimitMessages = () => {
     let lastMessages = messages.slice(-MAX_PERIOD_MESSAGES_USER);
     console.log("last messages: " + JSON.stringify(lastMessages));
-    if (!lastMessages || lastMessages.length == 0) return false;
+    if (!lastMessages) 
+      return false;
+
+    lastMessages = lastMessages.filter((e) => {
+      return e.user_id == user._id
+    })
+
+    if (lastMessages.length <= 5)
+      return false;
 
     for (let i = 0; i < lastMessages.length; i++) {
       if (!lastMessages.at(i)) {
         return false
       }
 
-      if (lastMessages.at(i)?.user_id !== user._id) {
-        return false;
-      }
-
       // @ts-ignore
       let messageAge = getCurrentTimestamp().seconds - lastMessages.at(i)?.timestamp.seconds;
       console.log("Message: " + lastMessages.at(i)?.text +  " Message age: " + messageAge);
-      if (messageAge < MAX_PERIOD) {
+      if (messageAge > MAX_PERIOD) {
         return false;
       }
     }
