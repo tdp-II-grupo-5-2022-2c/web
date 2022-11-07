@@ -26,6 +26,7 @@ import {ROUTES} from "./RoutesNames";
 import {MyStickersStrings} from "../res/strings";
 import MyToast, {IToast} from "../components/MyToast";
 import {globalStickerStyles} from "../res/globalStyles";
+import Packet from "../components/Packet";
 
 export type Filters = {
   name?: string,
@@ -157,31 +158,18 @@ const MyStickers = () => {
       {!loading && stickers.sort((a,b) => a.is_on_album < b.is_on_album ? -1 : 0).map((player, index) =>
         player.quantity > 0 &&
           <Col key={player.id} className="col-md-3 p-3 d-flex justify-content-center">
-              {/*<Draggable sticker={player} type={DraggableTypes.STICKER}>*/}
-                  <Sticker player={player}
-                           displayBadge={true}
-                           style={globalStickerStyles.stickerSmall}
-                           showNotInAlbum={!player.is_on_album}
-                           cardClassName={(player.is_on_album ? "" : "card-text-sticker--shadow card-sticker--shadow")}
-                           draggable={!player.is_on_album}
-                  />
-              {/*</Draggable>*/}
-          </Col>
-      )}
-      {stickers.map((player, index) =>
-          player.quantity > 0 &&
-          <Col key={player.id} className="col-md-3 p-3 d-flex justify-content-center">
-            <Draggable sticker={player} type={DraggableTypes.STICKER}>
-              <Sticker player={player}
-                       displayBadge={true}
-                       style={globalStickerStyles.stickerSmall}
-              />
-            </Draggable>
+            <Sticker player={player}
+                     displayBadge={true}
+                     style={globalStickerStyles.stickerSmall}
+                     showNotInAlbum={!player.is_on_album}
+                     cardClassName={(player.is_on_album ? "" : "card-text-sticker--shadow card-sticker--shadow")}
+                     draggable={!player.is_on_album}
+            />
           </Col>
       )}
       {!loading && stickers && !hasStickers(stickers) && hasStickers(user.stickers) &&
-          <Col>
-              <CardText>No se encontró ninguna figurita con este filtro</CardText>
+          <Col className="align-items-center mt-9">
+              <CardText className="text-white h1 text-center">No se encontró ninguna figurita con este filtro</CardText>
           </Col>
       }
     </React.Fragment>;
@@ -205,10 +193,12 @@ const MyStickers = () => {
         </Row>
         <Row>
           <Col className="col-md-2 col-sm-12">
-            <Row className="mt-5">
-              <Button onClick={goToCreateExchange}>Intercambiar</Button>
+            <Row className="mt-5 justify-content-center">
+              <Col className="col-auto">
+                <Button onClick={goToCreateExchange}>Crear Intercambio</Button>
+              </Col>
             </Row>
-            <Row className="mt-7">
+            <Row className="mt-4 align-content-start">
               <Form>
                 <FormGroup className="custom-control custom-radio mb-3">
                   <Row className="m-0 p-0">
@@ -253,15 +243,23 @@ const MyStickers = () => {
               <Container fluid className="h-65vh bg-translucent-light border rounded" style={{
                 overflowY: "auto"
               }}>
-                <Row>
+                <Row className="justify-content-center mt-3">
                   <StickersList stickers={fetchedStickers}/>
                   {!hasStickers(fetchedStickers) && !hasStickers(user.stickers) &&
-                    <Col>
-                          <p>No tienes figuritas, abrí un nuevo paquete</p>
-                          <Button color={"success"} onClick={goToDailyPacket}>
-                              Abrir paquete
-                          </Button>
-                      </Col>
+                    <Col className="col-auto">
+                      <Row>
+                        <h1 className="text-white text-center mt-9">No tienes figuritas, abrí un nuevo paquete</h1>
+                      </Row>
+                      <Row className="row-cols-auto justify-content-center">
+                        {/*TODO: FIX ME. Debería validar si no tiene paquetes*/}
+                        <Packet
+                            onOpenPacket={goToDailyPacket}
+                            unopenedPacketsQty={1}
+                            style={{maxWidth: "40%", cursor: "pointer"}}
+                            loading={loading}
+                        />
+                      </Row>
+                    </Col>
                   }
                 </Row>
               </Container>
@@ -270,6 +268,7 @@ const MyStickers = () => {
           <Col className="col-md-2">
             <Row className="justify-content-center h-75">
               <div className="col col-12 d-flex justify-content-center" ref={dropAlbum}>
+                {/*TODO: animar el album*/}
                 <img
                     src={require("../assets/img/album_book.png")}
                     onMouseOver={() => {setMouseOverAlbum(true)}}
@@ -295,4 +294,4 @@ const MyStickers = () => {
 
 }
 
-export default MyStickers
+export default MyStickers;

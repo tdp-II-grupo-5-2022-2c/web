@@ -66,11 +66,11 @@ const Sticker = ({
         className={cardClassName}
     >
       {displayBadge && displayQuantity && player.quantity !== undefined && player.quantity > 1 &&
-          <span style={{fontSize: 20 }} className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-gradient-gray">
+          <span style={{fontSize: 18 }} className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-translucent-darker">
             &nbsp;{player.quantity}&nbsp;
           </span>}
       {showNotInAlbum &&
-        <span style={{fontSize: 20}} className="position-absolute top-0 start-0 translate-middle badge rounded-circle bg-gradient-neutral"
+        <span style={{fontSize: 18}} className="position-absolute top-0 start-0 translate-middle badge rounded-circle bg-gradient-neutral"
         id="not_in_album">
           <i className="ni ni-diamond text-indigo align-text-bottom"></i>
         </span>

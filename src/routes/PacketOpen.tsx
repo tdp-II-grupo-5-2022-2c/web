@@ -185,7 +185,7 @@ function PacketOpen() {
           {!opened &&
               <>
                 <Row className="h-25">
-                  <h1 className="mt-4 text-center text-white align-self-center" style={{fontSize: 30, cursor: "default"}}>NUEVO PAQUETE</h1>
+                  <h1 className="mt-4 text-center text-white align-self-center" style={{fontSize: 30, cursor: "default"}}>ABRIR PAQUETE</h1>
                 </Row>
                 <Row className="h-90vh m-0 p-0" >
                   <Col className="justify-content-center" >
