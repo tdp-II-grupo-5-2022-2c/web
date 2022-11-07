@@ -100,6 +100,11 @@ const MyCommunities = () => {
   }
 
   const onCreateCommunityClick = async () => {
+    if(!user.is_profile_complete){
+      setModalError({header:CommunityCreationStrings.PROFILE_NOT_COMPLETED_TITLE, body: CommunityCreationStrings.PROFILE_NOT_COMPLETED})
+      setShowModalError(true)
+      return
+    }
     setCreateCommunityForm(initialFormState)
     setShowCreateCommunityFormModal(true)
   }
