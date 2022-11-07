@@ -262,7 +262,6 @@ const MyStickers = () => {
                         {/*TODO: FIX ME. Debería validar si no tiene paquetes*/}
                         <Packet
                             onOpenPacket={goToDailyPacket}
-                            unopenedPacketsQty={1}
                             style={{maxWidth: "40%", cursor: "pointer"}}
                             loading={loading}
                         />

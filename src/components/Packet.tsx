@@ -5,7 +5,7 @@ import {globalPacketStyles} from "../res/globalStyles";
 
 type Props = {
   onOpenPacket: () => void,
-  unopenedPacketsQty: number,
+  unopenedPacketsQty?: number,
   style?: object,
   loading?: boolean
 }
@@ -41,7 +41,7 @@ const Packet = ({onOpenPacket, unopenedPacketsQty, style = {}, loading = false}:
                   </span>
                 </Row>}
               </CardImgOverlay>
-              {!loading && <CardImgOverlay>
+              {!loading && unopenedPacketsQty !== undefined && <CardImgOverlay>
                  <span style={{fontSize: 25}}
                                    className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-gradient-indigo">
                 &nbsp;{unopenedPacketsQty}&nbsp;
