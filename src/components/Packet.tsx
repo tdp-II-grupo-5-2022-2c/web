@@ -13,24 +13,24 @@ type Props = {
 const Packet = ({onOpenPacket, unopenedPacketsQty, style = {}, loading = false}: Props) => {
   const _opacity = unopenedPacketsQty === 0 ? 0.4 : 1
 
+  const noPackets = () => {
+    return unopenedPacketsQty === 0;
+  }
+
   return (
     <React.Fragment>
       <Container>
         <Row>
           <Col>
-            <Card className={`bg-transparent border-0 mx-auto floating`}
-                  style={{...globalPacketStyles.packet, ...style, opacity: _opacity}}
+            <Card className={`bg-transparent border-0 mx-auto ${noPackets() ? "" : "floating"}`}
+                  style={{...globalPacketStyles.packet, ...style}}
                   onClick={onOpenPacket}
             >
-              {/*{!loading && <span style={{fontSize: 25}}*/}
-              {/*          className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-gradient-gray">*/}
-              {/*  &nbsp;{unopenedPacketsQty}&nbsp;*/}
-              {/*</span>}*/}
               <CardImg
                 alt="..."
                 src={require("../assets/img/packet.png")}
                 top
-                style={{filter: (loading? "brightness(0.5)" : "brightness(1)")}}
+                style={{filter: (loading || noPackets()? "brightness(0.5)" : "brightness(1)"), opacity: _opacity}}
               />
               <CardImgOverlay>
                 {loading && <Row className="align-items-center d-flex h-75">
@@ -41,6 +41,17 @@ const Packet = ({onOpenPacket, unopenedPacketsQty, style = {}, loading = false}:
                   </span>
                 </Row>}
               </CardImgOverlay>
+              {!loading && <CardImgOverlay>
+                 <span style={{fontSize: 25}}
+                                   className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-gradient-indigo">
+                &nbsp;{unopenedPacketsQty}&nbsp;
+              </span>
+              </CardImgOverlay>}
+              { noPackets() &&
+                  <CardImgOverlay className="align-items-center d-flex justify-content-center">
+                    <h3 className="text-white text-center">No tienes paquetes</h3>
+                  </CardImgOverlay>
+              }
             </Card>
           </Col>
         </Row>
