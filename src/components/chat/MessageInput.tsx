@@ -46,6 +46,7 @@ function MessageInput({roomId}: Props) {
       return e.user_id == user._id
     })
 
+    console.log("user last messages: " + JSON.stringify(lastMessages));
     if (lastMessages.length <= 5)
       return false;
 
