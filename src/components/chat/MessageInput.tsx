@@ -51,6 +51,7 @@ function MessageInput({roomId}: Props) {
       return false;
 
     for (let i = 0; i < lastMessages.length; i++) {
+      console.log("messages: " + JSON.stringify(lastMessages.at(i)));
       if (!lastMessages.at(i)) {
         return false
       }
