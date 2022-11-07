@@ -53,12 +53,16 @@ root.render(
               }/>
               <Route path={ROUTES.MYALBUM} element={
                 <ProtectedRoute>
-                  <MyAlbum/>
+                  <DndProvider backend={HTML5Backend}>
+                    <MyAlbum/>
+                  </DndProvider>
                 </ProtectedRoute>
               } />
               <Route path={ROUTES.DAILYPACKET} element={
                 <ProtectedRoute>
-                  <PacketOpen />
+                  <DndProvider backend={HTML5Backend}>
+                    <PacketOpen />
+                  </DndProvider>
                 </ProtectedRoute>
               } />
               <Route path={ROUTES.MYPROFILE} element={
@@ -73,12 +77,16 @@ root.render(
               } />
               <Route path={ROUTES.COMMUNITY} element={
                 <ProtectedRoute>
-                  <Community />
+                  <DndProvider backend={HTML5Backend}>
+                    <Community />
+                  </DndProvider>
                 </ProtectedRoute>
               } />
               <Route path={ROUTES.MY_EXCHANGES} element={
                 <ProtectedRoute>
-                  <MyExchanges />
+                  <DndProvider backend={HTML5Backend}>
+                    <MyExchanges />
+                  </DndProvider>
                 </ProtectedRoute>
               } />
               <Route path={ROUTES.CREATE_EXCHANGE} element={

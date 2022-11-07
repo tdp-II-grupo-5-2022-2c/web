@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {ALBUM_PAGES, DEFAULT_COUNTRY_PAGE} from "../data/albumData";
 import AlbumPage from "../components/AlbumPage";
-import {ISticker} from "../components/Sticker";
+import {ISticker} from "../components/stickers/Sticker";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import client from "../services/config";
 import {useUser} from "../context/UserContext";

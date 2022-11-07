@@ -6,7 +6,7 @@ import {
   signOut
 } from 'firebase/auth';
 import {auth} from '../firebase';
-import {ISticker} from "../components/Sticker";
+import {ISticker} from "../components/stickers/Sticker";
 import client from "../services/config";
 
 export interface User {

@@ -1,4 +1,4 @@
-import Sticker, {ISticker, IStickerData} from "../Sticker";
+import Sticker, {ISticker, IStickerData} from "./Sticker";
 import {globalStickerStyles} from "../../res/globalStyles";
 import React from "react";
 
