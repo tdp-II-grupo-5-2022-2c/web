@@ -6923,6 +6923,10 @@ button.bg-darker:focus {
   border-left: 1px solid #e9ecef !important;
 }
 
+.border-left-3 {
+  border-left-width: 3px !important;
+}
+
 .border-0 {
   border: 0 !important;
 }
@@ -15196,6 +15200,10 @@ button.section-darker:focus {
 
 .h-65vh {
   height: 65vh !important;
+}
+
+.h-75vh {
+  height: 75vh !important;
 }
 
 .h-10vh {

@@ -6,6 +6,7 @@ import './assets/plugins/nucleo/css/nucleo.css';
 import './assets/css/argon-dashboard-react.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import './css/App.css';
+import '/node_modules/flag-icons/css/flag-icons.min.css';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
