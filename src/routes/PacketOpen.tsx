@@ -16,7 +16,8 @@ import {IToast} from "../components/MyToast";
 
 const PACKET_OPENING_ERROR_MESSAGES = {
   NOT_ENOUGH_STICKERS: "En este momento no tenemos paquetes disponibles",
-  SERVER_ERROR: "Ha ocurrido un error al intentar abrir el paquete"
+  SERVER_ERROR: "Ha ocurrido un error al intentar abrir el paquete",
+  USER_DOESNT_HAVE_PACKETS: "No tienes paquetes para abrir."
 }
 
 //TODO: VALIDAR QUE EL USUARIO TIENE PAQUETES PARA ABRIR
@@ -41,6 +42,9 @@ function PacketOpen() {
     const requestBody = {
       user_id: user._id
     }
+    if (user.package_counter === 0) {
+      return;
+    }
     setLoading(true);
     try{
       const {data: openedPacketStickers}  = await client.post(`/stickers/package`, requestBody);
@@ -53,6 +57,9 @@ function PacketOpen() {
       if (error.response) {
         if(error.response.data?.detail === "Could not return daily package. Exception: [OPEN_PACKAGE] error: No stickers at the moment to create a package"){
           setErrorMessage(PACKET_OPENING_ERROR_MESSAGES.SERVER_ERROR)
+        }
+        if(error.response.data?.detail.includes("doesn't have any packages to open")) {
+          setErrorMessage(PACKET_OPENING_ERROR_MESSAGES.USER_DOESNT_HAVE_PACKETS)
         }
       } else if (error.request) {
         console.log(error.request);
@@ -189,10 +196,9 @@ function PacketOpen() {
                 </Row>
                 <Row className="h-90vh m-0 p-0" >
                   <Col className="justify-content-center" >
-                    {/*TODO: user deberia tener un atributo con la cantidad de paquetes a abrir*/}
                     <Packet
                         onOpenPacket={openPacket}
-                        unopenedPacketsQty={1}
+                        unopenedPacketsQty={user.package_counter}
                         style={{maxWidth: "80%", cursor: "pointer"}}
                         loading={loading}
                     />

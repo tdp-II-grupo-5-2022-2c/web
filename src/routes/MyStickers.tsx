@@ -39,7 +39,6 @@ const MyStickers = () => {
   const {register} = useForm();
 
   const DESKTOP_SIZE = 1230;
-  const [showPasteOk, setShowPasteOk] = useState(false);
   const initialModalState = {
     header: "",
     body: "",
@@ -91,10 +90,6 @@ const MyStickers = () => {
       );
     }
     setLoading(false);
-  }
-
-  const closeShowPasteOk = () => {
-    setShowPasteOk(false)
   }
 
   const addStickerToAlbum = async (sticker: ISticker) => {
@@ -267,7 +262,6 @@ const MyStickers = () => {
                         {/*TODO: FIX ME. Debería validar si no tiene paquetes*/}
                         <Packet
                             onOpenPacket={goToDailyPacket}
-                            unopenedPacketsQty={1}
                             style={{maxWidth: "40%", cursor: "pointer"}}
                             loading={loading}
                         />
@@ -299,8 +293,6 @@ const MyStickers = () => {
           </Col>
         </Row>
       </Container>
-      <MyModal header={"Figurita Pegada!"} body={"Ya no deberias ver mas tu figurita si era una sola"}
-               isOpen={showPasteOk} onAccept={closeShowPasteOk}/>
       <Error modal={errorModal} isOpen={showErrorModal} onAccept={() => setShowErrorModal(false)}/>
     </React.Fragment>
   );

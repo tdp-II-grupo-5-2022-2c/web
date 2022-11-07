@@ -18,7 +18,8 @@ export interface User {
   stickers: ISticker[],
   favorite_countries: string[],
   country: string,
-  is_profile_complete: boolean
+  is_profile_complete: boolean,
+  package_counter: number
 }
 
 interface UserActions {
