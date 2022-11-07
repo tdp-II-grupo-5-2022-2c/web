@@ -39,15 +39,21 @@ function MessageInput({roomId}: Props) {
   const userLimitMessages = () => {
     let lastMessages = messages.slice(-MAX_PERIOD_MESSAGES_USER);
     console.log("last messages: " + JSON.stringify(lastMessages));
-    if (!lastMessages || lastMessages.length == 0) return false;
+    if (!lastMessages) 
+      return false;
+
+    lastMessages = lastMessages.filter((e) => {
+      return e.user_id == user._id
+    })
+
+    console.log("user last messages: " + JSON.stringify(lastMessages));
+    if (lastMessages.length < MAX_PERIOD_MESSAGES_USER)
+      return false;
 
     for (let i = 0; i < lastMessages.length; i++) {
+      console.log("messages: " + JSON.stringify(lastMessages.at(i)));
       if (!lastMessages.at(i)) {
         return false
-      }
-
-      if (lastMessages.at(i)?.user_id !== user._id) {
-        return false;
       }
 
       // @ts-ignore
