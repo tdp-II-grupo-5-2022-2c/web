@@ -151,29 +151,25 @@ const MyProfile = () => {
                     </div>
                   </div>
                 </div>
-                <div className="text-center border-0 pt-8 pt-md-5 pb-0 pb-md-4 card-header">
-                  <div className="d-flex justify-content-between">
-                  </div>
-                </div>
+                <hr/>
                 <div className="pt-0 pt-md-4 card-body">
                   <div className="row">
-                    <div className="col">
-                      <div className="card-profile-stats d-flex justify-content-center mt-md-5">
-                        <div><span className="heading">22</span><span className="description">Comunidades</span></div>
-                        <div><span className="heading">10</span><span className="description">Figuritas</span></div>
-                        <div><span className="heading">89%</span><span className="description">Album completo</span>
-                        </div>
+                      <div className="card-profile-stats d-flex flex-row justify-content-center mt-md-5">
+                        <div><span className="heading">{user.exchanges_amount}</span><span className="description">Intercambios realizados</span></div>
+                        <div><span className="heading">{user.total_stickers_collected}</span><span className="description">Figuritas coleccionadas</span></div>
+                        <div><span className="heading">{user.album_completion_pct.toPrecision(1)}%</span><span className="description">Album completo</span></div>
                       </div>
-                    </div>
                   </div>
-                  <div className="text-center">
-                    <h3>
-                      {user.name} {user.lastname},
-                      <span className="font-weight-light"> {getYearsOld()}</span>
-                    </h3>
-                    <div><i className="ni education_hat mr-2"></i>{/*TODO:country*/}</div>
-                    <Button className="btn-danger" onClick={handleLogout}>Cerrar Sesion</Button>
-                    <hr className="my-4"/>
+                  <div className="row">
+                    <div className="d-flex flex-column align-items-center">
+                      <h3>
+                        {user.name} {user.lastname},
+                        <span className="font-weight-light"> {getYearsOld()}</span>
+                      </h3>
+                      <div><i className="ni education_hat mr-2"></i>{user.country}</div>
+                      <Button className="btn-danger" onClick={handleLogout}>Cerrar Sesion</Button>
+                      <hr className="my-4"/>
+                    </div>
                   </div>
                 </div>
               </div>

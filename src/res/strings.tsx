@@ -10,6 +10,7 @@ export const CommunityCreationStrings = {
   COMMUNITY_LIMIT: "No se puede pertenecer a mas de 10 comunidades",
   CREATED: "La comunidad se ha creado exitosamente",
   PROFILE_NOT_COMPLETED: "Debes completar tu perfil para poder crear una comunidad",
+  PROFILE_NOT_COMPLETED_TITLE: "Perfil Incompleto",
 }
 
 export const CommunityJoinStrings = {

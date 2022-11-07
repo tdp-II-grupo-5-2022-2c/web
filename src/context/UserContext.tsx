@@ -19,6 +19,9 @@ export interface User {
   favorite_countries: string[],
   country: string,
   is_profile_complete: boolean,
+  total_stickers_collected: number
+  album_completion_pct: number
+  exchanges_amount: number
   package_counter: number
 }
 
