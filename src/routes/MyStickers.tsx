@@ -9,10 +9,23 @@ import {useForm} from "react-hook-form";
 import client from "../services/config";
 import {MyModal} from "../components/MyModal";
 import {useUser} from "../context/UserContext";
-import {Button, CardText, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupText, Row} from "reactstrap";
+import {
+  Button,
+  CardText,
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  InputGroup,
+  InputGroupText,
+  Label,
+  Row, Spinner
+} from "reactstrap";
 import {ROUTES} from "./RoutesNames";
 import {MyStickersStrings} from "../res/strings";
 import MyToast, {IToast} from "../components/MyToast";
+import {globalStickerStyles} from "../res/globalStyles";
 
 export type Filters = {
   name?: string,
@@ -24,9 +37,13 @@ const MyStickers = () => {
   const navigate = useNavigate();
   const {register} = useForm();
 
+  const DESKTOP_SIZE = 1230;
   const [showPasteOk, setShowPasteOk] = useState(false);
-
   const [fetchedStickers, setFetchedStickers] = useState<ISticker[]>([])
+  const [isMouseOverAlbum, setMouseOverAlbum] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isDesktop, setDesktop] = useState<boolean>(window.innerWidth >= DESKTOP_SIZE);
+
   const initialFilterState: Filters = {
     name: undefined,
     country: undefined
@@ -37,7 +54,7 @@ const MyStickers = () => {
     'Argentina': 'ARG',
     'Mexico': 'MEX',
     'Francia': 'FRA',
-    'Qatar': 'QAT',
+    'Brasil': 'BRA',
     'Todos': 'ALL'
   }
 
@@ -53,18 +70,19 @@ const MyStickers = () => {
 
   const fetchUserStickers = async () => {
     console.log(_searchFilters.current)
+    setLoading(true);
     try {
       const {data: stickers} = await client.get(`/users/${user._id}/stickers`, {
         params: _searchFilters.current
       });
       setFetchedStickers(stickers)
-
     } catch (error: any) {
       console.error(
         "Request failed, response:",
         error
       );
     }
+    setLoading(false);
   }
 
   const closeShowPasteOk = () => {
@@ -123,16 +141,45 @@ const MyStickers = () => {
 
   const StickersList = ({stickers}: { stickers: ISticker[] }) => {
     return <React.Fragment>
-      {stickers.map((player, index) =>
+      {loading &&
+          <>
+            <Row className="m-1">
+              <Spinner style={{height: '3rem', width: '3rem'}}
+                       className="d-flex img-center" color="light" type="grow">
+              </Spinner>
+            </Row>
+            <Row className="mt-2">
+              <h1 className="text-white text-center">Buscando figuritas...</h1>
+            </Row>
+          </>
+      }
+      {/* Primero los que no están en el album, luego el resto */}
+      {!loading && stickers.sort((a,b) => a.is_on_album < b.is_on_album ? -1 : 0).map((player, index) =>
         player.quantity > 0 &&
           <Col key={player.id} className="col-md-3 p-3 d-flex justify-content-center">
-              <Draggable sticker={player} type={DraggableTypes.STICKER}>
+              {/*<Draggable sticker={player} type={DraggableTypes.STICKER}>*/}
                   <Sticker player={player}
-                           displayBadge={true}/>
-              </Draggable>
+                           displayBadge={true}
+                           style={globalStickerStyles.stickerSmall}
+                           showNotInAlbum={!player.is_on_album}
+                           cardClassName={(player.is_on_album ? "" : "card-text-sticker--shadow card-sticker--shadow")}
+                           draggable={!player.is_on_album}
+                  />
+              {/*</Draggable>*/}
           </Col>
       )}
-      {stickers && !hasStickers(stickers) && hasStickers(user.stickers) &&
+      {stickers.map((player, index) =>
+          player.quantity > 0 &&
+          <Col key={player.id} className="col-md-3 p-3 d-flex justify-content-center">
+            <Draggable sticker={player} type={DraggableTypes.STICKER}>
+              <Sticker player={player}
+                       displayBadge={true}
+                       style={globalStickerStyles.stickerSmall}
+              />
+            </Draggable>
+          </Col>
+      )}
+      {!loading && stickers && !hasStickers(stickers) && hasStickers(user.stickers) &&
           <Col>
               <CardText>No se encontró ninguna figurita con este filtro</CardText>
           </Col>
@@ -140,62 +187,102 @@ const MyStickers = () => {
     </React.Fragment>;
   }
 
+  const updateMedia = () => {
+    setDesktop(window.innerWidth >= DESKTOP_SIZE)
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  })
 
   return (
     <React.Fragment>
       <MyNavbar/>
-      <Container fluid>
+      <Container className={"bg-my-stickers-img " + (isDesktop ? "h-90vh overflow-hidden" : "")} fluid>
         <Row>
-          <Col className="col-md-2">
-            <Button onClick={goToCreateExchange}>Intercambiar</Button>
-            <Row className="h-100 m-7">
+          <h1 className="mt-4 text-center text-white align-self-center" style={{fontSize: 30}}>MIS FIGURITAS</h1>
+        </Row>
+        <Row>
+          <Col className="col-md-2 col-sm-12">
+            <Row className="mt-5">
+              <Button onClick={goToCreateExchange}>Intercambiar</Button>
+            </Row>
+            <Row className="mt-7">
               <Form>
-                <h3 className="text-gray">Pais</h3>
-                {Object.entries(countriesToFilter).map(([key, value]) =>
-                  <FormGroup key={value} className="custom-control custom-radio mb-3">
-                    <Button
-                      color="primary"
-                      outline
-                      onClick={() => onCountryClick(value)}
-                    >
-                      {key}
-                    </Button>
-                  </FormGroup>
-                )}
+                <FormGroup className="custom-control custom-radio mb-3">
+                  <Row className="m-0 p-0">
+                    <Label className="text-start"><h1 className="text-white">País</h1></Label>
+                  </Row>
+                  {Object.entries(countriesToFilter).map(([key, value]) =>
+                    <Row className="d-flex justify-content-start mb-2">
+                      <Col className="col-auto">
+                      <Button key={value}
+                        className="text-white"
+                        color="warning"
+                        onClick={() => onCountryClick(value)}
+                      >
+                        {key}
+                      </Button>
+                      </Col>
+                    </Row>
+                  )}
+                </FormGroup>
               </Form>
             </Row>
           </Col>
           <Col className="col-md-8 pr-6 pl-6">
-            <Row>
-              <Form className="navbar-search form-inline mr-3 d-none d-md-flex ml-lg-auto">
+            <Row className="mt-5">
+              <Form className="navbar-search">
                 <FormGroup className="mb-0">
-                  <InputGroup className="input-group-alternative">
+                  <InputGroup className="input-group-alternative bg-translucent-dark text-white">
                     <InputGroupText>
                       <i className="fas fa-search"/>
                     </InputGroupText>
-                    <Input placeholder="Buscar" type="text" id="name" {...register("name", {
+                    <Input placeholder="Buscar"
+                           type="text"
+                           className="text-white"
+                           id="name" {...register("name", {
                       onChange: handleChange()
                     })} />
                   </InputGroup>
                 </FormGroup>
               </Form>
             </Row>
-            <Row>
-              <StickersList stickers={fetchedStickers}/>
-              {!hasStickers(fetchedStickers) && !hasStickers(user.stickers) &&
-                <Col>
-                      <p>No tienes figuritas, abrí un nuevo paquete</p>
-                      <Button color={"success"} onClick={goToDailyPacket}>
-                          Abrir paquete
-                      </Button>
-                  </Col>
-              }
+            <Row className="flex-row">
+              <Container fluid className="h-65vh bg-translucent-light border rounded" style={{
+                overflowY: "auto"
+              }}>
+                <Row>
+                  <StickersList stickers={fetchedStickers}/>
+                  {!hasStickers(fetchedStickers) && !hasStickers(user.stickers) &&
+                    <Col>
+                          <p>No tienes figuritas, abrí un nuevo paquete</p>
+                          <Button color={"success"} onClick={goToDailyPacket}>
+                              Abrir paquete
+                          </Button>
+                      </Col>
+                  }
+                </Row>
+              </Container>
             </Row>
           </Col>
           <Col className="col-md-2">
-            <div className="row" ref={dropAlbum}>
-              <DropBoard title={MyStickersStrings.PASTE_TO_ALBUM_TITLE} body={MyStickersStrings.PASTE_TO_ALBUM_BODY}/>
-            </div>
+            <Row className="justify-content-center h-75">
+              <div className="col col-12 d-flex justify-content-center" ref={dropAlbum}>
+                <img
+                    src={require("../assets/img/album_book.png")}
+                    onMouseOver={() => {setMouseOverAlbum(true)}}
+                    onMouseLeave={() => {setMouseOverAlbum(false)}}
+                    style={{
+                      position: "sticky",
+                      top: "20rem",
+                      maxWidth: "14rem",
+                      maxHeight: "17rem"
+                    }}
+                />
+              </div>
+            </Row>
             <MyToast toast={toast} className={"bg-danger"}/>
 
           </Col>

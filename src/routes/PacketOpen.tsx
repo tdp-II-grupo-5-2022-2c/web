@@ -118,6 +118,7 @@ function PacketOpen() {
               <Row className="h-25">
                 <h1 className="mt-4 text-center text-white align-self-center" style={{fontSize: 30}}>RECIBISTE</h1>
               </Row>
+              {/* Los stickers del paquete abierto */}
               <Row className="justify-content-center m-0 p-0 align-items-center">
                 <Col className="col-10 justify-content-center d-flex">
                   <Row className="justify-content-center">

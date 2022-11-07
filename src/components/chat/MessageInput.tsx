@@ -17,7 +17,7 @@ function MessageInput({roomId}: Props) {
 
   const MAX_LENGTH = 50;
   const MAX_PERIOD_MESSAGES_USER = 5;
-  const MAX_PERIOD = 60; //2 minutos (segundos)
+  const MAX_PERIOD = 60; //1 minuto (segundos)
 
   const handleChange = (event: any) => {
     if (event.target.value.length <= MAX_LENGTH) {
@@ -39,7 +39,7 @@ function MessageInput({roomId}: Props) {
   const userLimitMessages = () => {
     let lastMessages = messages.slice(-MAX_PERIOD_MESSAGES_USER);
     console.log("last messages: " + JSON.stringify(lastMessages));
-    if (!lastMessages)
+    if (!lastMessages || lastMessages.length < MAX_PERIOD_MESSAGES_USER)
       return false;
 
     for (let i = 0; i < lastMessages.length; i++) {

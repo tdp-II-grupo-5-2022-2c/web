@@ -34,7 +34,7 @@ function App() {
             <div className="col-md-4">
               <div className="card" onClick={handleMyStickers}>
                 <div className="card-body">
-                  <img src={"/images/ARG11.png"} style={globalStickerStyles.sticker}/>
+                  <img src={"/images/ARG10.png"} style={globalStickerStyles.sticker}/>
                   <Button style={globalButtonsStyle.alternative}>
                     <p className="m-0 text-white">Mis figuritas</p>
                   </Button>
