@@ -1,42 +1,60 @@
 export type AlbumPage = {
-  styles: object
+  styles: object,
+  flagIcon: string
 }
 
 const default_page : AlbumPage = {
   styles: {
-    backgroundColor: 'lightblue'
-  }
+    backgroundColor: 'rgba(117,169,219,0.5)'
+  },
+  flagIcon: ''
 }
 
+// Iconos de banderas: https://flagicons.lipis.dev/
 const ALBUM_PAGES_METADATA = new Map<string, AlbumPage>([
     ['ARG', {
       styles: {
-        backgroundColor: '#75a9db'
-      }
+        backgroundColor: "rgba(117,169,219,0.5)"
+      },
+      flagIcon: 'fi-ar'
     }],
-    ['QAT', {
+    ['BRA', {
       styles: {
-        backgroundColor: '#76273f'
-      }
+        backgroundColor: 'rgba(232,186,11,0.5)'
+      },
+      flagIcon: 'fi-br'
     }],
     ['MEX', {
       styles: {
-        backgroundColor: '#39462e'
-      }
+        backgroundColor: 'rgba(57,70,46,0.5)'
+      },
+      flagIcon: 'fi-mx'
     }],
     ['FRA', {
       styles: {
-        backgroundColor: '#031583'
-      }
+        backgroundColor: 'rgba(3,21,131,0.5)',
+      },
+      flagIcon: 'fi-fr'
     }]
 ]);
 
-export const ALBUM_PAGES = ["QAT", "MEX", "ARG", "FRA"]
+const COUNTRIES_MAP = new Map<string,string>([
+  ['ARG', 'Argentina'],
+  ['MEX', 'Mexico'],
+  ['FRA', 'Francia'],
+  ['BRA', 'Brasil'],
+]);
 
-export const DEFAULT_COUNTRY_PAGE = "QAT";
+export const ALBUM_PAGES = ["BRA", "MEX", "ARG", "FRA"]
+
+export const DEFAULT_COUNTRY_PAGE = "ARG";
 
 export function getAlbumPage(country: string) : AlbumPage {
   // TODO: no tengo idea de Typescript :)
   // @ts-ignore
   return ALBUM_PAGES_METADATA.has(country) ? ALBUM_PAGES_METADATA.get(country) : default_page;
+}
+
+export function getAlbumCountryName(country: string) : string {
+  return COUNTRIES_MAP.get(country) || "";
 }

@@ -45,20 +45,23 @@ const StickerPlaceHolder = ({country, position, index, pasteId, onPaste, style =
     })
   }
 
-  //TODO: renderizado condicional, si no tengo figurita renderizo el placeholder, caso contrario
-  // renderizo la figurita que recibo por props
+  const toPaste = () => {
+    return pasteId && position === index && onPaste;
+  }
+
   return (
-    <Card style={styles.stickerPlaceHolder}>
+    <Card className={`${toPaste() ? "floating bg-translucent-warning" : "bg-translucent-dark"}`} style={styles.stickerPlaceHolder}>
       <CardBody className="d-flex flex-column justify-content-between">
         <Row>
-          <span className="h1 font-weight-bold" style={styles.text}>{formatCountry(country)}</span>
+          <span className="h1 font-weight-bold text-center" style={styles.text}>{formatCountry(country)}</span>
         </Row>
         <Row>
-          <span className="h1 font-weight-bold" style={styles.text}>{formatNumber(index)}</span>
+          <span className="h1 font-weight-bold text-center" style={styles.text}>{formatNumber(index)}</span>
         </Row>
         {/*<p className="card-text" style={styles.text}>{player.name}</p>*/}
-        <Row className="m-0 p-0">
-          {pasteId && position === index && onPaste && <Button color="primary" size="sm" className="m-2" onClick={() => onPaste(pasteId)}>Pegar</Button>}
+        <Row className="m-0 p-0 justify-content-center">
+          {/* @ts-ignore */}
+          {toPaste() && <Button color="secondary" size="sm" className="m-2" onClick={() => onPaste(pasteId)}>Pegar</Button>}
         </Row>
       </CardBody>
     </Card>

@@ -16,7 +16,7 @@ const MyProfile = () => {
     country: user.country,
     date_of_birth: user.date_of_birth,
     lastname: user.lastname,
-    favorite_countries: user.favorite_countries
+    favorite_countries: user.favorite_countries || []
   };
   const [form, setForm] = useState(initialState)
   const navigate = useNavigate()

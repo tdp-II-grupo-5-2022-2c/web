@@ -199,7 +199,7 @@ const MyStickers = () => {
   return (
     <React.Fragment>
       <MyNavbar/>
-      <Container className={"bg-my-stickers-img " + (isDesktop ? "h-90vh overflow-hidden" : "")} fluid>
+      <Container className={"bg-qatar-img " + (isDesktop ? "h-90vh overflow-auto" : "")} fluid>
         <Row>
           <h1 className="mt-4 text-center text-white align-self-center" style={{fontSize: 30}}>MIS FIGURITAS</h1>
         </Row>
@@ -252,10 +252,11 @@ const MyStickers = () => {
               </Form>
             </Row>
             <Row className="flex-row">
-              <Container fluid className="h-65vh bg-translucent-light border rounded" style={{
-                overflowY: "auto"
+              <Container fluid className="h-65vh bg-translucent-light border rounded mb-1" style={{
+                overflowY: "auto",
+                overflowX: "hidden"
               }}>
-                <Row className="justify-content-center mt-3">
+                <Row className="justify-content-center mt-3 mb-3">
                   <StickersList stickers={fetchedStickers}/>
                   {!hasStickers(fetchedStickers) && !hasStickers(user.stickers) &&
                     <Col className="col-auto">

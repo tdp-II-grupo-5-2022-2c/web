@@ -27,6 +27,7 @@ export type ICommunity = {
 const MyCommunities = () => {
   const user = useUser();
 
+  const DESKTOP_SIZE = 730;
   const [showCreateCommunityFormModal, setShowCreateCommunityFormModal] = useState(false);
   const initialFormState: CreateCommunityForm = {
     name: "",
@@ -43,6 +44,7 @@ const MyCommunities = () => {
   const [modalOk, setModalOk] = useState(initialModalState);
   const [modalError, setModalError] = useState(initialModalState);
   const [createdCommunityId, setCreatedCommunityId] = useState<string>();
+  const [isDesktop, setDesktop] = useState<boolean>(window.innerWidth >= DESKTOP_SIZE);
 
   const navigate = useNavigate();
 
@@ -123,15 +125,25 @@ const MyCommunities = () => {
     navigate(`/communities/${communityId}`)
   }
 
+  const updateMedia = () => {
+    setDesktop(window.innerHeight >= DESKTOP_SIZE)
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  })
+
   return (
     <React.Fragment>
       <MyNavbar/>
-      <Container fluid>
+      <Container className={"bg-gradient-orange " + (isDesktop ? " overflow-hidden h-90vh" : "")} fluid>
         <Row>
-          <Col lg={6} md={6} sm={6}>
-            <h1>Comunidades</h1>
+          <Col lg={2} md={12}></Col>
+          <Col className="offset-lg-1 mt-5 d-flex justify-content-center" lg={6} md={12}>
+            <h1 className="text-center text-white">MIS COMUNIDADES</h1>
           </Col>
-          <Col className="text-end mb-1" lg={6} md={6} sm={6}>
+          <Col className="text-md-start text-lg-right text-xl-right text-sm-start mb-1 mt-lg-5" lg={3} md={5} sm={5}>
             <Button color="success" onClick={onCreateCommunityClick}>Crear Comunidad</Button>
           </Col>
         </Row>
@@ -169,7 +181,7 @@ const MyCommunities = () => {
               <span id={community._id} className="mr-2">{community.name}</span>
               {user._id === community.owner &&
                   <Badge id={community._id} pill color="default">
-                      Administrador
+                      ADMIN
                   </Badge>
               }
             </ListGroupItem>
