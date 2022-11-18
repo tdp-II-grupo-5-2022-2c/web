@@ -5,7 +5,7 @@ import {Button} from "reactstrap";
 import client from "../services/config";
 import {ROUTES} from "./RoutesNames";
 import {useNavigate} from "react-router-dom";
-import {ALBUM_PAGES} from "../data/albumData";
+import {ALBUM_PAGES, COUNTRIES, COUNTRIES_TO_FLAG, STRING_TO_ENUM} from "../data/albumData";
 import {ProfileStrings} from "../res/strings";
 import Success from "../components/modals/Success";
 
@@ -267,18 +267,19 @@ const MyProfile = () => {
                           </div>
                         </div>
                       </div>
-
                     </div>
                     <hr className="my-4"/>
                     <h6 className="heading-small text-muted mb-4">Paises favoritos</h6>
                     <div className="pl-lg-4 text-center">
-                      <div className="row row-cols-lg-6 row-cols-md-6">
+                      <div className="row row-cols-lg-auto row-cols-md-auto">
                           {ALBUM_PAGES.map((country, index) =>
-                            <div key={country} className="col">
-                              <Button className={isSelected(country) ? "btn btn-success" : "btn btn-primary"} name="fav-country" type="button" onClick={() => selectCountry(country)}
-                                      disabled={!isEditing}>
-                                {country}
-                              </Button>
+                            <div key={country} className="position-relative">
+                              <span className={`fi fi-${COUNTRIES_TO_FLAG.get(STRING_TO_ENUM.get(country) || COUNTRIES.Arg)} ${isSelected(country) ? "btn btn-success" : "btn btn-primary"}`}
+                                    onClick={isEditing ? () => selectCountry(country) : undefined}></span>
+                              {isSelected(country) &&
+                                <span style={{left: 60, top: 5 }} className="position-absolute translate-middle badge rounded-pill bg-translucent-darker">
+                                            <i className="ni ni-check-bold text-success"></i>
+                              </span>}
                             </div>
                           )}
                       </div>

@@ -45,6 +45,28 @@ const COUNTRIES_MAP = new Map<string,string>([
   ['BRA', 'Brasil'],
 ]);
 
+export enum COUNTRIES {
+  Arg = "ARG",
+  Mex = "MEX",
+  Fra = "FRA",
+  Bra = "BRA",
+}
+
+export const COUNTRIES_TO_FLAG = new Map<COUNTRIES, string>([
+  [COUNTRIES.Arg, 'ar'],
+  [COUNTRIES.Mex, 'mx'],
+  [COUNTRIES.Fra, 'fr'],
+  [COUNTRIES.Bra, 'br'],
+]);
+
+export const STRING_TO_ENUM = new Map<string, COUNTRIES>([
+  ["ARG", COUNTRIES.Arg],
+  ["MEX", COUNTRIES.Mex],
+  ["FRA", COUNTRIES.Fra],
+  ["BRA", COUNTRIES.Bra],
+]);
+
+
 export const ALBUM_PAGES = ["BRA", "MEX", "ARG", "FRA"]
 
 export const DEFAULT_COUNTRY_PAGE = "ARG";
