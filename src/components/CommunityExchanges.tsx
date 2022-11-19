@@ -7,6 +7,7 @@ import {fetchCommunityExchanges} from "../services/apicalls";
 import Success from "./modals/Success";
 import Error from "./modals/Error";
 import {IStickerData} from "./stickers/Sticker";
+import MySpinner from "./spinner/MySpinner";
 
 type Props = {
   communityId: string
@@ -25,13 +26,19 @@ const CommunityExchanges = ({communityId}:Props) => {
   const [showModal, setShowModal] = useState(false)
   const [showModalError, setShowModalError] = useState(false)
 
+  const [isLoading, setIsLoading] = useState(false)
+  const [loadingMsg, setLoadingMsg] = useState("")
+
   useEffect(() => {
     _fetchCommunityExchanges()
   }, [])
 
   const _fetchCommunityExchanges = async () => {
+    setLoadingMsg("Obteniendo intercambios...")
+    setIsLoading(true)
     const exchanges = await fetchCommunityExchanges(user._id, communityId)
     setCommunityExchanges(exchanges)
+    setIsLoading(false)
   }
 
   const acceptExchange = async (exchangeId: string) => {
@@ -73,6 +80,8 @@ const CommunityExchanges = ({communityId}:Props) => {
       receiver_id: user._id
     }
     try {
+      setLoadingMsg("Procesando...")
+      setIsLoading(true)
       const {data: response} = await client.post(`/exchanges/${exchangeId}`, form)
       return true
 
@@ -97,7 +106,7 @@ const CommunityExchanges = ({communityId}:Props) => {
         console.log('Error', error.message);
       }
     }
-
+    setIsLoading(false)
     return false
   }
 
@@ -139,7 +148,10 @@ const CommunityExchanges = ({communityId}:Props) => {
 
   return (
     <React.Fragment>
-      <div className="container">
+      {isLoading && <div className="d-flex justify-content-center align-items-center h-65vh">
+        <MySpinner message={loadingMsg}/>
+      </div>}
+      {!isLoading && <div className="container">
         <div className="row">
           {communityExchanges.map((exchange, index) =>
             <div key={exchange._id} className="d-flex justify-content-center mb-1">
@@ -148,7 +160,7 @@ const CommunityExchanges = ({communityId}:Props) => {
             </div>
           )}
         </div>
-      </div>
+      </div>}
       <Success modal={modal} isOpen={showModal} onAccept={closeModal}/>
       <Error modal={modalError} isOpen={showModalError} onAccept={closeModalError}/>
     </React.Fragment>
