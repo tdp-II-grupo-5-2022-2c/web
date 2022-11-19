@@ -12,7 +12,7 @@ export const Stickers = ({stickers, style} : Props) => {
   return <React.Fragment>
       {stickers && stickers.map((player, index) =>
         (player.quantity > 0) &&
-          <div className="p-0 col" key={player.id} >
+          <div className="col p-0 mb-1" key={player.id} >
               <Draggable sticker={player} type={DraggableTypes.STICKER}>
                   <Sticker player={player}
                            displayBadge={true}
@@ -35,7 +35,7 @@ type Props2 = {
 export const AllStickers = ({stickers, style} : Props2) => {
   return (<React.Fragment>
     {stickers && stickers.map((player, index) =>
-        <div className="p-0 col" key={player._id}>
+        <div className="col p-0 mb-1" key={player._id}>
             <Draggable sticker={player} type={DraggableTypes.STICKER} >
                 <Sticker player={player}
                          displayBadge={true}
