@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
 import {ALBUM_PAGES, DEFAULT_COUNTRY_PAGE} from "../data/albumData";
 import AlbumPage from "../components/AlbumPage";
@@ -6,8 +6,8 @@ import {ISticker} from "../components/stickers/Sticker";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import client from "../services/config";
 import {useUser} from "../context/UserContext";
-import {Container, Row, Col, Spinner, Button, Fade} from "reactstrap";
-import {ArrowLeftIcon} from "@primer/octicons-react";
+import {Container, Row, Col, Fade} from "reactstrap";
+import MySpinner from "../components/spinner/MySpinner";
 
 const MyAlbum = () => {
   const NUM_PLAYERS = 11;
@@ -137,12 +137,7 @@ const MyAlbum = () => {
         <Row className="h-75vh overflow-auto justify-content-center align-items-center">
           {isLoading &&
               <Col className="justify-content-center col-4 align-self-center">
-                <Row>
-                  <Spinner className="text-white-50 img-center d-flex" type="grow" style={{height: '3rem', width: '3rem'}}></Spinner>
-                </Row>
-                <Row className="mt-5">
-                  <h1 className="text-white-50 text-center">Cargando Album...</h1>
-                </Row>
+                <MySpinner message={"Cargando Album..."} className="text-white-50"/>
               </Col>
           }
           {!isLoading &&
