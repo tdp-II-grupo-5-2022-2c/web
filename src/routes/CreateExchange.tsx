@@ -17,6 +17,7 @@ import {ROUTES} from "./RoutesNames";
 import client from "../services/config";
 import Success from "../components/modals/Success";
 import Error from "../components/modals/Error";
+import MySpinner from "../components/spinner/MySpinner";
 
 const CreateExchange = () => {
   const user = useUser()
@@ -41,6 +42,8 @@ const CreateExchange = () => {
   const [showModal, setShowModal] = useState(false)
   const [errorModal, setErrorModal] = useState(initialModalState)
   const [showErrorModal, setShowErrorModal] = useState(false)
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const navigate = useNavigate();
 
@@ -173,6 +176,7 @@ const CreateExchange = () => {
       stickers_to_receive: getStickersDataId(stickersToReceive)
     }
     try {
+      setIsLoading(true)
       const {data: createdExchange} = await client.post("/exchanges", form)
       setModal({header: CreateExchangeStrings.OK_TITLE, body: CreateExchangeStrings.EXCHANGE_CREATED})
       setShowModal(true)
@@ -185,7 +189,10 @@ const CreateExchange = () => {
           setErrorModal({header: CreateExchangeStrings.ERROR_TITLE, body: CreateExchangeStrings.ERROR_MAX_REACHED})
           setShowErrorModal(true)
         } else if (error.response.data?.detail.includes("has not complete his profile")) {
-          setErrorModal({header:CreateExchangeStrings.ERROR_TITLE, body: CreateExchangeStrings.ERROR_PROFILE_NOT_COMPLETED})
+          setErrorModal({
+            header: CreateExchangeStrings.ERROR_TITLE,
+            body: CreateExchangeStrings.ERROR_PROFILE_NOT_COMPLETED
+          })
           setShowErrorModal(true)
         }
         console.log(error.response);
@@ -195,6 +202,7 @@ const CreateExchange = () => {
         console.log('Error', error.message);
       }
     }
+    setIsLoading(false)
   }
 
   const closeModal = () => {
@@ -209,24 +217,20 @@ const CreateExchange = () => {
   const StickersPicker = () => {
 
     const styles = {
-      stickersPickers: {
-        backgroundImage: `url("/images/bg_stickers.jpeg")`
-      },
       stickersPickersReceive: {
         backgroundImage: `url("/images/qatar_bg_4.jpeg")`
       }
     }
 
     return (
-      <div className="card" style={isGiving ? styles.stickersPickers : styles.stickersPickersReceive}>
-        <div className="card-body">
-          <div className="row row-cols-md-3 row-cols-lg-5">
-            {/*Listado de stickers*/}
-            {isGiving ?
-              <Stickers stickers={fetchedStickers} style={globalStickerStyles.stickerSmall}/>
-              : <AllStickers stickers={allStickers} style={globalStickerStyles.stickerSmall}/>
-            }
-          </div>
+      <div className="container h-65vh bg-translucent-light border rounded"
+           style={!isGiving ? styles.stickersPickersReceive : {}}>
+        <div className="row row-cols-md-2 row-cols-lg-5 mt-2">
+          {/*Listado de stickers*/}
+          {isGiving ?
+            <Stickers stickers={fetchedStickers} style={globalStickerStyles.stickerSmall}/>
+            : <AllStickers stickers={allStickers} style={globalStickerStyles.stickerSmall}/>
+          }
         </div>
       </div>
     )
@@ -235,97 +239,82 @@ const CreateExchange = () => {
   const MyExchangeCreator = () => {
 
     const styles = {
-      exchangeCreation: {
-        backgroundImage: `url("/images/bg_exchange.jpg")`
-      },
       dropSize: {
         height: '28rem'
       }
     }
 
     return (
-      <div className="card" style={styles.exchangeCreation}>
-        <div className="card-body text-center">
-          <div className="row">
-            <div className="col">
-              <div ref={isGiving ? dropExchangeGive : undefined} className="card"
-                   style={{...styles.dropSize, ...globalButtonsStyle.alternative}}>
-                <div className="card-body">
-                  <div className="d-flex flex-column align-items-center">
-                    <h1 className="text-white">Voy a dar</h1>
-                    {isGiving && <div className="text-center" style={globalButtonsStyle.alternative}>
-                        <p className="text-white">{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
-                    </div>}
-                    <StickerStack stickers={stickersToGive} isCreating={true}/>
-                    <PlayersInfo stickers={stickersToGive}/>
-                  </div>
+      <div className="container h-65vh bg-translucent-light border rounded mb-1 text-center mt-2">
+        <div className="row mt-2">
+          <div className="col">
+            <div ref={isGiving ? dropExchangeGive : undefined} className="card"
+                 style={{...styles.dropSize, ...globalButtonsStyle.alternative}}>
+              <div className="card-body">
+                <div className="d-flex flex-column align-items-center">
+                  <h1 className="text-white">Voy a dar</h1>
+                  {isGiving && <div className="text-center" style={globalButtonsStyle.alternative}>
+                    <p className="text-white">{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
+                  </div>}
+                  <StickerStack stickers={stickersToGive} isCreating={true}/>
+                  <hr className="my-1"/>
+                  <PlayersInfo stickers={stickersToGive}/>
                 </div>
               </div>
             </div>
-            <div className="col">
-              <div ref={!isGiving ? dropExchangeReceive : undefined} className="card"
-                   style={{...styles.dropSize, ...globalButtonsStyle.alternative}}>
-                <div className="card-body">
-                  <div className="d-flex flex-column align-items-center">
-                    <h1 className="text-white">Voy a recibir</h1>
-                    {!isGiving && <div className="text-center">
-                        <p className="text-white">{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
-                    </div>}
-                    <StickerStack2 stickers={stickersToReceive} isCreating={true}/>
-                    <PlayersInfo stickers={stickersToReceive}/>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
-          <div className="row justify-content-md-center">
-            {stickersToGive.length > 0 && stickersToReceive.length > 0 &&
-                <h1 className="text-green m-0">{CreateExchangeStrings.EXCHANGE_READY}</h1>}
-            {stickersToGive.length > 0 && stickersToReceive.length > 0 &&
-                <Button className="btn-success w-50" onClick={createExchange}>
-                    Confirmar
-                </Button>}
+          <div className="col">
+            <div ref={!isGiving ? dropExchangeReceive : undefined} className="card"
+                 style={{...styles.dropSize, ...globalButtonsStyle.alternative}}>
+              <div className="card-body">
+                <div className="d-flex flex-column align-items-center">
+                  <h1 className="text-white">Voy a recibir</h1>
+                  {!isGiving && <div className="text-center">
+                    <p className="text-white">{CreateExchangeStrings.EXCHANGE_GIVE_HINT}</p>
+                  </div>}
+                  <StickerStack2 stickers={stickersToReceive} isCreating={true}/>
+                  <hr className="my-1"/>
+                  <PlayersInfo stickers={stickersToReceive}/>
+                </div>
+              </div>
+            </div>
           </div>
 
         </div>
+        <div className="row justify-content-md-center">
+          {stickersToGive.length > 0 && stickersToReceive.length > 0 &&
+            <h1 className="text-green m-0">{CreateExchangeStrings.EXCHANGE_READY}</h1>}
+          {stickersToGive.length > 0 && stickersToReceive.length > 0 &&
+            <Button className="btn-success w-50" onClick={createExchange}>
+              Confirmar
+            </Button>}
+        </div>
+
       </div>
     )
-  }
-
-  const styles = {
-    stickersPickers: {
-      backgroundImage: `url("/images/bg_stickers.jpeg")`
-    },
-    stickersPickersReceive: {
-      backgroundImage: `url("/images/qatar_bg_4.jpeg")`
-    }
   }
 
   return (
     <React.Fragment>
       <MyNavbar/>
-      <div className="container-fluid">
-        <div className="row">
-          <h1>Creando Intercambio</h1>
+      <div className="container-fluid bg-qatar-img h-90vh overflow-auto">
+        {isLoading &&
+          <div className="d-flex justify-content-center align-items-center h-100vh">
+            <MySpinner className="text-white-50" message={"Creando intercambio..."}/>
+          </div>
+        }
+        {!isLoading && <div className="row">
+          <h1 className="mt-4 text-center text-white align-self-center" style={{fontSize: 30}}>Creando Intercambio</h1>
+          <h1
+            className="mt-4 text-center text-white align-self-center">{isGiving ? PICKING_STATE_TITLE.give : PICKING_STATE_TITLE.receive}</h1>
           {/*Selector de figuritas*/}
-          <div className="col" style={isGiving ? styles.stickersPickers : styles.stickersPickersReceive}>
-            <div className="row">
-              <h1 className="text-white">{isGiving ? PICKING_STATE_TITLE.give : PICKING_STATE_TITLE.receive}</h1>
-            </div>
-              <div className="row">
-              <div className="col-md-6">
-                <Input placeholder="Buscar" type="text" id="name" onChange={handleChange}
+          <div className="col">
+            <div className="row mb-2">
+              <form>
+                <Input placeholder="Buscar" className="text-white bg-translucent-dark " type="text" id="name"
+                       onChange={handleChange}
                        value={form.name}/>
-              </div>
-              <div className="col-md-2">
-                <Button onClick={isGiving ? selectReceive : selectGive}
-                        style={globalButtonsStyle.alternative} className="text-white">
-                  {isGiving ? "A recibir" : "A dar"}</Button>
-              </div>
-              <div className="col-md-1">
-                <Button onClick={clean} className="btn-secondary">Limpiar</Button>
-              </div>
+              </form>
             </div>
             <div className="row">
               <StickersPicker/>
@@ -333,9 +322,21 @@ const CreateExchange = () => {
           </div>
           {/*Intercambio*/}
           <div className="col">
+            <div className="container text-center">
+              <div className="row">
+                <div className="col-6">
+                  <Button onClick={isGiving ? selectReceive : selectGive}
+                          style={globalButtonsStyle.alternative} className="text-white" block>
+                    {isGiving ? "A recibir" : "A dar"}</Button>
+                </div>
+                <div className="col-6">
+                  <Button onClick={clean} className="btn-secondary" block>Limpiar</Button>
+                </div>
+              </div>
+            </div>
             <MyExchangeCreator/>
           </div>
-        </div>
+        </div>}
       </div>
       <Success modal={modal} isOpen={showModal} onAccept={closeModal}/>
       <Error modal={errorModal} isOpen={showErrorModal} onAccept={closeErrorModal}/>
