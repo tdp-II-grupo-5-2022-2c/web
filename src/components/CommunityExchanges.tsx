@@ -46,20 +46,12 @@ const CommunityExchanges = ({communityId}:Props) => {
     if (success) {
       setModal({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_ACCEPT_OK})
       setShowModal(true)
-    } else {
-      //setModalError({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_ACCEPT_ERROR})
-      //setShowModalError(true)
     }
   }
 
   const rejectExchange = async (exchangeId: string) => {
-    const success = await doRequest("reject", exchangeId)
-    if (!success) {
-      //setModalError({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_REJECT_ERROR})
-      //setShowModalError(true)
-    } else {
-      _fetchCommunityExchanges()
-    }
+    await doRequest("reject", exchangeId)
+    _fetchCommunityExchanges()
   }
 
   const closeModal = () => {
@@ -91,6 +83,11 @@ const CommunityExchanges = ({communityId}:Props) => {
         if (error.response.data?.detail.includes("has not complete his profile")) {
           setModalError({header:ExchangeStrings.PROFILE_NOT_COMPLETED_TITLE, body: ExchangeStrings.ERROR_ACCEPT_REJECT_PROFILE_NOT_COMPLETED})
           setShowModalError(true)
+        } else if (error.response.data?.detail.includes("is completed, you cannot apply any action")){
+          if(action === "accept"){
+            setModalError({header:ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_TAKEN})
+            setShowModalError(true)
+          }
         } else {
           if(action === "accept"){
             setModalError({header: ExchangeStrings.EXCHANGE_HEADER, body: ExchangeStrings.EXCHANGE_ACCEPT_ERROR})

@@ -44,6 +44,7 @@ export const ExchangeStrings = {
   EXCHANGE_REJECT_ERROR: "Hubo un error al rechazar el intercambio",
   ERROR_ACCEPT_REJECT_PROFILE_NOT_COMPLETED: "Debes completar tu perfil para poder aceptar o rechazar un intercambio",
   PROFILE_NOT_COMPLETED_TITLE: "Perfil Incompleto",
+  EXCHANGE_TAKEN: "Otra persona ya ha aceptado este intercambio",
 }
 
 
