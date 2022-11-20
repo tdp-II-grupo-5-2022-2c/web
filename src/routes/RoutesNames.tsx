@@ -10,5 +10,6 @@ export const ROUTES = {
   COMMUNITY_JOIN: "/communities/:community_id/join",
   MY_EXCHANGES: "/my-exchanges",
   CREATE_EXCHANGE: "/create-exchange",
+  BUY_PACKET: "/buy-packet",
   TEST: "/test"
 }
