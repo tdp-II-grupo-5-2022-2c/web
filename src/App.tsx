@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import client from "./services/config"
+import {getFCMToken} from "./firebase"
 import { useNavigate } from 'react-router-dom';
 import MyNavbar from "./components/MyNavbar";
 import {useUser} from "./context/UserContext";
@@ -9,7 +11,7 @@ import {globalButtonsStyle, globalStickerStyles} from "./res/globalStyles";
 
 function App() {
 
-  const {mail} = useUser();
+  const {mail, _id} = useUser();
   const navigate = useNavigate();
 
   const handleMyStickers = () => {
@@ -23,6 +25,13 @@ function App() {
   const handleMyAlbum = () => {
     navigate(ROUTES.MYALBUM)
   }
+
+  useEffect(() => {
+    getFCMToken()
+      .then( (fcmToken) => {
+        client.put(`/users/${_id}`, { fcmToken });
+      });
+  }, []);
 
   return (
     <React.Fragment>
