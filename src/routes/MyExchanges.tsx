@@ -111,7 +111,6 @@ const MyExchanges = () => {
             }
 
           </div>
-
         </div>
       </div>
     </React.Fragment>

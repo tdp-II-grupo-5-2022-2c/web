@@ -15,6 +15,7 @@ import {
 export type CreateCommunityForm = {
   name: string,
   password: string
+  description: string
 }
 
 type Props = {
@@ -68,6 +69,22 @@ const CreateCommunityModal = ({header, body, form, isOpen, handleChange, onAccep
                     name="password"
                     value={form.password}
                     onChange={handleChange}
+                />
+              </InputGroup>
+            </FormGroup>
+            <FormGroup>
+              <Label>Descripción</Label>
+              <InputGroup>
+                <InputGroupText>
+                  <i className="ni ni-collection" />
+                </InputGroupText>
+                <textarea
+                  className="form-control-alternative form-control"
+                  rows={3}
+                  placeholder="Descripción de la comunidad"
+                  name="description"
+                  value={form.description}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </FormGroup>

@@ -10,6 +10,7 @@ import {fetchCommunities} from "../services/apicalls";
 import Success from "../components/modals/Success";
 import Error from "../components/modals/Error";
 import MySpinner from "../components/spinner/MySpinner";
+import {MAX_COMMUNITY_DESCR_LEN} from "../res/constants";
 
 export type ICommunity = {
   "_id": string,
@@ -19,12 +20,12 @@ export type ICommunity = {
 
 const MyCommunities = () => {
   const user = useUser();
-
   const DESKTOP_SIZE = 730;
   const [showCreateCommunityFormModal, setShowCreateCommunityFormModal] = useState(false);
   const initialFormState: CreateCommunityForm = {
     name: "",
     password: "",
+    description: ""
   };
   const [createCommunityForm, setCreateCommunityForm] = useState(initialFormState)
   const [fetchedCommunities, setCommunities] = useState<ICommunity[]>([])
@@ -120,6 +121,9 @@ const MyCommunities = () => {
   }
 
   const handleChange = ({target: {name, value}}: any) => {
+    if(name === "description" && value.length > MAX_COMMUNITY_DESCR_LEN){
+      return
+    }
     setCreateCommunityForm({...createCommunityForm, [name]: value});
   }
 
