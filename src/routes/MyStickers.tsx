@@ -6,7 +6,6 @@ import {DraggableTypes} from "../components/Draggable";
 import {useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import client from "../services/config";
-import {MyModal} from "../components/MyModal";
 import {useUser} from "../context/UserContext";
 import {
   Button,
@@ -74,6 +73,15 @@ const MyStickers = () => {
   useEffect(() => {
     fetchUserStickers()
   }, [])
+
+  useEffect(() => {
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  })
+
+  const updateMedia = () => {
+    setDesktop(window.innerWidth >= DESKTOP_SIZE)
+  }
 
   const fetchUserStickers = async () => {
     console.log(_searchFilters.current)
@@ -143,6 +151,10 @@ const MyStickers = () => {
     navigate("../create-exchange")
   }
 
+  const goToBuyPacket = () => {
+    navigate(`../${ROUTES.BUY_PACKET}`)
+  }
+
   function goToDailyPacket() {
     navigate(`../${ROUTES.DAILYPACKET}`)
   }
@@ -182,15 +194,6 @@ const MyStickers = () => {
     </React.Fragment>;
   }
 
-  const updateMedia = () => {
-    setDesktop(window.innerWidth >= DESKTOP_SIZE)
-  }
-
-  useEffect(() => {
-    window.addEventListener("resize", updateMedia);
-    return () => window.removeEventListener("resize", updateMedia);
-  })
-
   return (
     <React.Fragment>
       <MyNavbar/>
@@ -203,6 +206,11 @@ const MyStickers = () => {
             <Row className="mt-5 justify-content-center">
               <Col className="col-auto">
                 <Button onClick={goToCreateExchange}>Crear Intercambio</Button>
+              </Col>
+            </Row>
+            <Row className="mt-5 justify-content-center">
+              <Col className="col-auto">
+                <Button onClick={goToBuyPacket}>Comprar paquete</Button>
               </Col>
             </Row>
             <Row className="mt-4 align-content-start">

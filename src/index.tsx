@@ -28,6 +28,7 @@ import CreateExchange from "./routes/CreateExchange";
 import {ErrorHandler} from "./context/ErrorHandler";
 import Test from "./routes/Test";
 import JoinCommunity from "./routes/JoinCommunity";
+import BuyPacket from "./routes/BuyPacket";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -100,6 +101,11 @@ root.render(
               <Route path={ROUTES.COMMUNITY_JOIN} element={
                 <ProtectedRoute>
                   <JoinCommunity />
+                </ProtectedRoute>
+              } />
+              <Route path={ROUTES.BUY_PACKET} element={
+                <ProtectedRoute>
+                  <BuyPacket />
                 </ProtectedRoute>
               } />
               <Route path={ROUTES.TEST} element={
