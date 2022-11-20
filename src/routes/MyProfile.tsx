@@ -29,10 +29,8 @@ const MyProfile = () => {
 
   const acceptChanges = async () => {
     setIsEditing(false)
-    console.log(form)
     let isProfileComplete = user.is_profile_complete;
     // Actualizo en el back
-    console.log("Is profile complete? " + isProfileComplete);
     const { data: updatedUser } = await client.put(`/users/${user._id}`, form);
     if (!isProfileComplete && updatedUser.is_profile_complete) {
       toggleShowSuccessCompleteProfile();
@@ -83,15 +81,14 @@ const MyProfile = () => {
   }
 
   const selectCountry = (country: string) => {
-    console.log(country)
     setForm(prevState => ({...prevState, "favorite_countries": addOrRemove(prevState.favorite_countries, country)}));
-    //setFavoriteCountries(oldFavorites => addIfNotPresent(oldFavorites, country))
   }
 
   const hasMandatoryFields = () => {
     return form.name.length > 0 && form.lastname.length > 0;
   }
 
+  // TODO: ver cual es la fecha minima para poder jugar al juego
   function getMax() {
     const date = new Date()
     const maxUserYear = date.getFullYear() - 14

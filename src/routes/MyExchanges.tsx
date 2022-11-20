@@ -4,10 +4,13 @@ import {useUser} from "../context/UserContext";
 import client from "../services/config";
 import Exchange, {IExchange} from "../components/Exchange";
 import {IStickerData} from "../components/stickers/Sticker";
+import MySpinner from "../components/spinner/MySpinner";
 
 const MyExchanges = () => {
   const user = useUser();
   const [userExchanges, setUserExchanges] = useState<IExchange[]>([]);
+
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     fetchCommunitiesExchanges()
@@ -15,6 +18,7 @@ const MyExchanges = () => {
 
   const fetchCommunitiesExchanges = async () => {
     try {
+      setIsLoading(true)
       const response = await client.get(`/exchanges?sender_id=${user._id}&completed=false`)
       console.log(response.data)
       setUserExchanges(response.data)
@@ -27,6 +31,7 @@ const MyExchanges = () => {
         console.log('Error', error.message);
       }
     }
+    setIsLoading(false)
   }
 
   // TODO: codigo repetido
@@ -73,30 +78,37 @@ const MyExchanges = () => {
       <MyNavbar/>
       <div className="container-fluid bg-gradient-orange h-90vh">
         <div className="row">
-            <h1 className="text-center text-white mt-5">MIS INTERCAMBIOS</h1>
-            <div className="card col-md-auto">
-              <div className="card-body d-flex flex-row justify-content-around">
-                <div className="d-flex flex-row align-items-center justify-content-start">
-                  <i className="ni ni-bold-right text-danger ni-3x"></i>
-                  <p className="">Figuritas a dar</p>
-                </div>
-                <div className="d-flex flex-row align-items-center justify-content-start">
-                  <i className="ni ni-bold-left text-success ni-3x"></i>
-                  <p className="">Figuritas a recibir</p>
-                </div>
+          <h1 className="text-center text-white mt-5">MIS INTERCAMBIOS</h1>
+          <div className="card col-md-auto">
+            <div className="card-body d-flex flex-row justify-content-around">
+              <div className="d-flex flex-row align-items-center justify-content-start">
+                <i className="ni ni-bold-right text-danger ni-3x"></i>
+                <p className="">Figuritas a dar</p>
+              </div>
+              <div className="d-flex flex-row align-items-center justify-content-start">
+                <i className="ni ni-bold-left text-success ni-3x"></i>
+                <p className="">Figuritas a recibir</p>
               </div>
             </div>
           </div>
+        </div>
         <div className="row">
-          <div className="card">
-            <div className="card-body row">
-              {userExchanges.map((exchange, index) =>
-                <div key={exchange._id} className="col-4 my-1">
-                  <Exchange exchange={exchange} onClickReceive={() => swapReceive(index)}
-                            onClickGive={() => swapGive(index)}/>
-                </div>
-              )}
-            </div>
+          <div className="h-65vh bg-translucent-light border rounded">
+            {isLoading &&
+              <div className="d-flex justify-content-center align-items-center h-65vh">
+                <MySpinner className="text-white-50" message={"Obteniendo intercambios..."}/>
+              </div>
+            }
+            {!isLoading &&
+              <div className="row row-cols-md-1 row-cols-lg-3">
+                {userExchanges.map((exchange, index) =>
+                  <div key={exchange._id} className="my-1">
+                    <Exchange exchange={exchange} onClickReceive={() => swapReceive(index)}
+                              onClickGive={() => swapGive(index)}/>
+                  </div>
+                )}
+              </div>
+            }
 
           </div>
 
