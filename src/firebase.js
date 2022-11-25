@@ -11,6 +11,7 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
+import {getMessaging, getToken} from "firebase/messaging"
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -31,7 +32,25 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const chatdb = getFirestore(app);
+const messaging = getMessaging(app);
 
+export const getFCMToken = async () => {
+  console.log('Requesting permission...');
+  const permission = await Notification.requestPermission();
+  if (permission !== 'granted') {
+    console.log('Do not have permission for notifications.');
+    return "";
+  }
+
+  const currentToken = await getToken(messaging, {vapidKey: 'BLR9J4uuYM9myx00-TE8VjbcwoHix7ysDtSUy5n_YqBH4nhaXcL_i5GYzM3UywQRAIJo69gGwtp_S1fzn83DQWU'})
+  if (currentToken) {
+    console.log(`currentToken: ${currentToken}`);
+    return currentToken;
+  }
+  
+  console.log('cannot get token for firebase cloud messaging');
+  return "";
+};
 
 async function sendMessage(roomId, user, text) {
   try {
