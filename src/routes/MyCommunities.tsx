@@ -70,6 +70,7 @@ const MyCommunities = () => {
       name: createCommunityForm.name,
       password: createCommunityForm.password,
       owner: user._id,
+      description: createCommunityForm.description,
       users: []
     }
     try {

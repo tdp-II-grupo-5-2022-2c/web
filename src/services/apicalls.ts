@@ -1,4 +1,5 @@
 import client from "./config";
+import {CommunityInfo} from "../routes/Community";
 
 export const fetchUserStickers = async (userId: number, searchFilters:any) => {
   try {
@@ -67,4 +68,22 @@ export const fetchCommunities = async (ownerId?: number, memberId?: number, name
   return fetchedCommunities
 }
 
+export const updateCommunity = async (community_id: string, user_id: any, form: any): Promise<CommunityInfo | undefined> =>  {
+  let updatedCommunity = undefined;
+  try {
+    const response = await client.put(`/communities/${community_id}`, form, {headers: {
+        'x-user-id': user_id
+      }})
+    updatedCommunity = response.data
+  } catch (error: any) {
+    if (error.response) {
+      console.log(error.response);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      console.log('Error', error.message);
+    }
+  }
 
+  return updatedCommunity
+}

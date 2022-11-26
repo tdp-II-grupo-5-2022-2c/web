@@ -10,15 +10,17 @@ import UsersList from "../components/communities/UsersList";
 import {MyModal} from "../components/MyModal";
 import CommunityInviteLink from "../components/communities/CommunityInviteLink";
 import CommunityExchanges from "../components/CommunityExchanges";
-import {CreateCommunityForm} from "../components/CreateCommunityModal";
 import {MAX_COMMUNITY_DESCR_LEN} from "../res/constants";
+import {updateCommunity} from "../services/apicalls";
 
 export type CommunityInfo = {
-  "_id": string,
-  "name": string,
-  "owner": number,
-  "users": any[],
-  "password": string
+  _id: string,
+  name: string,
+  owner: number,
+  description: string,
+  users: any[],
+  password: string,
+  is_blocked: boolean
 }
 
 function Community() {
@@ -26,12 +28,19 @@ function Community() {
   const {setErrorResponse} = useErrorHandler();
   const user = useUser();
 
-  const [community, setCommunity] = useState<CommunityInfo | undefined>(undefined);
+  const initCommunity: CommunityInfo = {
+      _id: "",
+      name: "",
+      owner: 0,
+      description: "",
+      users: [],
+      password: "",
+      is_blocked: false
+  }
+  const [community, setCommunity] = useState<CommunityInfo>(initCommunity);
   const [inviteModalOpen, setInviteModalOpen] = useState<boolean>(false);
 
-  const initialFormState: CreateCommunityForm = {
-    name: "",
-    password: "",
+  const initialFormState = {
     description: ""
   };
   const [form, setForm] = useState(initialFormState)
@@ -42,7 +51,6 @@ function Community() {
   }, [community_id])
 
   const fetchCommunity = async () => {
-    let _community: CommunityInfo | undefined = undefined;
     try {
       const response = await client.get(`/communities/${community_id}`, {
         headers: {
@@ -50,8 +58,9 @@ function Community() {
         }
       });
       response.data._id = response.data.id //hack: ahora el back trae id... again...
-      _community = response.data
-      setForm({name: "", password: "", description: ""})
+      const _community = response.data
+      setCommunity(_community);
+      setForm({description: community.description})
     } catch (error: any) {
       console.log(error.response || error.request || error.message);
       setErrorResponse({
@@ -59,7 +68,6 @@ function Community() {
         message: "¡Ups! Hubo un problema obteniendo esta comunidad"
       });
     }
-    setCommunity(_community);
   }
 
   const toggleInvite = () => {
@@ -79,11 +87,17 @@ function Community() {
 
   const cancelEdit = () => {
     setIsEditing(false)
-    setForm(initialFormState)
+    setForm({description: community.description})
   }
 
-  const updateCommunity = () => {
-    console.log("Upadting description")
+  const _updateCommunity = async () => {
+    if(community){
+      const updatedCommunity = await updateCommunity(community._id, user._id, {description: form.description})
+      if(updatedCommunity){
+        setCommunity(prevState => ({...prevState, "description": updatedCommunity.description}))
+      }
+    }
+    setIsEditing(false)
   }
 
   return (
@@ -108,10 +122,10 @@ function Community() {
                 {community.owner === user._id && !isEditing &&
                   <Button className="ml-3" color="success" onClick={enableEdit}>Editar</Button>}
                 {community.owner === user._id && isEditing &&
-                  <Button className="ml-3" color="success" onClick={updateCommunity}>Guardar</Button>}
+                  <Button className="ml-3" color="success" onClick={_updateCommunity}>Guardar</Button>}
                 {community.owner === user._id && isEditing &&
                   <Button className="ml-3 btn btn-primary" onClick={cancelEdit}>Cancelar</Button>}
-                {community.owner === user._id &&
+                {community.owner === user._id && !isEditing &&
                   <Button className="ml-3" color="success" onClick={toggleInvite}>Invitar</Button>}
               </div>
             </Row>
