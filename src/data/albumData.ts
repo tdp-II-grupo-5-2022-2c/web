@@ -10,71 +10,84 @@ const default_page : AlbumPage = {
   flagIcon: ''
 }
 
+export enum ECOUNTRIES {
+  Arg = "ARG",
+  Ksa = "KSA",
+  Mex = "MEX",
+  Pol = "POL",
+}
+
+export const COUNTRIES = {
+  ARG: "ARG",
+  KSA: "KSA",
+  MEX: "MEX",
+  POL: "POL",
+}
+
 // Iconos de banderas: https://flagicons.lipis.dev/
 const ALBUM_PAGES_METADATA = new Map<string, AlbumPage>([
-    ['ARG', {
+    [COUNTRIES.ARG, {
       styles: {
         backgroundColor: "rgba(117,169,219,0.5)"
       },
       flagIcon: 'fi-ar'
     }],
-    ['BRA', {
+    [COUNTRIES.KSA, {
       styles: {
-        backgroundColor: 'rgba(232,186,11,0.5)'
+        backgroundColor: 'rgba(21, 97, 55, 0.8)'
       },
-      flagIcon: 'fi-br'
+      flagIcon: 'fi-sa'
     }],
-    ['MEX', {
+    [COUNTRIES.MEX, {
       styles: {
         backgroundColor: 'rgba(57,70,46,0.5)'
       },
       flagIcon: 'fi-mx'
     }],
-    ['FRA', {
+    [COUNTRIES.POL, {
       styles: {
-        backgroundColor: 'rgba(3,21,131,0.5)',
+        backgroundColor: 'rgba(226, 4, 4, 0.8)',
       },
-      flagIcon: 'fi-fr'
+      flagIcon: 'fi-pl'
     }]
 ]);
 
-const COUNTRIES_MAP = new Map<string,string>([
-  ['ARG', 'Argentina'],
-  ['MEX', 'Mexico'],
-  ['FRA', 'Francia'],
-  ['BRA', 'Brasil'],
+export const COUNTRIES_MAP = new Map<string,string>([
+  [COUNTRIES.ARG, 'Argentina'],
+  [COUNTRIES.KSA, 'Arabia Saudita'],
+  [COUNTRIES.MEX, 'Mexico'],
+  [COUNTRIES.POL, 'Polonia'],
 ]);
 
-export enum COUNTRIES {
-  Arg = "ARG",
-  Mex = "MEX",
-  Fra = "FRA",
-  Bra = "BRA",
+export const COUNTRIES_NAMES = {
+  ARG: 'Argentina',
+  KSA: 'Arabia Saudita',
+  MEX: 'Mexico',
+  POL: 'Polonia',
+  ALL: 'Todos',
 }
 
-export const COUNTRIES_TO_FLAG = new Map<COUNTRIES, string>([
-  [COUNTRIES.Arg, 'ar'],
-  [COUNTRIES.Mex, 'mx'],
-  [COUNTRIES.Fra, 'fr'],
-  [COUNTRIES.Bra, 'br'],
+export const COUNTRIES_TO_FLAG = new Map<ECOUNTRIES, string>([
+  [ECOUNTRIES.Arg, 'ar'],
+  [ECOUNTRIES.Ksa, 'sa'],
+  [ECOUNTRIES.Mex, 'mx'],
+  [ECOUNTRIES.Pol, 'pl'],
 ]);
 
-export const STRING_TO_ENUM = new Map<string, COUNTRIES>([
-  ["ARG", COUNTRIES.Arg],
-  ["MEX", COUNTRIES.Mex],
-  ["FRA", COUNTRIES.Fra],
-  ["BRA", COUNTRIES.Bra],
+export const STRING_TO_ENUM = new Map<string, ECOUNTRIES>([
+  ["ARG", ECOUNTRIES.Arg],
+  ["KSA", ECOUNTRIES.Ksa],
+  ["MEX", ECOUNTRIES.Mex],
+  ["POL", ECOUNTRIES.Pol],
 ]);
 
 
-export const ALBUM_PAGES = ["BRA", "MEX", "ARG", "FRA"]
+export const ALBUM_PAGES = [COUNTRIES.ARG, COUNTRIES.KSA, COUNTRIES.MEX, COUNTRIES.POL]
 
-export const DEFAULT_COUNTRY_PAGE = "ARG";
+export const DEFAULT_COUNTRY_PAGE = COUNTRIES.ARG;
 
 export function getAlbumPage(country: string) : AlbumPage {
-  // TODO: no tengo idea de Typescript :)
-  // @ts-ignore
-  return ALBUM_PAGES_METADATA.has(country) ? ALBUM_PAGES_METADATA.get(country) : default_page;
+  return ALBUM_PAGES_METADATA.get(country) || default_page;
 }
 
 export function getAlbumCountryName(country: string) : string {

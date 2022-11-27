@@ -23,12 +23,13 @@ const MyAlbum = () => {
 
   const [isDesktop, setDesktop] = useState<boolean>(window.innerWidth >= DESKTOP_SIZE);
   const [isLoading, setLoading] = useState(true); //TODO Agregar loader del album
-  const [isPasting, setIsPasting] = useState(false);
+
+  const QPARAM_COUNTRY = "country"
+  const QPARAM_POSITION = "position"
 
   useEffect(() => {
-    // TODO: poner en una constante global este queryParam
-    const country = searchParams.get("country") || undefined;
-    const position = searchParams.get("position") || undefined;
+    const country = searchParams.get(QPARAM_COUNTRY) || undefined;
+    const position = searchParams.get(QPARAM_POSITION) || undefined;
     const stickerIdToBePasted = searchParams.get("stickerId") || undefined;
 
     if (country) {
@@ -68,11 +69,6 @@ const MyAlbum = () => {
     setAlbumStickers(stickers);
   }
 
-  const validateSelectedPage = () => {
-    return albumStickers &&
-        albumStickers.length >= NUM_PLAYERS;
-  }
-
   const nextPage = () => {
     let _currentPosition = ALBUM_PAGES.findIndex((element) => element === selectedCountry);
     let _selectedCountry = DEFAULT_COUNTRY_PAGE;
@@ -108,7 +104,6 @@ const MyAlbum = () => {
     console.log("Response")
     console.log(response)
 
-    setIsPasting(false);
     setPasteId(undefined);
     setPosition(undefined);
     setPastedIdAnimation(stickerId)
