@@ -35,6 +35,13 @@
   background-attachment: fixed !important;
 }
 
+.bg-logo-img {
+  background-image: url("../assets/img/qatar_logo_big.png");
+  background-size: 30%, auto !important;
+  background-repeat: no-repeat;
+  background-position: center !important;
+}
+
 .bg-football {
   background-image: url('../assets/img/orange-ball.png');
 }
@@ -42,4 +49,8 @@
 .sticker-zoom-animate {
   transition: all 0.3s ease 0s;
   transform: scale(0.8);
+}
+
+::-webkit-scrollbar {
+  display: none;
 }

@@ -8,6 +8,7 @@ import Success from "./modals/Success";
 import Error from "./modals/Error";
 import {IStickerData} from "./stickers/Sticker";
 import MySpinner from "./spinner/MySpinner";
+import {Col, Row} from "reactstrap";
 
 type Props = {
   communityId: string
@@ -146,8 +147,15 @@ const CommunityExchanges = ({communityId}:Props) => {
   return (
     <React.Fragment>
       {isLoading && <div className="d-flex justify-content-center align-items-center h-65vh">
-        <MySpinner message={loadingMsg}/>
+        <MySpinner className="text-white" message={loadingMsg}/>
       </div>}
+      {!isLoading && communityExchanges.length === 0 &&
+        <Row className="justify-content-center align-items-center h-100">
+          <Col>
+            <h2 className="text-center text-white-50"> No hay intercambios disponibles.</h2>
+          </Col>
+        </Row>
+      }
       {!isLoading && <div className="container">
         <div className="row">
           {communityExchanges.map((exchange, index) =>

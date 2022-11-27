@@ -164,49 +164,25 @@ const MyCommunities = () => {
             <h1 className="text-center text-white">MIS COMUNIDADES</h1>
           </Col>
           <Col className="text-md-start text-lg-right text-xl-right text-sm-start mb-1 mt-lg-5" lg={3} md={5} sm={5}>
-            <Button color="success" onClick={onCreateCommunityClick}>Crear Comunidad</Button>
+            <Button className="bg-translucent-darker text-white border-darker" onClick={onCreateCommunityClick}>Crear Comunidad</Button>
           </Col>
         </Row>
-        <Row>
-          <Col lg={2} md={12}>
-            {/*<Row>*/}
-            {/*  <Col lg={12} md={6}>*/}
-            {/*    <Button className="ml-0 mb-2" color="primary" block> Administrador </Button>*/}
-            {/*  </Col>*/}
-            {/*  <Col lg={12} md={6}>*/}
-            {/*    <Button className="ml-0 mb-2" color="default" block> Todos </Button>*/}
-            {/*  </Col>*/}
-            {/*</Row>*/}
-          </Col>
-          <Col className="offset-lg-1" lg={6} md={12}>
-            {/*<Row>*/}
-            {/*  <Form className="navbar-search">*/}
-            {/*    <FormGroup className="mb-0">*/}
-            {/*      <InputGroup className="input-group-alternative bg-white">*/}
-            {/*        <InputGroupText>*/}
-            {/*          <i className="fas fa-search"/>*/}
-            {/*        </InputGroupText>*/}
-            {/*        <Input placeholder="Buscar" type="text" id="name" {...register("name", {*/}
-            {/*          onChange: handleFilterChange()*/}
-            {/*        })} />*/}
-            {/*      </InputGroup>*/}
-            {/*    </FormGroup>*/}
-            {/*  </Form>*/}
-            {/*</Row>*/}
-            <ListGroup>
+        <Row className="justify-content-center">
+          <Col lg={6} md={12}>
+            <ListGroup className="shadow">
               {isLoading &&
                 <div className="d-flex justify-content-center align-items-center h-65vh">
-                  <MySpinner className="text-white-50" message={"Obteniendo comunidades..."}/>
+                  <MySpinner className="text-white" message={"Obteniendo comunidades..."}/>
                 </div>
               }
               {!isLoading && fetchedCommunities
                 .sort((a, b) => a.owner === user._id ? -1 : 0)
                 .map((community, index) =>
-                  <ListGroupItem className="justify-content-between" key={community._id} action onClick={viewCommunity}
+                  <ListGroupItem className="bg-translucent-dark border-0 shadow" key={community._id} action onClick={viewCommunity}
                                  id={community._id} tag="button">
-                    <span id={community._id} className="mr-2">{community.name}</span>
+                    <span id={community._id} className="mr-2 text-white">{community.name}</span>
                     {user._id === community.owner &&
-                      <Badge id={community._id} pill color="default">
+                      <Badge id={community._id} pill className="bg-gradient-orange">
                         ADMIN
                       </Badge>
                     }

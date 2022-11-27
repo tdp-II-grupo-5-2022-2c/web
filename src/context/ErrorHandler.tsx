@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import MyNavbar from "../components/MyNavbar";
-import {Container} from "reactstrap";
+import {Card, Col, Container, Row} from "reactstrap";
 
 interface ErrorActions {
   setErrorResponse: (response: ErrorResponse) => any;
@@ -39,9 +39,19 @@ export const ErrorHandler = ({ children }: any) => {
       return (
           <>
             <MyNavbar/>
-            <Container className="align-content-center mt-5">
-              <h1 className="text-center text-red" style={{fontSize: 100}}>{errorResponse?.statusCode}</h1>
-              <h2 className="text-center">{errorResponse?.message || '¡Ups!'}</h2>
+            <Container className="bg-gradient-orange h-90vh" fluid>
+              <Row className="justify-content-center align-items-center h-100">
+                <Col className="col-md-5 col-sm-12">
+                  <Card className="bg-translucent-dark">
+                    <Row>
+                      <h1 className="text-center text-red mt-5" style={{fontSize: 100}}>{errorResponse?.statusCode}</h1>
+                    </Row>
+                    <Row>
+                      <h2 className="mb-5 text-center text-white">{errorResponse?.message || '¡Ups!'}</h2>
+                    </Row>
+                  </Card>
+                </Col>
+              </Row>
             </Container>
           </>
       )
