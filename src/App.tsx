@@ -34,7 +34,7 @@ function App() {
   }
 
   const handleDailyPacket = () => {
-    navigate(ROUTES.DAILYPACKET)
+    navigate(ROUTES.OPEN_PACKET)
   }
 
   const handleMyAlbum = () => {

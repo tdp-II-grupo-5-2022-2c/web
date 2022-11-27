@@ -147,8 +147,8 @@ const MyStickers = () => {
     navigate(`../${ROUTES.BUY_PACKET}`)
   }
 
-  function goToDailyPacket() {
-    navigate(`../${ROUTES.DAILYPACKET}`)
+  function goToOpenPacket() {
+    navigate(`../${ROUTES.OPEN_PACKET}`)
   }
 
   const StickersList = ({stickers}: { stickers: ISticker[] }) => {
@@ -253,15 +253,14 @@ const MyStickers = () => {
               }}>
                 <Row className="justify-content-center mt-3 mb-3">
                   <StickersList stickers={fetchedStickers}/>
-                  {!hasStickers(fetchedStickers) && !hasStickers(user.stickers) &&
+                  {!hasStickers(fetchedStickers) && !hasStickers(user.stickers) && user.package_counter > 0 &&
                     <Col className="col-auto">
                       <Row>
                         <h1 className="text-white text-center mt-9">No tienes figuritas, abrí un nuevo paquete</h1>
                       </Row>
                       <Row className="row-cols-auto justify-content-center">
-                        {/*TODO: FIX ME. Debería validar si no tiene paquetes*/}
                         <Packet
-                            onOpenPacket={goToDailyPacket}
+                            onOpenPacket={goToOpenPacket}
                             style={{maxWidth: "40%", cursor: "pointer"}}
                             loading={loading}
                         />
