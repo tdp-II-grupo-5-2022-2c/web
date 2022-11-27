@@ -35,7 +35,7 @@ export const claimDailyPackages = async(userId: number) => {
 export const fetchAllStickers = async () => {
   try {
     const {data: stickers} = await client.get(`/stickers`);
-    return stickers
+    return stickers.items
   } catch (error: any) {
     console.error(
       "Request failed, response:",
@@ -71,7 +71,7 @@ export const fetchCommunities = async (ownerId?: number, memberId?: number, name
   let fetchedCommunities: any = []
   try {
     const response = await client.get(`/communities`, {params: _params})
-    fetchedCommunities = response.data
+    fetchedCommunities = response.data.items
   } catch (error: any) {
     if (error.response) {
       console.log(error.response);

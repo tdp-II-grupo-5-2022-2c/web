@@ -15,7 +15,6 @@ type Props = {
 function UsersList({users}: Props) {
   return (
       <>
-        {/*TODO: messages-container es de chat, se podría sacar de ahi y usar en general.*/}
         <Card className="bg-transparent border-0">
           <List type="unstyled">
             {users.map((x) => (
@@ -29,7 +28,7 @@ function UsersList({users}: Props) {
                 </span>
                 </div>
                 <Media className="ml-2 d-lg-block">
-                  <span className="mb-0 text-sm font-weight-bold">
+                  <span className="mb-0 text-sm text-white font-weight-bold">
                     {x.name + ' ' + x.lastname}
                   </span>
                 </Media>

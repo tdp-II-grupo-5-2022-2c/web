@@ -11,7 +11,7 @@ type Props = {
 function ChatRoom({roomId}: Props) {
   return (
       <>
-        <Card className="messages-container card-translucent container-fluid" fluid>
+        <Card className="messages-container bg-logo-img container-fluid" fluid>
           <MessageList roomId={roomId}/>
           <MessageInput roomId={roomId}/>
         </Card>

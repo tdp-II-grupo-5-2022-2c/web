@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useUser} from "../../context/UserContext";
 import {getCurrentTimestamp, getMessages, sendMessage} from "../../firebase";
-import {Button, Form, Input, InputGroup, Row} from "reactstrap";
+import {Button, Col, Form, Input, InputGroup, Row} from "reactstrap";
 import "./styles.css";
 import {MessageInfo} from "./MessageList";
 
@@ -28,7 +28,7 @@ function MessageInput({roomId}: Props) {
   const handleSubmit = (event: any) => {
     event.preventDefault();
     if (userLimitMessages()) {
-      setErrorMessage("Debes esperar un momento antes de publicar mas mensajes");
+      setErrorMessage("Debes esperar un momento antes de publicar más mensajes.");
     } else {
       setErrorMessage(undefined);
       sendMessage(roomId, user, value);
@@ -74,27 +74,34 @@ function MessageInput({roomId}: Props) {
 
   return (
       <>
-        <Form onSubmit={handleSubmit} className="message-input-container mr-0 pr-0">
-          <Row className="form-inline w-100">
-            <InputGroup className="w-100">
-              <Input
-                  type="text"
-                  placeholder="Escribe un mensaje"
-                  value={value}
-                  onChange={handleChange}
-                  required
-                  minLength={1}
-              />
-              <Button
-                  type="submit"
-                  disabled={value.length < 1 || value.length > MAX_LENGTH}
-                  color="primary">
-                Enviar
-              </Button>
-            </InputGroup>
-            {errorMessage && <small className="text-danger">{errorMessage}</small>}
-          </Row>
-        </Form>
+        <Row className="justify-content-center">
+          <Form onSubmit={handleSubmit} className="message-input-container mr-0 pr-0">
+            <Row className="form-inline w-100">
+              <InputGroup className="w-100">
+                <Input
+                    className="bg-translucent-darker text-white border-darker"
+                    type="text"
+                    placeholder="Escribe un mensaje"
+                    value={value}
+                    onChange={handleChange}
+                    required
+                    minLength={1}
+                />
+                <Button
+                    type="submit"
+                    disabled={value.length < 1 || value.length > MAX_LENGTH}
+                    className="bg-darker text-white border-darker">
+                  Enviar
+                </Button>
+              </InputGroup>
+              <Row>
+                <Col className="ml-1">
+                  {errorMessage && <small className="text-white">{errorMessage}</small>}
+                </Col>
+              </Row>
+            </Row>
+          </Form>
+        </Row>
       </>
   )
 }

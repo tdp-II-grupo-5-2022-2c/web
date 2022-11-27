@@ -66,6 +66,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   --color-gray: hsl(210, 3%, 25%);
   --color-blue: hsl(208, 100%, 50%);
+  --color-white: hsl(0, 0%, 100%);
   --border-radius: 5px;
   overflow: auto;
   height: 100%;
@@ -15208,6 +15209,10 @@ button.section-darker:focus {
 
 .h-10vh {
   height: 10vh !important;
+}
+
+.h-70vh {
+  height: 70vh !important;
 }
 
 .row.row-grid > [class*="col-"] + [class*="col-"] {
