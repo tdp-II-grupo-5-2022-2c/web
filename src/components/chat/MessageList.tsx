@@ -1,8 +1,9 @@
-import {useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {getMessages} from "../../firebase";
 import {useUser} from "../../context/UserContext";
-import {List} from "reactstrap";
+import {Col, List, Row} from "reactstrap";
 import "./styles.css";
+import MySpinner from "../spinner/MySpinner";
 
 
 type Props = {
@@ -19,11 +20,17 @@ export type MessageInfo = {
 
 function MessageList({roomId}: Props) {
   const [messages, setMessages] = useState<MessageInfo[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const user = useUser();
   const containerRef = useRef(null);
 
+  const loadMessages = (messages: MessageInfo[]) => {
+    setMessages(messages);
+    setLoading(false);
+  }
+
   useEffect(() => {
-    const unsubscribe = getMessages(roomId, setMessages);
+    const unsubscribe = getMessages(roomId, loadMessages);
     return unsubscribe;
   }, [roomId]);
 
@@ -38,15 +45,24 @@ function MessageList({roomId}: Props) {
   return (
       <>
         <div className="message-list-container col" ref={containerRef}>
-          <List type="unstyled" className="message-list">
-            {messages.map((x) => (
-                <Message
-                    key={x.id}
-                    message={x}
-                    isOwnMessage={x.user_id === user._id}
-                />
-            ))}
-          </List>
+          {loading &&
+              <Row className="justify-content-center align-items-center h-100">
+                <Col>
+                  <MySpinner className="text-white" message=""/>
+                </Col>
+              </Row>
+          }
+          {!loading &&
+              <List type="unstyled" className="message-list">
+                {messages.map((x) => (
+                    <Message
+                        key={x.id}
+                        message={x}
+                        isOwnMessage={x.user_id === user._id}
+                    />
+                ))}
+              </List>
+          }
         </div>
       </>
   );
