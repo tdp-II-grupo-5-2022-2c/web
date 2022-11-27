@@ -60,7 +60,7 @@ function Community() {
       response.data._id = response.data.id //hack: ahora el back trae id... again...
       const _community = response.data
       setCommunity(_community);
-      setForm({description: community.description})
+      setForm(prevForm => ({...prevForm, description: _community.description}))
     } catch (error: any) {
       console.log(error.response || error.request || error.message);
       setErrorResponse({
