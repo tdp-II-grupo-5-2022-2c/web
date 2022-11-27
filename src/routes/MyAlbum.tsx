@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
-import {ALBUM_PAGES, DEFAULT_COUNTRY_PAGE} from "../data/albumData";
+import {ALBUM_PAGES, COUNTRIES_MAP, DEFAULT_COUNTRY_PAGE} from "../data/albumData";
 import AlbumPage from "../components/AlbumPage";
 import {ISticker} from "../components/stickers/Sticker";
 import {useNavigate, useSearchParams} from "react-router-dom";
@@ -32,13 +32,19 @@ const MyAlbum = () => {
     const position = searchParams.get(QPARAM_POSITION) || undefined;
     const stickerIdToBePasted = searchParams.get("stickerId") || undefined;
 
-    if (country) {
+    if (country && isValidCountry(country)) {
       setSelectedCountry(country);
+      setPasteId(stickerIdToBePasted);
+      setPosition(Number(position) || undefined);
+      findPastedStickers(country)
+    } else {
+      navigateTo(DEFAULT_COUNTRY_PAGE)
     }
-    setPasteId(stickerIdToBePasted);
-    setPosition(Number(position) || undefined);
-    findPastedStickers(country)
   }, [selectedCountry, searchParams])
+
+  const isValidCountry = (country: string) => {
+    return COUNTRIES_MAP.has(country)
+  }
 
   const findPastedStickers = async (country?: string, withLoading?:false) => {
     setLoading(true);
