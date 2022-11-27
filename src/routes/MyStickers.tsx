@@ -26,6 +26,7 @@ import MyToast, {IToast} from "../components/MyToast";
 import Error from "../components/modals/Error";
 import {globalStickerStyles} from "../res/globalStyles";
 import Packet from "../components/Packet";
+import {COUNTRIES_NAMES} from "../data/albumData";
 
 export type Filters = {
   name?: string,
@@ -55,14 +56,6 @@ const MyStickers = () => {
     country: undefined
   }
   const _searchFilters = useRef<Filters>(initialFilterState);
-
-  const countriesToFilter = {
-    'Argentina': 'ARG',
-    'Mexico': 'MEX',
-    'Francia': 'FRA',
-    'Brasil': 'BRA',
-    'Todos': 'ALL'
-  }
 
   const closeToast = () => {
     setToast({...toast, isOpen:false})
@@ -124,10 +117,9 @@ const MyStickers = () => {
 
   const onCountryClick = (value: string) => {
     _searchFilters.current["country"] = value
-    if (value === countriesToFilter.Todos) {
+    if (value === "ALL") {
       _searchFilters.current = initialFilterState;
     }
-    console.log(_searchFilters)
     fetchUserStickers();
   }
 
@@ -155,8 +147,8 @@ const MyStickers = () => {
     navigate(`../${ROUTES.BUY_PACKET}`)
   }
 
-  function goToDailyPacket() {
-    navigate(`../${ROUTES.DAILYPACKET}`)
+  function goToOpenPacket() {
+    navigate(`../${ROUTES.OPEN_PACKET}`)
   }
 
   const StickersList = ({stickers}: { stickers: ISticker[] }) => {
@@ -219,15 +211,15 @@ const MyStickers = () => {
                   <Row className="m-0 p-0">
                     <Label className="text-start"><h1 className="text-white">País</h1></Label>
                   </Row>
-                  {Object.entries(countriesToFilter).map(([key, value]) =>
-                    <Row className="d-flex justify-content-start mb-2">
+                  {Object.entries(COUNTRIES_NAMES).map(([key, value]) =>
+                    <Row key={key} className="d-flex justify-content-start mb-2">
                       <Col className="col-auto">
-                      <Button key={value}
+                      <Button
                         className="text-white"
                         color="warning"
-                        onClick={() => onCountryClick(value)}
+                        onClick={() => onCountryClick(key)}
                       >
-                        {key}
+                        {value}
                       </Button>
                       </Col>
                     </Row>
@@ -261,15 +253,14 @@ const MyStickers = () => {
               }}>
                 <Row className="justify-content-center mt-3 mb-3">
                   <StickersList stickers={fetchedStickers}/>
-                  {!hasStickers(fetchedStickers) && !hasStickers(user.stickers) &&
+                  {!hasStickers(fetchedStickers) && !hasStickers(user.stickers) && user.package_counter > 0 &&
                     <Col className="col-auto">
                       <Row>
                         <h1 className="text-white text-center mt-9">No tienes figuritas, abrí un nuevo paquete</h1>
                       </Row>
                       <Row className="row-cols-auto justify-content-center">
-                        {/*TODO: FIX ME. Debería validar si no tiene paquetes*/}
                         <Packet
-                            onOpenPacket={goToDailyPacket}
+                            onOpenPacket={goToOpenPacket}
                             style={{maxWidth: "40%", cursor: "pointer"}}
                             loading={loading}
                         />

@@ -3,7 +3,7 @@ export const ROUTES = {
   SIGNIN: "/sign-in",
   MYSTICKERS: "/my-stickers",
   MYALBUM: "/my-album",
-  DAILYPACKET: "/open-packet",
+  OPEN_PACKET: "/open-packet",
   MYPROFILE: "/profile",
   MYCOMMUNITIES: "/my-communities",
   COMMUNITY: "/communities/:community_id",
