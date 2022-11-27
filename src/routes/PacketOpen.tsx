@@ -34,6 +34,7 @@ function PacketOpen() {
   const [opened, setOpened] = useState<boolean>(false)
   const [isDesktop, setDesktop] = useState<boolean>(window.innerWidth >= DESKTOP_SIZE);
   const [isMouseOverAlbum, setMouseOverAlbum] = useState<boolean>(false);
+  const [isMouseOverPacket, setMouseOverPacket] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const fadeInTimeout = 600;
   const navigate = useNavigate();
@@ -82,6 +83,10 @@ function PacketOpen() {
 
   const goToAlbum = () => {
     navigate(ROUTES.MYALBUM);
+  }
+
+  const goToOpenPacket = () => {
+    window.location.reload();
   }
 
   const closeshowPacketOpeningError = () => {
@@ -170,24 +175,47 @@ function PacketOpen() {
                     </Col>}
               </Row>
               {/*  ALBUM */}
-              <Row className="m-0 p-0 justify-content-center">
-                <Col className="d-flex col-2 justify-content-center">
-                  {isMouseOverAlbum &&
-                      <span className="floating text-white text-center">Ir al Album</span>
-                  }
+              <Row>
+                <Col>
+                  <Row className="m-0 p-0 justify-content-center">
+                    <Col className="d-flex col-2 justify-content-center">
+                      {isMouseOverAlbum &&
+                          <span className="floating text-white text-center">Ir al Album</span>
+                      }
+                    </Col>
+                  </Row>
+                  <Row className="m-0 p-0 justify-content-center">
+                    <div className={"col col-md-4 col-sm-12 card-packet-album-image d-flex justify-content-center "
+                    + (isOverAlbum ? "card-packet-album-image-drop" : "")}
+                         ref={dropAlbum}
+                         onClick={goToAlbum}
+                    >
+                      <img src={require("../assets/img/album_book.png")}
+                           onMouseOver={() => {setMouseOverAlbum(true)}}
+                           onMouseLeave={() => {setMouseOverAlbum(false)}}
+                      />
+                    </div>
+                  </Row>
                 </Col>
-              </Row>
-              <Row className="m-0 p-0 justify-content-center">
-                <div className={"col col-md-4 col-sm-12 card-packet-album-image d-flex justify-content-center "
-                + (isOverAlbum ? "card-packet-album-image-drop" : "")}
-                     ref={dropAlbum}
-                     onClick={goToAlbum}
-                >
-                  <img src={require("../assets/img/album_book.png")}
-                       onMouseOver={() => {setMouseOverAlbum(true)}}
-                       onMouseLeave={() => {setMouseOverAlbum(false)}}
-                  />
-                </div>
+                <Col>
+                  <Row className="m-0 p-0 justify-content-center">
+                    <Col className="d-flex col-2 justify-content-center">
+                      {isMouseOverPacket &&
+                          <span className="floating text-white text-center">Abrir otro paquete</span>
+                      }
+                    </Col>
+                  </Row>
+                  <Row className="m-0 p-0 justify-content-center">
+                    <div className={"col col-md-4 col-sm-12 card-packet-album-image d-flex justify-content-center"}
+                         onClick={goToOpenPacket}
+                    >
+                      <img src={require("../assets/img/packet.png")}
+                           onMouseOver={() => {setMouseOverPacket(true)}}
+                           onMouseLeave={() => {setMouseOverPacket(false)}}
+                      />
+                    </div>
+                  </Row>
+                </Col>
               </Row>
               </>
           }

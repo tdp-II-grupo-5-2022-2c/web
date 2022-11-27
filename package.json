@@ -26,7 +26,8 @@
     "web-vitals": "^2.1.4",
     "react-hook-form": "^7.36.0",
     "@primer/octicons-react": "^17.9.0",
-    "flag-icons": "^6.6.6"
+    "flag-icons": "^6.6.6",
+    "react-countdown": "^2.3.5"
   },
   "scripts": {
     "start": "react-scripts start",

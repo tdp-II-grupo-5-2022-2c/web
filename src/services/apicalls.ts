@@ -1,6 +1,7 @@
 import client from "./config";
 import {CommunityInfo} from "../routes/Community";
 
+// USER
 export const fetchUserStickers = async (userId: number, searchFilters:any) => {
   try {
     const {data: stickers} = await client.get(`/users/${userId}/stickers`, {
@@ -17,6 +18,20 @@ export const fetchUserStickers = async (userId: number, searchFilters:any) => {
   }
 }
 
+export const claimDailyPackages = async(userId: number) => {
+  try {
+    const response = await client.put(`/users/${userId}/packages/daily-package`)
+    return {data: response.data, statusCode: response.status}
+  } catch (error: any) {
+    console.error(
+        "Request failed, response:",
+        error
+    )
+    return {data: null, statusCode: error.statusCode}
+  }
+}
+
+// STICKERS
 export const fetchAllStickers = async () => {
   try {
     const {data: stickers} = await client.get(`/stickers`);
@@ -30,6 +45,7 @@ export const fetchAllStickers = async () => {
   }
 }
 
+// EXCHANGES
 export const fetchCommunityExchanges = async (userId: number, communityId:string) => {
   try {
     const {data: exchanges} = await client.get(`/users/${userId}/communities/${communityId}/exchanges`);
@@ -44,6 +60,7 @@ export const fetchCommunityExchanges = async (userId: number, communityId:string
   }
 }
 
+// COMMUNITIES
 export const fetchCommunities = async (ownerId?: number, memberId?: number, name?: string) => {
   const _params = {
     owner: ownerId || undefined,

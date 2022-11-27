@@ -2,6 +2,14 @@ export const ProfileStrings = {
   MANDATORY_FIELD: "*No puedes dejar este campo vacio"
 }
 
+export const HomeStrings = {
+  DAILY_PACKAGE_ERROR_HEADER: 'Error al reclamar paquete diario',
+  DAILY_PACKAGE_NOT_AVAILABLE: '¡Ups! No tienes paquetes diarios para reclamar.',
+  DAILY_PACKAGE_UNEXPECTED_ERROR: '¡Ups! Ha habido un error al reclamar paquete. Contacta al administrador.',
+  DAILY_PACKAGE_SUCCESS_HEADER: '¡Felicidades!',
+  DAILY_PACKAGE_SUCCESS: '¡Has recibido 2 paquetes diarios!'
+}
+
 export const CommunityCreationStrings = {
   OK_HEADER: "¡Comunidad Creada!",
   ERROR_HEAD: "Error al crear Comunidad",

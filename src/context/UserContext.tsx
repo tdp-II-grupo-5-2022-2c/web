@@ -23,6 +23,7 @@ export interface User {
   album_completion_pct: number
   exchanges_amount: number
   package_counter: number
+  has_packages_available: boolean
 }
 
 interface UserActions {
@@ -31,6 +32,7 @@ interface UserActions {
   logout: () => Promise<any> | void;
   getUser: (email: string) => Promise<any>;
   restore: (email:string) => Promise<any>;
+  updateUser: (user: User) => void;
 }
 
 const UserContext = React.createContext<User & UserActions>(
@@ -112,6 +114,10 @@ export const UserProvider = ({ children }: PropsWithChildren<any>) => {
       console.log("RESTORING")
       console.log(user)
       setUser(user || {} as User)
+    },
+
+    updateUser(user: User) {
+      setUser(user)
     }
   }
 
