@@ -142,7 +142,7 @@ function App() {
           <Col>
             <Row className="mb-3 m-0 p-0 justify-content-center">
               <Col className="d-flex col-2 justify-content-center">
-                <span className="text-white text-center" style={{fontSize: 25}}>Paquete diario</span>
+                <span className="text-white text-center" style={{fontSize: 25}}>Paquetes diarios</span>
               </Col>
             </Row>
             <Row className="m-0 p-0 justify-content-center">
