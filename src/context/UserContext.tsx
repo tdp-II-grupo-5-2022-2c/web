@@ -23,7 +23,7 @@ export interface User {
   album_completion_pct: number
   exchanges_amount: number
   package_counter: number
-  has_packages_available: boolean
+  has_daily_packages_available: boolean
 }
 
 interface UserActions {

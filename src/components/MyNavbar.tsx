@@ -32,7 +32,7 @@ const MyNavbar = (args: any) => {
           <div className="collapse navbar-collapse d-flex overflow-hidden">
               <a className="nav-link text-white" href={ROUTES.HOME}>Inicio</a>
               <a className="nav-link text-white" href={ROUTES.MYSTICKERS}>Mis Figuritas</a>
-              <a className="nav-link text-white" href={ROUTES.DAILYPACKET}>Abrir Paquete</a>
+              <a className="nav-link text-white" href={ROUTES.OPEN_PACKET}>Abrir Paquete</a>
               <a className="nav-link text-white" href={ROUTES.MYPROFILE}>Mi Perfil</a>
               <a className="nav-link text-white" href={ROUTES.MYALBUM}>Mi Album</a>
               <a className="nav-link text-white" href={ROUTES.MYCOMMUNITIES}>Mis Comunidades</a>

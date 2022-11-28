@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import MyNavbar from "../components/MyNavbar";
-import {ALBUM_PAGES, DEFAULT_COUNTRY_PAGE} from "../data/albumData";
+import {ALBUM_PAGES, COUNTRIES_MAP, DEFAULT_COUNTRY_PAGE} from "../data/albumData";
 import AlbumPage from "../components/AlbumPage";
 import {ISticker} from "../components/stickers/Sticker";
 import {useNavigate, useSearchParams} from "react-router-dom";
@@ -23,21 +23,28 @@ const MyAlbum = () => {
 
   const [isDesktop, setDesktop] = useState<boolean>(window.innerWidth >= DESKTOP_SIZE);
   const [isLoading, setLoading] = useState(true); //TODO Agregar loader del album
-  const [isPasting, setIsPasting] = useState(false);
+
+  const QPARAM_COUNTRY = "country"
+  const QPARAM_POSITION = "position"
 
   useEffect(() => {
-    // TODO: poner en una constante global este queryParam
-    const country = searchParams.get("country") || undefined;
-    const position = searchParams.get("position") || undefined;
+    const country = searchParams.get(QPARAM_COUNTRY) || undefined;
+    const position = searchParams.get(QPARAM_POSITION) || undefined;
     const stickerIdToBePasted = searchParams.get("stickerId") || undefined;
 
-    if (country) {
+    if (country && isValidCountry(country)) {
       setSelectedCountry(country);
+      setPasteId(stickerIdToBePasted);
+      setPosition(Number(position) || undefined);
+      findPastedStickers(country)
+    } else {
+      navigateTo(DEFAULT_COUNTRY_PAGE)
     }
-    setPasteId(stickerIdToBePasted);
-    setPosition(Number(position) || undefined);
-    findPastedStickers(country)
   }, [selectedCountry, searchParams])
+
+  const isValidCountry = (country: string) => {
+    return COUNTRIES_MAP.has(country)
+  }
 
   const findPastedStickers = async (country?: string, withLoading?:false) => {
     setLoading(true);
@@ -66,11 +73,6 @@ const MyAlbum = () => {
     console.log("processed stickers... ")
     console.log(stickers)
     setAlbumStickers(stickers);
-  }
-
-  const validateSelectedPage = () => {
-    return albumStickers &&
-        albumStickers.length >= NUM_PLAYERS;
   }
 
   const nextPage = () => {
@@ -108,7 +110,6 @@ const MyAlbum = () => {
     console.log("Response")
     console.log(response)
 
-    setIsPasting(false);
     setPasteId(undefined);
     setPosition(undefined);
     setPastedIdAnimation(stickerId)

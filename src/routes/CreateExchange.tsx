@@ -218,13 +218,13 @@ const CreateExchange = () => {
 
     const styles = {
       stickersPickersReceive: {
-        backgroundImage: `url("/images/qatar_bg_4.jpeg")`
-      }
+        backgroundImage: `url("/images/qatar_bg_4.jpeg")`,
+      },
     }
 
     return (
       <div className="container h-65vh bg-translucent-light border rounded"
-           style={!isGiving ? styles.stickersPickersReceive : {}}>
+           style={{...{overflowY: "auto", overflowX: "hidden"}, ...(!isGiving ? styles.stickersPickersReceive : {})}}>
         <div className="row row-cols-md-2 row-cols-lg-5 mt-2">
           {/*Listado de stickers*/}
           {isGiving ?

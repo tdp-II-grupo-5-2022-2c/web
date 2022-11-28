@@ -60,7 +60,7 @@ root.render(
                   </DndProvider>
                 </ProtectedRoute>
               } />
-              <Route path={ROUTES.DAILYPACKET} element={
+              <Route path={ROUTES.OPEN_PACKET} element={
                 <ProtectedRoute>
                   <DndProvider backend={HTML5Backend}>
                     <PacketOpen />
