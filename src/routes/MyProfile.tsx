@@ -154,7 +154,7 @@ const MyProfile = () => {
                       <div className="card-profile-stats d-flex flex-row justify-content-center mt-md-5">
                         <div><span className="heading">{user.exchanges_amount}</span><span className="description">Intercambios realizados</span></div>
                         <div><span className="heading">{user.stickers_collected}</span><span className="description">Figuritas coleccionadas</span></div>
-                        <div><span className="heading">{user.album_completion_pct.toPrecision(1)}%</span><span className="description">Album completo</span></div>
+                        <div><span className="heading">{user.album_completion_pct}%</span><span className="description">Album completo</span></div>
                       </div>
                   </div>
                   <div className="row">
