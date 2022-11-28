@@ -5,13 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import MyNavbar from "./components/MyNavbar";
 import {useUser} from "./context/UserContext";
 import {ROUTES} from "./routes/RoutesNames";
-import {Button, Col, Row, Tooltip, UncontrolledTooltip} from "reactstrap";
+import {Button, Card, Col, Container, Row, Tooltip, UncontrolledTooltip} from "reactstrap";
 import {globalButtonsStyle, globalStickerStyles} from "./res/globalStyles";
 import {claimDailyPackages} from "./services/apicalls";
 import Error from "./components/modals/Error";
 import {HomeStrings} from "./res/strings";
 import Success from "./components/modals/Success";
 import Countdown from "react-countdown";
+import Sticker from "./components/stickers/Sticker";
+import Packet from "./components/Packet";
 
 
 function App() {
@@ -42,6 +44,10 @@ function App() {
   }
 
   const onClickDailyPackage = () => {
+    if (!user.has_daily_packages_available) {
+      return;
+    }
+
     claimDailyPackages(user._id).then(response => {
       if (response.data === null && response.statusCode === 400) {
         setErrorModal({
@@ -71,7 +77,7 @@ function App() {
   const getDailyPacketDate = () => {
     let date = new Date();
     date.setDate(date.getDate() + 1);
-    date.setHours(9);
+    date.setHours(6);
     date.setMinutes(0);
     date.setSeconds(0);
     return date;
@@ -87,69 +93,88 @@ function App() {
   return (
     <React.Fragment>
       <MyNavbar/>
-      <div className="container text-center">
-        <h1>¡ Bienvenido {user.mail} !</h1>
+      <Container fluid className="bg-gradient-orange h-90vh overflow-auto">
 
-        <div className="row">
-            <div className="col-md-4">
-              <div className="card" onClick={handleMyStickers}>
-                <div className="card-body">
-                  <img src={"/images/ARG11.png"} style={globalStickerStyles.sticker}/>
-                  <Button style={globalButtonsStyle.alternative}>
-                    <p className="m-0 text-white">Mis figuritas</p>
-                  </Button>
-                </div>
+        <Row>
+          <Col className="mt-5 d-flex" lg={3} md={12}>
+            <h1 className="text-white text-start">INICIO</h1>
+          </Col>
+        </Row>
+        <Row className="align-items-center justify-content-center mb-4">
+          <Col className="text-center text-lg-right text-xl-right text-sm-start mb-1 mt-lg-5" lg={3} md={5} sm={5}>
+            <h1 className="text-white text-center">¡Bienvenido {user.name}!</h1>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <Row className="mb-3 m-0 p-0 justify-content-center">
+              <Col className="d-flex col-2 justify-content-center">
+                <span className="text-white text-center" style={{fontSize: 25}}>Mis Figuritas</span>
+              </Col>
+            </Row>
+            <Row className="m-0 p-0 justify-content-center">
+              <div className={"col col-md-4 col-sm-12 d-flex justify-content-center floating"}
+                   style={{cursor: 'pointer'}}
+                   onClick={handleMyStickers}>
+                <img src={require("./assets/img/stickers/ARG/ARG10.png")}
+                     style={globalStickerStyles.sticker}
+                />
               </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card" onClick={handleMyAlbum}>
-                <div className="card-body text-center">
-                  <img src={"/images/album.png"} style={globalStickerStyles.sticker}/>
-                  <Button style={globalButtonsStyle.alternative}>
-                    <p className="m-0 text-white">Mi album</p>
-                  </Button>
-                </div>
+            </Row>
+          </Col>
+          <Col>
+            <Row className="mb-3 m-0 p-0 justify-content-center">
+              <Col className="d-flex col-2 justify-content-center">
+                <span className="text-white text-center" style={{fontSize: 25}}>Mi Album</span>
+              </Col>
+            </Row>
+            <Row className="m-0 p-0 justify-content-center">
+              <div className={"col col-md-4 col-sm-12 d-flex justify-content-center floating"}
+                   style={{cursor: 'pointer'}}
+                   onClick={handleMyAlbum}>
+                <img src={require("./assets/img/album_book.png")}
+                     style={globalStickerStyles.sticker}
+                />
               </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card">
-                <div className="card-body text-center">
-                  <Row>
-                    <Col>
-                  <img src={"/images/daily_packet.png"} style={globalStickerStyles.sticker}/>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                  <Button
-                          style={globalButtonsStyle.alternative}
-                          disabled={!user.has_daily_packages_available}
-                          onClick={onClickDailyPackage}>
-                      <p className="m-0 text-white">Paquete diario</p>
-                  </Button>
-                    </Col>
-                  </Row>
-                  {!user.has_daily_packages_available &&
-                      <Row>
-                        <Countdown date={getDailyPacketDate()} renderer={({ hours, minutes, seconds, completed }) => {
-                          return (
-                              <span className="text-qatar-secondary">
-                                {hours}H  {minutes}M  {seconds}S
-                              </span>
-                          );
-                        }} />
-                      </Row>
-                  }
-                </div>
-              </div>
-            </div>
-          </div>
+            </Row>
+          </Col>
+          <Col>
+            <Row className="mb-3 m-0 p-0 justify-content-center">
+              <Col className="d-flex col-2 justify-content-center">
+                <span className="text-white text-center" style={{fontSize: 25}}>Paquete diario</span>
+              </Col>
+            </Row>
+            <Row className="m-0 p-0 justify-content-center">
+              <Packet
+                  onOpenPacket={onClickDailyPackage}
+                  unopenedPacketsQty={(user.has_daily_packages_available ? 2 : 0)}
+                  style={{maxWidth: "50%", cursor: "pointer"}}
+                  message=""
+              />
+            </Row>
+            {!user.has_daily_packages_available &&
+                <Row className="align-items-center justify-content-center mt-3">
+                  <Countdown date={getDailyPacketDate()} renderer={({ hours, minutes, seconds, completed }) => {
+                    return (
+                        <Card className="bg-transparent border-0">
+                          <span className="text-black text-center"> Próximos paquetes en... </span>
+                          <span className="text-black text-center" style={{fontSize: 25}}>
+                              {hours}H  {minutes}M  {seconds}S
+                          </span>
+                        </Card>
+                    );
+                  }} />
+                </Row>
+            }
+          </Col>
+        </Row>
         <Error modal={errorModal} isOpen={showErrorModal} onAccept={() => setShowErrorModal(false)}/>
         <Success modal={successModal} isOpen={showSuccessModal} onAccept={() => {
           setShowSuccessModal(false);
           handleDailyPacket();
         }}/>
-      </div>
+      </Container>
     </React.Fragment>
 
   );

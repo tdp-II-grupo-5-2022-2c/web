@@ -175,7 +175,7 @@ function PacketOpen() {
                     </Col>}
               </Row>
               {/*  ALBUM */}
-              <Row>
+              <Row className="position-sticky mb--1 h-50 align-items-end">
                 <Col>
                   <Row className="m-0 p-0 justify-content-center">
                     <Col className="d-flex col-2 justify-content-center">

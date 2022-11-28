@@ -16231,10 +16231,9 @@ a.btn-icon-only {
 
 .card-packet-album-image {
   position: relative;
-  overflow-y: hidden;
-  overflow-x: hidden;
 }
 .card-packet-album-image img {
+  position: -webkit-sticky;
   position: sticky;
   transition: all 0.15s ease;
   transform: translate(0, 40%);

@@ -157,7 +157,7 @@ const MyCommunities = () => {
   return (
     <React.Fragment>
       <MyNavbar/>
-      <Container className={"bg-gradient-orange " + (isDesktop ? " overflow-hidden h-90vh" : "")} fluid>
+      <Container className={"bg-gradient-orange " + (isDesktop ? "h-90vh" : "")} fluid>
         <Row>
           <Col lg={2} md={12}></Col>
           <Col className="offset-lg-1 mt-5 d-flex justify-content-center" lg={6} md={12}>
@@ -169,7 +169,7 @@ const MyCommunities = () => {
         </Row>
         <Row className="justify-content-center">
           <Col lg={6} md={12}>
-            <ListGroup className="shadow">
+            <ListGroup className="shadow mb-5">
               {isLoading &&
                 <div className="d-flex justify-content-center align-items-center h-65vh">
                   <MySpinner className="text-white" message={"Obteniendo comunidades..."}/>

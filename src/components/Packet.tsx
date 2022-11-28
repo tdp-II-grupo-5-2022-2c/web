@@ -7,10 +7,11 @@ type Props = {
   onOpenPacket: () => void,
   unopenedPacketsQty?: number,
   style?: object,
-  loading?: boolean
+  loading?: boolean,
+  message?:string
 }
 
-const Packet = ({onOpenPacket, unopenedPacketsQty, style = {}, loading = false}: Props) => {
+const Packet = ({onOpenPacket, unopenedPacketsQty, style = {}, loading = false, message = undefined}: Props) => {
   const _opacity = unopenedPacketsQty === 0 ? 0.4 : 1
 
   const noPackets = () => {
@@ -49,7 +50,7 @@ const Packet = ({onOpenPacket, unopenedPacketsQty, style = {}, loading = false}:
               </CardImgOverlay>}
               { noPackets() &&
                   <CardImgOverlay className="align-items-center d-flex justify-content-center">
-                    <h3 className="text-white text-center">No tienes paquetes</h3>
+                    <h3 className="text-white text-center">{message !== undefined ? message : "No tienes paquetes"}</h3>
                   </CardImgOverlay>
               }
             </Card>
