@@ -201,7 +201,7 @@ function PacketOpen() {
                   <Row className="m-0 p-0 justify-content-center">
                     <Col className="d-flex col-2 justify-content-center">
                       {isMouseOverPacket &&
-                          <span className="floating text-white text-center">Abrir otro paquete</span>
+                          <span className="floating text-white text-center">Ir a abrir paquete</span>
                       }
                     </Col>
                   </Row>
