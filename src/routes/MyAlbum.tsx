@@ -35,7 +35,7 @@ const MyAlbum = () => {
     if (country && isValidCountry(country)) {
       setSelectedCountry(country);
       setPasteId(stickerIdToBePasted);
-      setPosition(Number(position) || undefined);
+      setPosition(position === undefined ? undefined : Number(position));
       findPastedStickers(country)
     } else {
       navigateTo(DEFAULT_COUNTRY_PAGE)
