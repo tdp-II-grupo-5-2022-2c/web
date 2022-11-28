@@ -71,9 +71,9 @@ function App() {
   const getDailyPacketDate = () => {
     let date = new Date();
     date.setDate(date.getDate() + 1);
-    date.setHours(0)
-    date.setMinutes(0)
-    date.setSeconds(0)
+    date.setHours(9);
+    date.setMinutes(0);
+    date.setSeconds(0);
     return date;
   }
 
@@ -123,13 +123,13 @@ function App() {
                     <Col>
                   <Button
                           style={globalButtonsStyle.alternative}
-                          disabled={!user.has_packages_available}
+                          disabled={!user.has_daily_packages_available}
                           onClick={onClickDailyPackage}>
                       <p className="m-0 text-white">Paquete diario</p>
                   </Button>
                     </Col>
                   </Row>
-                  {!user.has_packages_available &&
+                  {!user.has_daily_packages_available &&
                       <Row>
                         <Countdown date={getDailyPacketDate()} renderer={({ hours, minutes, seconds, completed }) => {
                           return (
